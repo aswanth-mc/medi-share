@@ -8,3 +8,4 @@ class User(AbstractUser):
         ('user', 'User'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+    email = models.EmailField(unique=True)
