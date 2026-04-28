@@ -1,0 +1,13 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input name="name" placeholder="Unit Name"><br>
+    <input name="email" type="email"><br>
+    <input name="password" type="password"><br>
+    <input name="license_number"><br>
+    <input type="file" name="license_file"><br>
+    <input type="text" name="location" placeholder="Location"><br>
+    <input type="text" name="phone" placeholder="Phone Number"><br>
+
+    <button type="submit">Register Unit</button>
+</form>
