@@ -20,9 +20,11 @@ def register_unit(request):
             user=user,
             name=request.POST['name'],
             license_number=request.POST['license_number'],
-            license_file=request.FILES['license_file']
+            license_file=request.FILES['license_file'],
+            location=request.POST['location'],
+            phone=request.POST['phone']
         )
 
         return redirect('login')
 
-    return render(request, 'register_unit.html')
+    return render(request, 'unit_register.html')
