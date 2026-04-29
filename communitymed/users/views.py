@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from units.models import Palliativeunit
 
 User = get_user_model()
 
@@ -50,6 +51,10 @@ def user_login(request):
 def admin_dashboard(request):
     if request.user.role != 'admin':
         return redirect('home')
+    
+    unit = PalliativeUnit.objects.get(id=unit_id)
+    unit.is_verified = True
+    unit.save()
 
     return render(request, 'admin/dashboard.html')
 
