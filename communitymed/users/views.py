@@ -92,5 +92,6 @@ def user_dashboard(request):
     return render(request, 'user/dashboard.html')
 
 
-
-
+def user_logout(request):
+    logout(request)
+    return redirect('home')
