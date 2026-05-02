@@ -1,0 +1,124 @@
+:root {
+    --primary-green: #108553;
+    --light-green: #f0f9f4;
+    --text-dark: #2d3436;
+    --border-gray: #dfe6e9;
+}
+
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8faf9;
+    padding: 20px;
+}
+
+.registration-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    max-width: 700px;
+    width: 100%;
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card-header h2 {
+    color: var(--primary-green);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.card-header p {
+    color: #636e72;
+    font-size: 0.95rem;
+}
+
+/* Grid Layout */
+.grid-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+.form-group input {
+    padding: 12px 16px;
+    border: 1px solid var(--border-gray);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(16, 133, 83, 0.1);
+}
+
+/* Specialized Styles */
+.file-input {
+    padding: 8px !important;
+    background: var(--light-green);
+    border: 1px dashed var(--primary-green) !important;
+}
+
+.btn-submit {
+    grid-column: span 2;
+    background-color: var(--primary-green);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #0d6d44;
+}
+
+.card-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+}
+
+.card-footer a {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .grid-form {
+        grid-template-columns: 1fr;
+    }
+    .full-width, .btn-submit {
+        grid-column: span 1;
+    }
+}
