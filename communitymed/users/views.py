@@ -82,6 +82,8 @@ def register_user(request):
 
         return redirect('login')
     return render(request,'register_user.html')
+
+
 @login_required
 def user_dashboard(request):
     if request.user.role != 'user':
