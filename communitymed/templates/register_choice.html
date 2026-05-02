@@ -11,112 +11,56 @@
 </head>
 <body>
  
-<div class="page">
- 
-  <!-- Header -->
-  <header class="header">
-    <div class="header-badge">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>
-      Social Care Portal
-    </div>
-    <h1>Choose your <em>registration</em> type</h1>
-    <p class="subtitle">Select the profile that best describes who you are. You can update your details anytime after registration.</p>
-  </header>
- 
-  <!-- Cards -->
-  <div class="cards">
- 
-    <!-- Card 1 – General User -->
-    <div class="card card--user" role="button" tabindex="0" onclick="selectCard('user')" onkeydown="if(event.key==='Enter')selectCard('user')">
-      <div class="card-watermark"></div>
- 
-      <div class="card-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
-      </div>
- 
-      <div class="card-body">
-        <span class="card-type">Individual</span>
-        <h2 class="card-title">General User</h2>
-        <p class="card-desc">For individuals seeking social services, community support, benefit guidance, or connecting with care programs in your area.</p>
-        <div class="card-features">
-          <span class="pill">Benefits Access</span>
-          <span class="pill">Community Support</span>
-          <span class="pill">Care Programs</span>
+<div class="container">
+    <div class="badge">SOCIAL CARE PORTAL</div>
+
+    <h1>Choose your <span style="color:#3b7a57;">registration</span> type</h1>
+    <p class="subtitle">
+        Select the profile that best describes who you are.
+    </p>
+
+    <div class="cards">
+
+        <!-- USER CARD -->
+        <div class="card">
+            <div class="icon">👤</div>
+            <h2>General User</h2>
+            <p class="desc">
+                For individuals seeking support, benefits, or community help.
+            </p>
+
+            <div class="tags">
+                <span>Benefits</span>
+                <span>Support</span>
+                <span>Programs</span>
+            </div>
+
+            <a href="" class="btn">
+                Register as User →
+            </a>
         </div>
-      </div>
- 
-      <div class="card-divider"></div>
- 
-      <button class="btn btn--user" aria-label="Register as General User">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <line x1="19" y1="8" x2="19" y2="14"/>
-          <line x1="22" y1="11" x2="16" y2="11"/>
-        </svg>
-        Register as User
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </button>
-    </div>
- 
-    <!-- Card 2 – Palliative Unit -->
-    <div class="card card--pallia" role="button" tabindex="0" onclick="selectCard('palliative')" onkeydown="if(event.key==='Enter')selectCard('palliative')">
-      <div class="card-watermark"></div>
- 
-      <div class="card-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-        </svg>
-      </div>
- 
-      <div class="card-body">
-        <span class="card-type">Healthcare</span>
-        <h2 class="card-title">Palliative Unit</h2>
-        <p class="card-desc">For palliative care teams, hospice units, and healthcare institutions delivering compassionate end-of-life support services.</p>
-        <div class="card-features">
-          <span class="pill">Case Management</span>
-          <span class="pill">Patient Records</span>
-          <span class="pill">Team Coordination</span>
+
+        <!-- UNIT CARD -->
+        <div class="card">
+            <div class="icon">🏥</div>
+            <h2>Palliative Unit</h2>
+            <p class="desc">
+                For healthcare teams and institutions providing care services.
+            </p>
+
+            <div class="tags">
+                <span>Case Management</span>
+                <span>Records</span>
+                <span>Coordination</span>
+            </div>
+
+            <a href="{% url 'register_unit'%}" class="btn">
+                Register as Unit →
+            </a>
         </div>
-      </div>
- 
-      <div class="card-divider"></div>
- 
-      <button class="btn btn--pallia" aria-label="Register as Palliative Unit">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <path d="M12 8v8M8 12h8"/>
-        </svg>
-        Register as Palliative Unit
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </button>
+
     </div>
- 
-  </div>
- 
-  <!-- Footer note -->
-  <p class="footer-note">
-    Already have an account? <a href="#">Sign in here</a> &nbsp;·&nbsp; Need help? <a href="#">Contact support</a>
-  </p>
- 
 </div>
- 
-<script>
-  function selectCard(type) {
-    const label = type === 'user' ? 'General User' : 'Palliative Unit';
-    // Replace with actual routing/form logic
-    alert(`Proceeding to ${label} registration form…`);
-  }
-</script>
  
 </body>
 </html>
