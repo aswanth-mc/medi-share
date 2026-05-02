@@ -28,3 +28,14 @@ def register_unit(request):
         return redirect('login')
 
     return render(request, 'unit_register.html')
+
+@logoin_required
+def approve_unit(request, unit_id):
+    if request.user.role != 'admin':
+        return redirect('home')
+
+    unit = PalliativeUnit.objects.get(id=unit_id)
+    unit.is_verified = True
+    unit.save()
+
+    return redirect('admin_dashboard')
