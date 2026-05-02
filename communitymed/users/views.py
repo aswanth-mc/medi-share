@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from units.models import PalliativeUnit
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -11,7 +12,7 @@ def home(request):
     return render(request, 'index.html')
 
 
-# 🔐 Login (Email + Password)
+
 def user_login(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -31,7 +32,7 @@ def user_login(request):
             if user:
                 login(request, user)
 
-                # 🔥 Role-based redirect
+                
                 if user.role == 'admin':
                     return redirect('admin_dashboard')
                 elif user.role == 'unit':
@@ -50,10 +51,41 @@ def user_login(request):
 def admin_dashboard(request):
     if request.user.role != 'admin':
         return redirect('home')
+    
+    pending_units = PalliativeUnit.objects.filter(is_verified=False)
 
-    return render(request, 'admin/dashboard.html')
+    return render(request, 'admin/dashboard.html',
+    {
+        'pending_units': pending_units
+    })
 
+def register_choice(request):
+    return render(request, 'register_choice.html')
 
+def register_user(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        username = request.POST.get('username')
+        phone = request.POST.get('phone')
+        location = request.POST.get('location')
+
+        if User.objects.filter(email=email).exists():
+            return render(request, 'register_user.html', {
+                'error': 'Email already exists'
+            })
+        
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            role='user',
+            phone=phone,
+            location=location
+        )
+
+        return redirect('login')
+    return render(request,'register_user.html')
 
 
 

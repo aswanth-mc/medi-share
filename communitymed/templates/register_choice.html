@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/register-choice.css' %}">
+{% endblock %}
+</head>
+<body>
+ 
+<div class="container">
+    <div class="badge">SOCIAL CARE PORTAL</div>
+
+    <h1>Choose your <span style="color:#3b7a57;">registration</span> type</h1>
+    <p class="subtitle">
+        Select the profile that best describes who you are.
+    </p>
+
+    <div class="cards">
+
+        <!-- USER CARD -->
+        <div class="card">
+            <div class="icon">👤</div>
+            <h2>General User</h2>
+            <p class="desc">
+                For individuals seeking support, benefits, or community help.
+            </p>
+
+            
+
+            <a href="{% url 'register_user' %}" class="btn">
+                Register as User →
+            </a>
+        </div>
+
+        <!-- UNIT CARD -->
+        <div class="card">
+            <div class="icon">🏥</div>
+            <h2>Palliative Unit</h2>
+            <p class="desc">
+                For healthcare teams and institutions providing care services.
+            </p>
+
+            
+
+            <a href="{% url 'register_unit'%}" class="btn">
+                Register as Unit →
+            </a>
+        </div>
+
+    </div>
+</div>
+ 
+</body>
+</html>

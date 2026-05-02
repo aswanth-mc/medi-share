@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventory',
     'users',
+    'units',
 ]
 AUTH_USER_MODEL = 'users.User'
 
@@ -124,3 +125,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
