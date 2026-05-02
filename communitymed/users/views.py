@@ -59,6 +59,8 @@ def admin_dashboard(request):
         'pending_units': pending_units
     })
 
+def register_choice(request):
+    return render(request, 'register_choice.html')
 
 
 
