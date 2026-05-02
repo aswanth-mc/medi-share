@@ -12,7 +12,7 @@ def home(request):
     return render(request, 'index.html')
 
 
-# 🔐 Login (Email + Password)
+
 def user_login(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -32,7 +32,7 @@ def user_login(request):
             if user:
                 login(request, user)
 
-                # 🔥 Role-based redirect
+                
                 if user.role == 'admin':
                     return redirect('admin_dashboard')
                 elif user.role == 'unit':
