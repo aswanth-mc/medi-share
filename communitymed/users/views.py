@@ -3,6 +3,7 @@ from units.models import PalliativeUnit
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from .models import MedicineRequest
 
 User = get_user_model()
 
@@ -95,3 +96,27 @@ def user_dashboard(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
+
+
+@login_required
+def request_medicine(request):
+    if request.user.role != 'user':
+        return redirect('home')
+
+    if request.method == "POST":
+        medicine_name = request.POST.get('medicine_name')
+        quantity = request.POST.get('quantity')
+        category = request.POST.get('category')   # ✅ your line
+        description = request.POST.get('description')
+
+        MedicineRequest.objects.create(
+            user=request.user,
+            medicine_name=medicine_name,
+            quantity=quantity,
+            category=category,   # ✅ your line
+            description=description
+        )
+
+        return redirect('user_dashboard')
+
+    return render(request, 'user/request_medicine.html')
