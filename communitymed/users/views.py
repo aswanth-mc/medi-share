@@ -54,7 +54,6 @@ def admin_dashboard(request):
     
     pending_units = PalliativeUnit.objects.filter(is_verified=False)
 
-<<<<<<< HEAD
     return render(request, 'admin/dashboard.html')
 
 @login_required
@@ -62,40 +61,6 @@ def user_dashboard(request):
     if request.user.role != 'user':
         return redirect('login')
     return render(request, 'user/dashboard.html')
-=======
-    return render(request, 'admin/dashboard.html',
-    {
-        'pending_units': pending_units
-    })
-
-def register_choice(request):
-    return render(request, 'register_choice.html')
-
-def register_user(request):
-    if request.method == "POST":
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        username = request.POST.get('username')
-        phone = request.POST.get('phone')
-        location = request.POST.get('location')
-
-        if User.objects.filter(email=email).exists():
-            return render(request, 'register_user.html', {
-                'error': 'Email already exists'
-            })
-        
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            role='user',
-            phone=phone,
-            location=location
-        )
-
-        return redirect('login')
-    return render(request,'register_user.html')
->>>>>>> ac6037c58c2737d21ca1eb45e72bb36e60d46f4a
 
 
 
