@@ -53,7 +53,11 @@ def admin_dashboard(request):
 
     return render(request, 'admin/dashboard.html')
 
-
+@login_required
+def user_dashboard(request):
+    if request.user.role != 'user':
+        return redirect('login')
+    return render(request, 'user/dashboard.html')
 
 
 
