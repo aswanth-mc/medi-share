@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 # Create your models here.
 
-class Palliativeunit(models.Model):
+class PalliativeUnit(models.Model):
     name=models.CharField(max_length=255)
     email=models.EmailField()
     phone=models.CharField(max_length=20)

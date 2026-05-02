@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from .models import Palliativeunit
+from .models import PalliativeUnit
 
 User = get_user_model()
 
@@ -18,7 +18,7 @@ def register_unit(request):
             role='unit'
         )
 
-        Palliativeunit.objects.create(
+        PalliativeUnit.objects.create(
             user=user,
             name=request.POST['name'],
             license_number=request.POST['license_number'],
@@ -29,14 +29,14 @@ def register_unit(request):
 
         return redirect('login')
 
-    return render(request, 'unit_register.html')
+    return render(request, 'unit/unit_register.html')
 
 @login_required
 def approve_unit(request, unit_id):
     if request.user.role != 'admin':
         return redirect('home')
 
-    unit = Palliativeunit.objects.get(id=unit_id)
+    unit = PalliativeUnit.objects.get(id=unit_id)
     unit.is_verified = True
     unit.save()
 
