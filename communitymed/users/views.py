@@ -38,7 +38,7 @@ def user_login(request):
                 elif user.role == 'unit':
                     return redirect('unit_dashboard')
                 else:
-                    return redirect('home')
+                    return redirect('user_dashboard')
 
         return render(request, 'login.html', {'error': 'Invalid credentials'})
 
@@ -55,6 +55,7 @@ def admin_dashboard(request):
     pending_units = PalliativeUnit.objects.filter(is_verified=False)
 
     return render(request, 'admin/dashboard.html', {'pending_units': pending_units})
+
 def register_choice(request):
     return render(request, 'register_choice.html')
 
