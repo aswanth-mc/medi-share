@@ -1,16 +1,20 @@
 function openModal(id) {
-    document.getElementById("modal-" + id).classList.add("show");
+    const modal = document.getElementById("modal-" + id);
+    if (modal) {
+        modal.classList.add("show");
+    }
 }
 
 function closeModal(id) {
-    document.getElementById("modal-" + id).classList.remove("show");
+    const modal = document.getElementById("modal-" + id);
+    if (modal) {
+        modal.classList.remove("show");
+    }
 }
-console.log(typeof closeModal);
 
+// Close modal if user clicks anywhere outside of the white box
 window.onclick = function(event) {
-    document.querySelectorAll('.modal').forEach(modal => {
-        if (event.target === modal) {
-            modal.classList.remove("show");
-        }
-    });
+    if (event.target.classList.contains('modal-bg')) {
+        event.target.classList.remove("show");
+    }
 };
