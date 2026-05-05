@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from .models import PalliativeUnit
-
+from users.models import MedicineRequest
 User = get_user_model()
 
 def register_unit(request):
@@ -41,3 +41,12 @@ def approve_unit(request, unit_id):
     unit.save()
 
     return redirect('admin_dashboard')
+
+@login_required
+def unit_dashboard(request):
+    if request.user.role != 'unit':
+        return redirect('home')
+    requests = MedicineRequest.objects.filter(user=request.user)
+    return render(request, 'unit/dashboard.html', {
+        'requests': requests
+    })

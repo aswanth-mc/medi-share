@@ -1,0 +1,15 @@
+<h2>Unit Dashboard</h2>
+
+{% for req in requests %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <p><strong>{{ req.medicine_name }}</strong></p>
+        <p>Quantity: {{ req.quantity }}</p>
+        <p>Category: {{ req.category }}</p>
+        <p>Status: {{ req.status }}</p>
+
+        <a href="{% url 'update_request_status' req.id 'approved' %}">Approve</a>
+        <a href="{% url 'update_request_status' req.id 'rejected' %}">Reject</a>
+    </div>
+{% empty %}
+    <p>No pending requests</p>
+{% endfor %}

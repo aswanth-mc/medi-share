@@ -1,8 +1,0 @@
-{% for unit in pending_units %}
-    <p>{{ unit.name }}</p>
-    <p>{{ unit.license_number }}</p>
-
-    <a href="{% url 'approve_unit' unit.id %}">
-        Approve
-    </a>
-{% endfor %}
