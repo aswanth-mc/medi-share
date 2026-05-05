@@ -69,7 +69,7 @@ def register_user(request):
         location = request.POST.get('location')
 
         if User.objects.filter(email=email).exists():
-            return render(request, 'register_user.html', {
+            return render(request, 'user/register.html', {
                 'error': 'Email already exists'
             })
         
@@ -83,7 +83,7 @@ def register_user(request):
         )
 
         return redirect('login')
-    return render(request,'register_user.html')
+    return render(request,'user/register.html')
 
 
 @login_required
