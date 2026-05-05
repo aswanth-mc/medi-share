@@ -1,8 +1,59 @@
-{% for unit in pending_units %}
-    <p>{{ unit.name }}</p>
-    <p>{{ unit.license_number }}</p>
+{% load static %}
 
-    <a href="{% url 'approve_unit' unit.id %}">
-        Approve
-    </a>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin-dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}">
+</head>
+<body>
+   <div class="dashboard-grid">
+    {% for unit in pending_units %}
+    <!-- Unit Card -->
+    <div class="unit-card">
+        <div class="card-body">
+            <h3>{{ unit.name }}</h3>
+            <p class="location-text"><strong>Place:</strong> {{ unit.location }}</p>
+        </div>
+        
+        <div class="card-actions">
+            <!-- Detailed View Button -->
+            <button onclick="openModal('{{ unit.id }}')" class="btn-info">Detailed View</button>
+            <!-- Approve Button -->
+            <a href="{% url 'approve_unit' unit.id %}" class="btn-success">Approve</a>
+        </div>
+    </div>
+
+    <!-- Modal Window (Hidden by Default) -->
+    <div id="modal-{{ unit.id }}" class="modal-bg">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span class="close-btn" onclick="closeModal('{{ unit.id }}')">&times;</span>
+                <h2>Verification: {{ unit.name }}</h2>
+            </div>
+            
+            <div class="modal-body">
+                <div class="details-pane">
+                    <p><strong>Place:</strong> {{ unit.location }}</p>
+                    <p><strong>Phone:</strong> {{ unit.phone }}</p>
+                    <p><strong>License No:</strong> {{ unit.license_number }}</p>
+                </div>
+
+                <div class="image-pane">
+                    <h4>License Image</h4>
+                    {% if unit.license_file %}
+                        <img src="{{ unit.license_file.url }}" alt="License" class="license-view">
+                    {% else %}
+                        <p>No license image provided.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<script src="{% static 'js/admin-dashboard.js' %}"></script>
+</body>
+</html>
