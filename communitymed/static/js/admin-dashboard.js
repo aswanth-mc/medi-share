@@ -5,6 +5,7 @@ function openModal(id) {
 function closeModal(id) {
     document.getElementById("modal-" + id).classList.remove("show");
 }
+console.log(typeof closeModal);
 
 window.onclick = function(event) {
     document.querySelectorAll('.modal').forEach(modal => {
