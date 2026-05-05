@@ -1,8 +1,39 @@
-{% for unit in pending_units %}
-    <p>{{ unit.name }}</p>
-    <p>{{ unit.license_number }}</p>
+{% load static %}
 
-    <a href="{% url 'approve_unit' unit.id %}">
-        Approve
-    </a>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin-dashboard</title>
+</head>
+<body>
+    <h2>pending units</h2>
+    <div class="container">
+        {% for unit in pending_units %}
+        <div class="card">
+            <h3>{{ unit.name }}</h3>
+            <p>{{ unit.location }}</p>
+            <div class="btn">
+                <button onclick="openModal('{{ unit.id }}')" class="btn details">View Details</button>
+                <a href="{% url 'approve_unit' unit.id %}">Approve</a>
+            </div>
+        </div>
+    </div>
+        <div id="modal-{{ unit.id }}" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('{{ unit.id }}')">&times;</span>
+
+            <h2>{{ unit.name }}</h2>
+            <p><strong>Location:</strong> {{ unit.location }}</p>
+            <p><strong>Phone:</strong> {{ unit.phone }}</p>
+            <p><strong>License No:</strong> {{ unit.license_number }}</p>
+
+            <h4>License Image</h4>
+            <img src="{{ unit.license_file.url }}" class="license-img">
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</body>
+</html>
