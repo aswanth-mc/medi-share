@@ -30,5 +30,6 @@ class UnitInventory(models.Model):
     donation = models.ForeignKey(MedicineDonation, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     quantity = models.PositiveIntegerField()
+    category = models.CharField(max_length=50)
     expiry_date = models.DateField()
     added_at = models.DateTimeField(auto_now_add=True)
