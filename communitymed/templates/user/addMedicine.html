@@ -1,0 +1,30 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="text" name="name" placeholder="Medicine Name" required><br>
+    <input type="number" name="quantity" placeholder="Quantity" required><br>
+    <label>Category</label>
+<select name="category" required>
+    <option value="">Select Category</option>
+    <option value="tablet">Tablet</option>
+    <option value="syrup">Syrup</option>
+    <option value="injection">Injection</option>
+    <option value="ointment">Ointment</option>
+    <option value="other">Other</option>
+</select>
+<br>
+    
+    <label>Expiry Date</label>
+    <input type="date" name="expiry_date" required><br>
+
+    <label>Upload Image</label>
+    <input type="file" name="image" required><br>
+
+    <label>Pickup Date</label>
+    <input type="date" name="pickup_date" required><br>
+
+    <label>Pickup Time</label>
+    <input type="time" name="pickup_time" required><br>
+
+    <button type="submit">Submit</button>
+</form>
