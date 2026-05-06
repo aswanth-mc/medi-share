@@ -106,15 +106,15 @@ def request_medicine(request):
     if request.method == "POST":
         medicine_name = request.POST.get('medicine_name')
         quantity = request.POST.get('quantity')
-        category = request.POST.get('category')   # ✅ your line
-        description = request.POST.get('description')
+        category = request.POST.get('category') 
+       
 
         MedicineRequest.objects.create(
             user=request.user,
             medicine_name=medicine_name,
             quantity=quantity,
-            category=category,   # ✅ your line
-            description=description
+            category=category,  
+
         )
 
         return redirect('user_dashboard')
