@@ -137,4 +137,4 @@ def add_donation(request):
         )
         return redirect('user_dashboard')
 
-    return render(request, 'add_donation.html')
+    return render(request, 'user/addMedicine.html')
