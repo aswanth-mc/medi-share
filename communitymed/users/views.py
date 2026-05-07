@@ -127,7 +127,7 @@ def add_donation(request):
     if request.method == "POST":
         MedicineDonation.objects.create(
             user=request.user,
-            name=request.POST.get('name'),
+            name=request.POST.get('medicine_name'),
             quantity=request.POST.get('quantity'),
             category=request.POST.get('category'),
             expiry_date=request.POST.get('expiry_date'),
