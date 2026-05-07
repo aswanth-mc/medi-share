@@ -1,7 +1,7 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <input type="text" name="name" placeholder="Medicine Name" required><br>
+    <input type="text" name="medicine_name" placeholder="Medicine Name"><br>
     <input type="number" name="quantity" placeholder="Quantity" required><br>
     <label>Category</label>
 <select name="category" required>
