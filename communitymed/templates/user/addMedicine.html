@@ -1,30 +1,76 @@
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Medicine | Medi-Share</title>
+    <link rel="stylesheet" href="{% static 'css/user/add_medicine.css' %}">
+</head>
+<body>
+    <div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h2>Donate Medicine</h2>
+            <p>Please provide accurate details for verification.</p>
+        </div>
 
-    <input type="text" name="medicine_name" placeholder="Medicine Name"><br>
-    <input type="number" name="quantity" placeholder="Quantity" required><br>
-    <label>Category</label>
-<select name="category" required>
-    <option value="">Select Category</option>
-    <option value="tablet">Tablet</option>
-    <option value="syrup">Syrup</option>
-    <option value="injection">Injection</option>
-    <option value="ointment">Ointment</option>
-    <option value="other">Other</option>
-</select>
-<br>
-    
-    <label>Expiry Date</label>
-    <input type="date" name="expiry_date" required><br>
+        <form method="POST" enctype="multipart/form-data" class="donation-form">
+            {% csrf_token %}
 
-    <label>Upload Image</label>
-    <input type="file" name="image" required><br>
+            <div class="form-group full-width">
+                <label>Medicine Name</label>
+                <input type="text" name="medicine_name" placeholder="Enter name (e.g., Paracetamol)" required>
+            </div>
 
-    <label>Pickup Date</label>
-    <input type="date" name="pickup_date" required><br>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" placeholder="Count/Amount" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="tablet">Tablet</option>
+                        <option value="syrup">Syrup</option>
+                        <option value="injection">Injection</option>
+                        <option value="ointment">Ointment</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
 
-    <label>Pickup Time</label>
-    <input type="time" name="pickup_time" required><br>
+            <div class="form-group full-width">
+                <label>Expiry Date</label>
+                <input type="date" name="expiry_date" required>
+            </div>
 
-    <button type="submit">Submit</button>
-</form>
+            <div class="form-group full-width">
+                <label>Upload Medicine Photo</label>
+                <input type="file" name="image" class="file-input" required>
+                <small>Ensure the expiry date is visible in the photo.</small>
+            </div>
+
+            <hr class="divider">
+            <div class="form-header-small">
+                <h3>Pickup Schedule</h3>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Preferred Date</label>
+                    <input type="date" name="pickup_date" required>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Time</label>
+                    <input type="time" name="pickup_time" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Submit for Verification</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
