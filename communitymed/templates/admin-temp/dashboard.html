@@ -13,7 +13,7 @@
     <div class="unit-card">
         <div class="card-body">
             <h3>{{ unit.name }}</h3>
-            <p class="location-text"><strong>Place:</strong> {{ unit.location }}</p>
+            <p class="location-text"><strong>Place:</strong> {{ unit.location_name }}</p>
         </div>
         
         <div class="card-actions">
@@ -34,7 +34,7 @@
             
             <div class="modal-body">
                 <div class="details-pane">
-                    <p><strong>Place:</strong> {{ unit.location }}</p>
+                    <p><strong>Place:</strong> {{ unit.location_name }}</p>
                     <p><strong>Phone:</strong> {{ unit.phone }}</p>
                     <p><strong>License No:</strong> {{ unit.license_number }}</p>
                 </div>
