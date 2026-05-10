@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from inventory.models import MedicineDonation
 from units.models import PalliativeUnit
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -120,3 +121,20 @@ def request_medicine(request):
         return redirect('user_dashboard')
 
     return render(request, 'user/request_medicine.html')
+
+@login_required
+def add_donation(request):
+    if request.method == "POST":
+        MedicineDonation.objects.create(
+            user=request.user,
+            medicine_name=request.POST.get('medicine_name'),
+            quantity=request.POST.get('quantity'),
+            category=request.POST.get('category'),
+            expiry_date=request.POST.get('expiry_date'),
+            image=request.FILES.get('image'),
+            pickup_date=request.POST.get('pickup_date'),
+            pickup_time=request.POST.get('pickup_time')
+        )
+        return redirect('user_dashboard')
+
+    return render(request, 'user/addMedicine.html')

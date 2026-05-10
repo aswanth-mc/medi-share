@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+
+from inventory.models import MedicineDonation, UnitInventory
 from .models import PalliativeUnit
 from users.models import MedicineRequest
 User = get_user_model()
@@ -50,3 +52,26 @@ def unit_dashboard(request):
     return render(request, 'unit/dashboard.html', {
         'requests': requests
     })
+
+@login_required
+def unit_dashboard(request):
+    if request.user.role != 'unit':
+        return redirect('home')
+
+    donations = MedicineDonation.objects.filter(status='pending')
+
+    return render(request, 'unit/dashboard.html', {
+        'donations': donations
+    })
+
+@login_required
+def approve_donation(request, donation_id):
+    if request.user.role != 'unit':
+        return redirect('home')
+
+    donation = MedicineDonation.objects.get(id=donation_id)
+    donation.status = 'approved'
+    donation.save()
+
+    return redirect('unit_dashboard')
+
