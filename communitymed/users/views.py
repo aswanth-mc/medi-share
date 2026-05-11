@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from inventory.models import MedicineDonation
 from units.models import PalliativeUnit
+from geopy.distance import geodesic
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -126,6 +127,20 @@ def request_medicine(request):
 
 @login_required
 def add_donation(request):
+
+    unit= PalliativeUnit.objects.filter(is_verified=True)
+    nearest_units = []
+
+    user_location =(
+        request.user.location_latitude,
+        request.user.location_longitude
+    )
+    for i in unit:
+        if unit.latitude and unit.logitude:
+            unit_location = (unit.latitude, unit.longitude)
+            distance = geodesic(user_location, unit_location).km
+            nearest_units=sorted(nearest_units, key=lambda x: x[distance])
+
     if request.method == "POST":
         MedicineDonation.objects.create(
             user=request.user,
