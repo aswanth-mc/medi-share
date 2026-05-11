@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from units.models import PalliativeUnit
 
 # Create your models here.
 User = settings.AUTH_USER_MODEL
@@ -21,6 +22,7 @@ class MedicineDonation(models.Model):
     pickup_time = models.TimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
+    selected_unit = models.ForeignKey(PalliativeUnit, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.medicine_name
