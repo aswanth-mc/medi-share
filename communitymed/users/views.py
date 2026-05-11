@@ -134,31 +134,81 @@ def request_medicine(request):
 @login_required
 def add_donation(request):
 
-    unit= PalliativeUnit.objects.filter(is_verified=True)
+    units = PalliativeUnit.objects.filter(
+        is_verified=True
+    )
+
     nearest_units = []
 
-    user_location =(
-        request.user.location_latitude,
-        request.user.location_longitude
+    user_location = (
+        request.user.latitude,
+        request.user.longitude
     )
-    for i in unit:
-        if unit.latitude and unit.logitude:
-            unit_location = (unit.latitude, unit.longitude)
-            distance = geodesic(user_location, unit_location).km
-            nearest_units=sorted(nearest_units, key=lambda x: x[distance])
+
+    for unit in units:
+
+        if unit.latitude and unit.longitude:
+
+            unit_location = (
+                unit.latitude,
+                unit.longitude
+            )
+
+            distance = geodesic(
+                user_location,
+                unit_location
+            ).km
+
+            nearest_units.append({
+                'unit': unit,
+                'distance': round(distance, 2)
+            })
+
+    nearest_units = sorted(
+        nearest_units,
+        key=lambda x: x['distance']
+    )
 
     if request.method == "POST":
+
         MedicineDonation.objects.create(
             user=request.user,
-            medicine_name=request.POST.get('medicine_name'),
-            quantity=request.POST.get('quantity'),
-            category=request.POST.get('category'),
-            expiry_date=request.POST.get('expiry_date'),
-            image=request.FILES.get('image'),
-            pickup_date=request.POST.get('pickup_date'),
-            pickup_time=request.POST.get('pickup_time'),
-            selected_unit_id = request.POST.get('selected_unit')
+
+            medicine_name=request.POST.get(
+                'medicine_name'
+            ),
+
+            quantity=request.POST.get(
+                'quantity'
+            ),
+
+            category=request.POST.get(
+                'category'
+            ),
+
+            expiry_date=request.POST.get(
+                'expiry_date'
+            ),
+
+            image=request.FILES.get(
+                'image'
+            ),
+
+            pickup_date=request.POST.get(
+                'pickup_date'
+            ),
+
+            pickup_time=request.POST.get(
+                'pickup_time'
+            ),
+
+            selected_unit_id=request.POST.get(
+                'selected_unit'
+            )
         )
+
         return redirect('user_dashboard')
 
-    return render(request, 'user/addMedicine.html')
+    return render(request, 'user/addMedicine.html', {
+        'nearest_units': nearest_units
+    })
