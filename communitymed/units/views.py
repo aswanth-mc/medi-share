@@ -17,7 +17,8 @@ def register_unit(request):
             username=email,
             email=email,
             password=password,
-            role='unit'
+            role='unit',
+        
         )
 
         PalliativeUnit.objects.create(
@@ -25,8 +26,11 @@ def register_unit(request):
             name=request.POST['name'],
             license_number=request.POST['license_number'],
             license_file=request.FILES['license_file'],
-            location=request.POST['location'],
-            phone=request.POST['phone']
+            location_name=request.POST['location_name'],
+            latitude=request.POST['latitude'],
+            longitude=request.POST['longitude'],
+            phone=request.POST['phone'],
+            
         )
 
         return redirect('login')

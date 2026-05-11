@@ -1,21 +1,19 @@
+{% extends "admin-temp/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admin-dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}">
-</head>
-<body>
-   <div class="dashboard-grid">
+{% block content %}
+<div class="dashboard-header">
+    <h1>Pending Unit Approvals</h1>
+    <p class="text-muted">Review and approve new palliative units</p>
+</div>
+
+<div class="dashboard-grid">
     {% for unit in pending_units %}
     <!-- Unit Card -->
     <div class="unit-card">
         <div class="card-body">
             <h3>{{ unit.name }}</h3>
-            <p class="location-text"><strong>Place:</strong> {{ unit.location }}</p>
+            <p class="location-text"><strong>Place:</strong> {{ unit.location_name }}</p>
         </div>
         
         <div class="card-actions">
@@ -36,7 +34,7 @@
             
             <div class="modal-body">
                 <div class="details-pane">
-                    <p><strong>Place:</strong> {{ unit.location }}</p>
+                    <p><strong>Place:</strong> {{ unit.location_name }}</p>
                     <p><strong>Phone:</strong> {{ unit.phone }}</p>
                     <p><strong>License No:</strong> {{ unit.license_number }}</p>
                 </div>
@@ -52,8 +50,12 @@
             </div>
         </div>
     </div>
+    {% empty %}
+    <div class="no-units">
+        <p>No pending units to approve</p>
+    </div>
     {% endfor %}
 </div>
+
 <script src="{% static 'js/admin-dashboard.js' %}"></script>
-</body>
-</html>
+{% endblock %}

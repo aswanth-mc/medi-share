@@ -1,3 +1,5 @@
+from urllib import request
+
 from django.shortcuts import render, redirect
 from inventory.models import MedicineDonation
 from units.models import PalliativeUnit
@@ -68,7 +70,9 @@ def register_user(request):
         password = request.POST.get('password')
         username = request.POST.get('username')
         phone = request.POST.get('phone')
-        location = request.POST.get('location')
+        location_name = request.POST.get('location_name')
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
 
         if User.objects.filter(email=email).exists():
             return render(request, 'user/register.html', {
@@ -81,7 +85,9 @@ def register_user(request):
             password=password,
             role='user',
             phone=phone,
-            location=location
+            location_name=location_name,
+            latitude=latitude,
+            longitude=longitude
         )
 
         return redirect('login')

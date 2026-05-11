@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'css/unit_registration.css' %}">
+     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 <body>
     <header class="auth-header">
@@ -61,10 +62,27 @@
                     <input type="text" name="phone" placeholder="+91 XXXXX XXXXX" required>
                 </div>
     
-                <div class="form-group">
-                    <label>Location</label>
-                    <input type="text" name="location" placeholder="City, District" required>
-                </div>
+                <div class="location-section">
+
+    <label>Select Location</label>
+
+    <div id="map"></div>
+
+    <input type="text"
+           name="location_name"
+           id="location_name"
+           readonly>
+
+    <input type="hidden"
+           name="latitude"
+           id="latitude">
+
+    <input type="hidden"
+           name="longitude"
+           id="longitude">
+
+</div>
+
     
                 <button type="submit" class="btn-submit">Register Unit</button>
             </form>
@@ -74,5 +92,7 @@
             </div>
         </div>
     </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="{% static 'js/locationPicker.js' %}"></script>
 </body>
 </html>
