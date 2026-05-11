@@ -115,6 +115,8 @@ def request_medicine(request):
             medicine_name=medicine_name,
             quantity=quantity,
             category=category,  
+            selected_unit = PalliativeUnit.objects.get( id=selected_unit_id)
+
 
         )
 
@@ -133,7 +135,8 @@ def add_donation(request):
             expiry_date=request.POST.get('expiry_date'),
             image=request.FILES.get('image'),
             pickup_date=request.POST.get('pickup_date'),
-            pickup_time=request.POST.get('pickup_time')
+            pickup_time=request.POST.get('pickup_time'),
+            selected_unit_id = request.POST.get('selected_unit')
         )
         return redirect('user_dashboard')
 
