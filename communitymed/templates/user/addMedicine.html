@@ -52,6 +52,23 @@
                 <small>Ensure the expiry date is visible in the photo.</small>
             </div>
 
+            <select name="selected_unit" required>
+
+    <option value="">Choose Nearby Unit</option>
+
+    {% for item in nearest_units %}
+
+        <option value="{{ item.unit.id }}">
+
+            {{ item.unit.name }}
+            ({{ item.distance }} km)
+
+        </option>
+
+    {% endfor %}
+
+</select>
+
             <hr class="divider">
             <div class="form-header-small">
                 <h3>Pickup Schedule</h3>

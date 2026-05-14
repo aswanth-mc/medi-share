@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 
+
 from inventory.models import MedicineDonation, UnitInventory
 from .models import PalliativeUnit
 from users.models import MedicineRequest
@@ -55,14 +56,25 @@ def unit_dashboard(request):
     requests = MedicineRequest.objects.filter(user=request.user)
     return render(request, 'unit/dashboard.html', {
         'requests': requests
-    })
+    }
+    
+    )
+
+
 
 @login_required
 def unit_dashboard(request):
+
     if request.user.role != 'unit':
         return redirect('home')
 
-    donations = MedicineDonation.objects.filter(status='pending')
+    unit = PalliativeUnit.objects.get(
+        user=request.user
+    )
+
+    donations = MedicineDonation.objects.filter(
+        selected_unit=unit
+    ).order_by('-created_at')
 
     return render(request, 'unit/dashboard.html', {
         'donations': donations
