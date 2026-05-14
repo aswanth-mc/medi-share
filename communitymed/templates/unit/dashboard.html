@@ -13,3 +13,41 @@
 {% empty %}
     <p>No pending requests</p>
 {% endfor %}
+
+<div class="container mt-5">
+
+    <h2>Incoming Donations</h2>
+
+    {% for donation in donations %}
+
+        <div class="card p-3 mb-3">
+
+            <h4>{{ donation.medicine_name }}</h4>
+
+            <p>Quantity: {{ donation.quantity }}</p>
+
+            <p>Category: {{ donation.category }}</p>
+
+            <p>Expiry: {{ donation.expiry_date }}</p>
+
+            <p>Status: {{ donation.status }}</p>
+
+            <p>Pickup:
+                {{ donation.pickup_date }}
+                {{ donation.pickup_time }}
+            </p>
+
+            <img
+                src="{{ donation.image.url }}"
+                width="150"
+            >
+
+        </div>
+
+    {% empty %}
+
+        <p>No donations available.</p>
+
+    {% endfor %}
+
+</div>
