@@ -1,25 +1,17 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Dashboard | Medi-Share</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Unit Dashboard</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <link rel="stylesheet"
           href="{% static 'css/unit/dashboard.css' %}">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 </head>
-
 <body>
 
 <div class="dashboard-container">
@@ -28,61 +20,73 @@
 
     <aside class="sidebar">
 
-        <div class="logo-section">
+        <div class="sidebar-top">
 
-            <h2>Medi-Share</h2>
+            <div class="logo-box">
 
-            <p>Palliative Unit</p>
+                <div class="logo-icon">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+
+                <div>
+                    <h2>Medi-Share</h2>
+                    <p>Palliative Unit</p>
+                </div>
+
+            </div>
 
         </div>
 
         <nav class="sidebar-menu">
 
-            <a href="#" class="active">
-                <i class="fa-solid fa-table-columns"></i>
-                Dashboard
+            <a href="#" class="menu-item active">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Dashboard</span>
             </a>
 
-            <a href="#">
+            <a href="#" class="menu-item">
                 <i class="fa-solid fa-hand-holding-medical"></i>
-                Donations
+                <span>Donations</span>
             </a>
 
-            <a href="#">
+            <a href="#" class="menu-item">
                 <i class="fa-solid fa-file-medical"></i>
-                Requests
+                <span>Requests</span>
             </a>
 
-            <a href="#">
+            <a href="#" class="menu-item">
                 <i class="fa-solid fa-boxes-stacked"></i>
-                Inventory
+                <span>Inventory</span>
             </a>
 
-            <a href="#">
+            <a href="#" class="menu-item">
                 <i class="fa-solid fa-gear"></i>
-                Settings
+                <span>Settings</span>
             </a>
 
         </nav>
 
-        <div class="logout-section">
-
-            <a href="#">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-            </a>
-
-        </div>
-
     </aside>
 
-    <!-- MAIN -->
+    <!-- OVERLAY -->
+
+    <div class="sidebar-overlay"
+         onclick="toggleSidebar()"></div>
+
+    <!-- MAIN CONTENT -->
 
     <main class="main-content">
 
         <!-- HEADER -->
 
         <header class="top-header">
+
+            <div class="mobile-menu-btn"
+                 onclick="toggleSidebar()">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </div>
 
             <div>
 
@@ -108,10 +112,9 @@
                     <img src="https://i.pravatar.cc/40"
                          alt="profile">
 
-                    <div>
+                    <div class="profile-info">
 
                         <h4>Unit Admin</h4>
-
                         <p>Administrator</p>
 
                     </div>
@@ -122,13 +125,158 @@
 
         </header>
 
-        <!-- CONTENT -->
+        <!-- METRIC CARDS -->
 
-        <section class="content-area">
+        <section class="metrics-grid">
 
-            <div class="placeholder-card">
+            <div class="metric-card">
 
-                Dashboard Content Here
+                <div class="metric-icon blue">
+                    <i class="fa-solid fa-hand-holding-medical"></i>
+                </div>
+
+                <div>
+
+                    <h2>145</h2>
+                    <p>Total Donations</p>
+
+                </div>
+
+            </div>
+
+            <div class="metric-card">
+
+                <div class="metric-icon orange">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+
+                <div>
+
+                    <h2>28</h2>
+                    <p>Pending Requests</p>
+
+                </div>
+
+            </div>
+
+            <div class="metric-card">
+
+                <div class="metric-icon green">
+                    <i class="fa-solid fa-box-open"></i>
+                </div>
+
+                <div>
+
+                    <h2>920</h2>
+                    <p>Inventory Stock</p>
+
+                </div>
+
+            </div>
+
+            <div class="metric-card">
+
+                <div class="metric-icon red">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+
+                <div>
+
+                    <h2>14</h2>
+                    <p>Expiring Soon</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- CONTENT GRID -->
+
+        <section class="content-grid">
+
+            <!-- CHART -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h3>Donation Statistics</h3>
+
+                    <button>View Report</button>
+
+                </div>
+
+                <div class="placeholder-card">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                    <p>Chart Area</p>
+
+                </div>
+
+            </div>
+
+            <!-- PENDING -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h3>Pending Verifications</h3>
+
+                    <button>View All</button>
+
+                </div>
+
+                <div class="verification-list">
+
+                    <div class="verification-item">
+
+                        <div>
+
+                            <h4>Paracetamol</h4>
+                            <p>Donated by Aswanth</p>
+
+                        </div>
+
+                        <span class="status pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+                    <div class="verification-item">
+
+                        <div>
+
+                            <h4>Insulin</h4>
+                            <p>Donated by Rahul</p>
+
+                        </div>
+
+                        <span class="status pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+                    <div class="verification-item">
+
+                        <div>
+
+                            <h4>Vitamin Syrup</h4>
+                            <p>Donated by Anu</p>
+
+                        </div>
+
+                        <span class="status pending">
+                            Pending
+                        </span>
+
+                    </div>
+
+                </div>
 
             </div>
 
