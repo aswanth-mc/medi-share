@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 260px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 24px;
+}
+
+.logo-section h2 {
+    color: #2563eb;
+    margin-bottom: 5px;
+}
+
+.logo-section p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin-top: 40px;
+}
+
+.sidebar-menu a {
+    text-decoration: none;
+    color: #374151;
+
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    transition: 0.3s;
+}
+
+.sidebar-menu a i {
+    margin-right: 10px;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu .active {
+
+    background: #2563eb;
+    color: white;
+}
+
+.logout-section a {
+    text-decoration: none;
+    color: #ef4444;
+}
+
+/* MAIN */
+
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* HEADER */
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 30px;
+}
+
+.top-header h1 {
+    font-size: 32px;
+    color: #111827;
+}
+
+.top-header p {
+    color: #6b7280;
+    margin-top: 5px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.notification-btn {
+    width: 45px;
+    height: 45px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
+    cursor: pointer;
+}
+
+.profile-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    background: white;
+
+    padding: 10px 14px;
+
+    border-radius: 14px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.profile-box img {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+}
+
+/* CONTENT */
+
+.placeholder-card {
+    height: 400px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #9ca3af;
+
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 900px) {
+
+    .sidebar {
+        width: 90px;
+    }
+
+    .sidebar-menu a {
+        font-size: 0;
+    }
+
+    .sidebar-menu a i {
+        font-size: 18px;
+        margin-right: 0;
+    }
+
+    .logo-section p,
+    .logout-section a {
+        display: none;
+    }
+
+}
