@@ -1,53 +1,144 @@
-<h2>Unit Dashboard</h2>
+{% load static %}
 
-{% for req in requests %}
-    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
-        <p><strong>{{ req.medicine_name }}</strong></p>
-        <p>Quantity: {{ req.quantity }}</p>
-        <p>Category: {{ req.category }}</p>
-        <p>Status: {{ req.status }}</p>
+<!DOCTYPE html>
+<html lang="en">
 
-        <a href="{% url 'update_request_status' req.id 'approved' %}">Approve</a>
-        <a href="{% url 'update_request_status' req.id 'rejected' %}">Reject</a>
-    </div>
-{% empty %}
-    <p>No pending requests</p>
-{% endfor %}
+<head>
 
-<div class="container mt-5">
+    <meta charset="UTF-8">
 
-    <h2>Incoming Donations</h2>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    {% for donation in donations %}
+    <title>Unit Dashboard</title>
 
-        <div class="card p-3 mb-3">
+    <link rel="stylesheet"
+          href="{% static 'css/unit/dashboard.css' %}">
 
-            <h4>{{ donation.medicine_name }}</h4>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-            <p>Quantity: {{ donation.quantity }}</p>
+</head>
 
-            <p>Category: {{ donation.category }}</p>
+<body>
 
-            <p>Expiry: {{ donation.expiry_date }}</p>
+<div class="dashboard-container">
 
-            <p>Status: {{ donation.status }}</p>
+    <!-- SIDEBAR -->
 
-            <p>Pickup:
-                {{ donation.pickup_date }}
-                {{ donation.pickup_time }}
-            </p>
+    <aside class="sidebar">
 
-            <img
-                src="{{ donation.image.url }}"
-                width="150"
-            >
+        <div class="logo-section">
+
+            <h2>Medi-Share</h2>
+
+            <p>Palliative Unit</p>
 
         </div>
 
-    {% empty %}
+        <nav class="sidebar-menu">
 
-        <p>No donations available.</p>
+            <a href="#" class="active">
+                <i class="fa-solid fa-table-columns"></i>
+                Dashboard
+            </a>
 
-    {% endfor %}
+            <a href="#">
+                <i class="fa-solid fa-hand-holding-medical"></i>
+                Donations
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-file-medical"></i>
+                Requests
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                Inventory
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+            </a>
+
+        </nav>
+
+        <div class="logout-section">
+
+            <a href="#">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+
+        <header class="top-header">
+
+            <div>
+
+                <h1>Dashboard</h1>
+
+                <p>
+                    Welcome back,
+                    Mathrubhumi Palliative Unit
+                </p>
+
+            </div>
+
+            <div class="header-right">
+
+                <button class="notification-btn">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                </button>
+
+                <div class="profile-box">
+
+                    <img src="https://i.pravatar.cc/40"
+                         alt="profile">
+
+                    <div>
+
+                        <h4>Unit Admin</h4>
+
+                        <p>Administrator</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- CONTENT -->
+
+        <section class="content-area">
+
+            <div class="placeholder-card">
+
+                Dashboard Content Here
+
+            </div>
+
+        </section>
+
+    </main>
 
 </div>
+
+<script src="{% static 'js/unit/dashboard.js' %}"></script>
+
+</body>
+</html>
