@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 
 
 from inventory.models import MedicineDonation, UnitInventory
@@ -51,34 +52,42 @@ def approve_unit(request, unit_id):
 
 @login_required
 def unit_dashboard(request):
+
     if request.user.role != 'unit':
         return redirect('home')
-    requests = MedicineRequest.objects.filter(user=request.user)
-    return render(request, 'unit/dashboard.html', {
-        'requests': requests
+
+    try:
+      
+        current_unit = request.user.palliativeunit
+    except AttributeError:
+
+        return redirect('home')
+
+    donations = MedicineDonation.objects.filter(selected_unit=current_unit)
+
+    incoming_requests = MedicineRequest.objects.filter(
+        assigned_unit__isnull=True, 
+        status='pending',
+        # Optional: location=current_unit.location_name (to filter by area like Kozhikode)
+    )
+
+    total_donations = donations.count()
+    pending_donations = donations.filter(status='pending').count()
+    approved_donations = donations.filter(status='approved').count()
+    inventory_stock = donations.filter(status='collected').count()
+
+    context = {
+        'total_donations': total_donations,
+        'pending_donations': pending_donations,
+        'approved_donations': approved_donations,
+        'inventory_stock': inventory_stock,
+        
+        # Sliced record lists to display in summary rows
+        'pending_list': donations.filter(status='pending').order_by('-id')[:5],
+        'requests': incoming_requests.order_by('-id')[:5],
     }
-    
-    )
 
-
-
-@login_required
-def unit_dashboard(request):
-
-    if request.user.role != 'unit':
-        return redirect('home')
-
-    unit = PalliativeUnit.objects.get(
-        user=request.user
-    )
-
-    donations = MedicineDonation.objects.filter(
-        selected_unit=unit
-    ).order_by('-created_at')
-
-    return render(request, 'unit/dashboard.html', {
-        'donations': donations
-    })
+    return render(request, 'unit/dashboard.html', context)
 
 @login_required
 def approve_donation(request, donation_id):
@@ -90,4 +99,6 @@ def approve_donation(request, donation_id):
     donation.save()
 
     return redirect('unit_dashboard')
+
+
 
