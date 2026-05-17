@@ -19,3 +19,53 @@ window.addEventListener("resize", () => {
         overlay.classList.remove("active");
     }
 });
+
+
+// Chart.js example for donation trends
+const ctx = document.getElementById("donationChart");
+
+if (ctx) {
+    new Chart(ctx, {
+        type: "bar",
+
+        data: {
+            labels: [
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat",
+                "Sun"
+            ],
+
+            datasets: [{
+                label: "Medicine Donations",
+
+                data: [12, 19, 8, 15, 22, 18, 25],
+
+                borderWidth: 1,
+
+                borderRadius: 10
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
