@@ -1,39 +1,97 @@
+{% extends 'user/base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+{% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/user/dashboard.css' %}">
-</head>
-<body>
-    <div class="navbar">
-    <div>CommunityMed</div>
-    <div>
-        {{ request.user.username }} |
-        <a href="{% url 'logout' %}" style="color:white;">Logout</a>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-12">
+        <form class="d-flex gap-2 bg-white p-2 rounded-3 border search-box">
+            <div class="input-group">
+                <span class="input-group-text bg-transparent border-0 text-secondary"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-0 bg-transparent" placeholder="Search medicines, e.g., Paracetamol, Insulin...">
+            </div>
+            <button class="btn btn-theme px-4 rounded-2" type="submit">Search</button>
+        </form>
     </div>
 </div>
 
-<div class="container">
-
-    <div class="card">
-        <h2>Welcome, {{ request.user.username }}</h2>
-        <p>Email: {{ request.user.email }}</p>
-        <p>Phone: {{ request.user.phone }}</p>
-        <p>Location: {{ request.user.location }}</p>
+<div class="row g-4">
+    
+    <div class="col-12 col-xl-9">
+        <h5 class="fw-bold mb-3 text-dark">Available Medicines</h5>
+        
+        <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card medicine-card border-0 shadow-sm p-3 rounded-4 bg-white h-100">
+                    <div class="med-img-placeholder mb-3 rounded-3 d-flex align-items-center justify-content-center bg-light">
+                        <i class="bi bi-capsule fs-1 text-muted"></i>
+                    </div>
+                    <h6 class="fw-bold mb-1 text-dark">Paracetamol 500mg</h6>
+                    <p class="text-muted small mb-2">Category: Tablet</p>
+                    
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-secondary">Quantity:</span>
+                        <span class="text-success fw-semibold">120 Tablets</span>
+                    </div>
+                    <div class="d-flex justify-content-between small mb-3">
+                        <span class="text-secondary">Expiry Date:</span>
+                        <span class="text-dark fw-medium">12/2025</span>
+                    </div>
+                    
+                    <div class="d-flex gap-2 mt-auto">
+                        <button class="btn btn-outline-theme btn-sm w-50 rounded-pill">Find Unit</button>
+                        <button class="btn btn-theme btn-sm w-50 rounded-pill">Order</button>
+                    </div>
+                </div>
+            </div>
+            </div>
     </div>
 
-    <div class="card">
-        <h3>Actions</h3>
-        <a href="{% url 'request_medicine' %}" class="btn">Request Medicine</a>
+    <div class="col-12 col-xl-3">
+        <div class="bg-white p-4 rounded-4 border mb-4 shadow-sm">
+            <h6 class="fw-bold mb-4 text-dark">How It Works</h6>
+            
+            <div class="workflow-steps d-flex flex-column gap-4">
+                <div class="d-flex gap-3 align-items-start">
+                    <span class="step-num text-white">1</span>
+                    <div>
+                        <h6 class="fw-bold mb-1 small text-dark">Search Medicine</h6>
+                        <p class="text-muted small m-0">Find the medicine you need from local stocks.</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-3 align-items-start">
+                    <span class="step-num text-white">2</span>
+                    <div>
+                        <h6 class="fw-bold mb-1 small text-dark">Order Medicine</h6>
+                        <p class="text-muted small m-0">Place an order for verified items.</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-3 align-items-start">
+                    <span class="step-num text-white">3</span>
+                    <div>
+                        <h6 class="fw-bold mb-1 small text-dark">Unit Approvel</h6>
+                        <p class="text-muted small m-0">Palliative unit will review and approve the request.</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-3 align-items-start">
+                    <span class="step-num text-white">4</span>
+                    <div>
+                        <h6 class="fw-bold mb-1 small text-dark">Collect Medicine</h6>
+                        <p class="text-muted small m-0">Vist the unit and collect your medicine.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="trust-banner p-3 rounded-4 border text-center">
+            <i class="bi bi-shield-check text-success display-6 mb-2 d-block"></i>
+            <h6 class="fw-bold mb-1 text-success">Safe • Verified • Trusted</h6>
+            <p class="text-secondary m-0 small">Medi-Share ensures strict distribution parameters.</p>
+        </div>
     </div>
-    <div class="card">
-        <h3>Actions</h3>
-        <a href="{% url 'add_donation' %}" class="btn">add Medicine</a>
-    </div>
+
 </div>
-</body>
-</html>
+{% endblock %}
