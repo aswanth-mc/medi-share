@@ -32,6 +32,7 @@ class MedicineRequest(models.Model):
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    selected_unit = models.ForeignKey('units.PalliativeUnit', on_delete=models.CASCADE, null=True, blank=True)
     medicine_name = models.CharField(max_length=255)
     quantity = models.IntegerField()
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
