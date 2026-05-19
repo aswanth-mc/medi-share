@@ -1,0 +1,95 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/unit/donation_view.css' %}">
+
+<div class="donations-grid">
+
+    {% for donation in donations %}
+
+    <div class="donation-card">
+
+        <div class="donation-image">
+
+            <img src="{{ donation.image.url }}"
+                 alt="{{ donation.medicine_name }}">
+
+            <span class="status-badge {{ donation.status }}">
+                {{ donation.status }}
+            </span>
+
+        </div>
+
+        <div class="donation-content">
+
+            <div class="medicine-header">
+
+                <h3>{{ donation.medicine_name }}</h3>
+
+                <p class="category">
+                    {{ donation.category }}
+                </p>
+
+            </div>
+
+            <div class="donation-details">
+
+                <div class="detail-item">
+                    <span class="label">Quantity</span>
+                    <span class="value">
+                        {{ donation.quantity }}
+                    </span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Expiry Date</span>
+                    <span class="value">
+                        {{ donation.expiry_date }}
+                    </span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Donor</span>
+                    <span class="value">
+                        {{ donation.user.username }}
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="donation-actions">
+
+                <a href="#"
+                   class="btn approve-btn">
+
+                    Approve
+
+                </a>
+
+                <a href="#"
+                   class="btn reject-btn">
+
+                    Reject
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="empty-state">
+
+        <h3>No Donations Found</h3>
+
+        <p>
+            No medicine donations are currently pending.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
