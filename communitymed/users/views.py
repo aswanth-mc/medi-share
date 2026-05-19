@@ -212,3 +212,15 @@ def add_donation(request):
     return render(request, 'user/addMedicine.html', {
         'nearest_units': nearest_units
     })
+
+# profile view
+@login_required
+def profile(request):
+
+    user = request.user
+
+    context = {
+        'user_obj': user
+    }
+
+    return render(request, 'profile/profile.html', context)
