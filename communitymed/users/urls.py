@@ -13,4 +13,5 @@ urlpatterns = [
     path('request-medicine/', views.request_medicine, name='request_medicine'),
     path('logout/', views.user_logout, name='logout'),
     path('add_donation/', views.add_donation, name='add_donation'),
+    path('profile/', views.profile, name='profile'),    
 ]
