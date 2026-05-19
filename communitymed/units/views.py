@@ -66,7 +66,7 @@ def unit_dashboard(request):
     donations = MedicineDonation.objects.filter(selected_unit=current_unit)
 
     incoming_requests = MedicineRequest.objects.filter(
-        assigned_unit__isnull=True, 
+        selected_unit__isnull=True, 
         status='pending',
         # Optional: location=current_unit.location_name (to filter by area like Kozhikode)
     )
@@ -89,6 +89,24 @@ def unit_dashboard(request):
 
     return render(request, 'unit/dashboard.html', context)
 
+@login_required
+def unit_donations(request):
+
+    donations = MedicineDonation.objects.filter(
+        selected_unit=request.user.palliativeunit
+    ).order_by('-created_at')
+
+    context = {
+        'donations': donations
+    }
+
+    return render(
+        request,
+        'unit/donation_view.html',
+        context
+    )
+
+#approve dontion
 @login_required
 def approve_donation(request, donation_id):
     if request.user.role != 'unit':
