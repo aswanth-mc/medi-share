@@ -223,4 +223,4 @@ def profile(request):
         'user_obj': user
     }
 
-    return render(request, 'profile/profile.html', context)
+    return render(request, 'profile.html', context)
