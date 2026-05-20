@@ -23,6 +23,9 @@ class MedicineDonation(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     selected_unit = models.ForeignKey(PalliativeUnit, on_delete=models.SET_NULL, null=True, blank=True)
+    approvped_at = models.DateTimeField(null=True, blank=True)
+    collected_at = models.DateTimeField(null=True, blank=True)
+    rejected_reason = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.medicine_name
