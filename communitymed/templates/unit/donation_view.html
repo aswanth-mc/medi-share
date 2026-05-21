@@ -1,0 +1,273 @@
+{% load static %}
+
+<link rel="stylesheet"
+      href="{% static 'css/unit/donation_view.css' %}">
+
+
+<div class="donation-page">
+
+    <!-- ========================= -->
+    <!-- PENDING DONATIONS -->
+    <!-- ========================= -->
+
+    <div class="section-header">
+
+        <h2>Pending Donations</h2>
+
+        <p>
+            New medicine donations waiting for verification
+        </p>
+
+    </div>
+
+    <div class="donations-grid">
+
+        {% for donation in pending_donations %}
+
+        <div class="donation-card">
+
+            <div class="donation-image">
+
+                <img src="{{ donation.image.url }}"
+                     alt="{{ donation.medicine_name }}">
+
+                <span class="status-badge pending">
+                    Pending
+                </span>
+
+            </div>
+
+            <div class="donation-content">
+
+                <div class="medicine-header">
+
+                    <h3>{{ donation.medicine_name }}</h3>
+
+                    <p class="category">
+                        {{ donation.category }}
+                    </p>
+
+                </div>
+
+                <div class="donation-details">
+
+                    <div class="detail-item">
+
+                        <span class="label">
+                            Quantity
+                        </span>
+
+                        <span class="value">
+                            {{ donation.quantity }}
+                        </span>
+
+                    </div>
+
+                    <div class="detail-item">
+
+                        <span class="label">
+                            Expiry Date
+                        </span>
+
+                        <span class="value">
+                            {{ donation.expiry_date }}
+                        </span>
+
+                    </div>
+
+                    <div class="detail-item">
+
+                        <span class="label">
+                            Donor
+                        </span>
+
+                        <span class="value">
+                            {{ donation.user.username }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="donation-actions">
+
+                    <a href="{% url 'approve_donation' donation.id %}"
+                       class="btn approve-btn">
+
+                        Approve
+
+                    </a>
+
+                    <a href="{% url 'reject_donation' donation.id %}"
+                       class="btn reject-btn">
+
+                        Reject
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <h3>No Pending Donations</h3>
+
+            <p>
+                There are currently no pending medicine donations.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- APPROVED DONATIONS -->
+    <!-- ========================= -->
+
+    <div class="section-header second-section">
+
+        <h2>Approved Donations</h2>
+
+        <p>
+            Medicines approved and waiting for collection
+        </p>
+
+    </div>
+
+    <div class="donations-grid">
+
+        {% for donation in approved_donations %}
+
+        <div class="donation-card">
+
+            <div class="donation-image">
+
+                <img src="{{ donation.image.url }}"
+                     alt="{{ donation.medicine_name }}">
+
+                <span class="status-badge approved">
+                    Approved
+                </span>
+
+            </div>
+
+            <div class="donation-content">
+
+                <div class="medicine-header">
+
+                    <h3>{{ donation.medicine_name }}</h3>
+
+                    <p class="category">
+                        {{ donation.category }}
+                    </p>
+
+                </div>
+
+                <div class="donation-details">
+
+                    <div class="detail-item">
+
+                        <span class="label">
+                            Quantity
+                        </span>
+
+                        <span class="value">
+                            {{ donation.quantity }}
+                        </span>
+
+                    </div>
+
+                    <div class="detail-item">
+
+                        <span class="label">
+                            Pickup Date
+                        </span>
+
+                        <span class="value">
+                            {{ donation.pickup_date }}
+                        </span>
+
+                    </div>
+
+                    <div class="detail-item">
+
+                        <span class="label">
+                            Pickup Time
+                        </span>
+
+                        <span class="value">
+                            {{ donation.pickup_time }}
+                        </span>
+
+                    </div>
+
+                    <div class="detail-item">
+
+                        <span class="label">
+                            Donor
+                        </span>
+
+                        <span class="value">
+                            {{ donation.user.username }}
+                        </span>
+                        <span class="label">
+                            Contact
+                        </span>
+
+                        <span class="value">
+                            {{ donation.user.phone }}
+                        </span>
+
+
+                    </div>
+
+                </div>
+
+                <div class="donation-actions">
+
+                    <a href="{% url 'collect_donation' donation.id %}"
+                       class="btn collect-btn">
+
+                        Collected
+
+                    </a>
+
+                    <a href="https://www.google.com/maps?q={{ donation.user.latitude }},{{ donation.user.longitude }}"
+                       target="_blank"
+                       class="btn location-btn">
+
+                        View Location
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <h3>No Approved Donations</h3>
+
+            <p>
+                No approved medicines waiting for collection.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>

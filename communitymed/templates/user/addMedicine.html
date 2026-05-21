@@ -1,93 +1,100 @@
+{% extends 'user/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donate Medicine | Medi-Share</title>
+
+{% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/user/add_medicine.css' %}">
-</head>
-<body>
-    <div class="form-container">
-    <div class="form-card">
-        <div class="form-header">
-            <h2>Donate Medicine</h2>
-            <p>Please provide accurate details for verification.</p>
+{% endblock %}
+
+{% block content %}
+<div class="form-container py-4">
+    <div class="form-card shadow-sm border rounded-4 bg-white p-4 max-w-xl mx-auto">
+        
+        <div class="form-header mb-4">
+            <h2 class="fw-bold text-dark">Donate Medicine</h2>
+            <p class="text-secondary small">Please provide accurate details for verification.</p>
         </div>
 
         <form method="POST" enctype="multipart/form-data" class="donation-form">
             {% csrf_token %}
 
-            <div class="form-group full-width">
-                <label>Medicine Name</label>
-                <input type="text" name="medicine_name" placeholder="Enter name (e.g., Paracetamol)" required>
+            <div class="form-group mb-3">
+                <label class="form-label fw-medium text-secondary">Medicine Name</label>
+                <input type="text" name="medicine_name" class="form-control" placeholder="Enter name (e.g., Paracetamol)" required>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="number" name="quantity" placeholder="Count/Amount" required>
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="form-label fw-medium text-secondary">Quantity</label>
+                        <input type="number" name="quantity" class="form-control" placeholder="Count/Amount" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <select name="category" required>
-                        <option value="">Select Category</option>
-                        <option value="tablet">Tablet</option>
-                        <option value="syrup">Syrup</option>
-                        <option value="injection">Injection</option>
-                        <option value="ointment">Ointment</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group full-width">
-                <label>Expiry Date</label>
-                <input type="date" name="expiry_date" required>
-            </div>
-
-            <div class="form-group full-width">
-                <label>Upload Medicine Photo</label>
-                <input type="file" name="image" class="file-input" required>
-                <small>Ensure the expiry date is visible in the photo.</small>
-            </div>
-
-            <select name="selected_unit" required>
-
-    <option value="">Choose Nearby Unit</option>
-
-    {% for item in nearest_units %}
-
-        <option value="{{ item.unit.id }}">
-
-            {{ item.unit.name }}
-            ({{ item.distance }} km)
-
-        </option>
-
-    {% endfor %}
-
-</select>
-
-            <hr class="divider">
-            <div class="form-header-small">
-                <h3>Pickup Schedule</h3>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Preferred Date</label>
-                    <input type="date" name="pickup_date" required>
-                </div>
-                <div class="form-group">
-                    <label>Preferred Time</label>
-                    <input type="time" name="pickup_time" required>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="form-label fw-medium text-secondary">Category</label>
+                        <select name="category" class="form-select" required>
+                            <option value="">Select Category</option>
+                            <option value="tablet">Tablet</option>
+                            <option value="syrup">Syrup</option>
+                            <option value="injection">Injection</option>
+                            <option value="ointment">Ointment</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn-submit">Submit for Verification</button>
+            <div class="form-group mb-3">
+                <label class="form-label fw-medium text-secondary">Expiry Date</label>
+                <input type="date" name="expiry_date" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label fw-medium text-secondary">Upload Medicine Photo</label>
+                <input type="file" name="image" class="form-control file-input" required>
+                <small class="text-muted d-block mt-1">Ensure the expiry date is visible in the photo.</small>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="form-label fw-medium text-secondary">Assigned Verification Center</label>
+                <select name="selected_unit" class="form-select" required>
+                    <option value="">Choose Nearby Unit</option>
+                    {% for item in nearest_units %}
+                        <option value="{{ item.unit.id }}">
+                            {{ item.unit.name }} ({{ item.distance }} km away)
+                        </option>
+                    {% empty %}
+                        <option value="" disabled>No active units found in your radius</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <hr class="my-4 text-muted border-dashed">
+            
+            <div class="form-header-small mb-3">
+                <h5 class="fw-bold text-dark">Pickup Schedule</h5>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="form-label fw-medium text-secondary">Preferred Date</label>
+                        <input type="date" name="pickup_date" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="form-label fw-medium text-secondary">Preferred Time</label>
+                        <input type="time" name="pickup_time" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-submit w-100 py-2 rounded-pill fw-medium">
+                Submit for Verification
+            </button>
         </form>
+        
     </div>
 </div>
-</body>
-</html>
+{% endblock %}

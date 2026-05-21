@@ -23,15 +23,28 @@ class MedicineDonation(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     selected_unit = models.ForeignKey(PalliativeUnit, on_delete=models.SET_NULL, null=True, blank=True)
+    approved_at = models.DateTimeField(null=True, blank=True)
+    collected_at = models.DateTimeField(null=True, blank=True)
+    rejected_reason = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.medicine_name
     
 class UnitInventory(models.Model):
+
     unit = models.ForeignKey(User, on_delete=models.CASCADE)
-    donation = models.ForeignKey(MedicineDonation, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+
+    donation = models.ForeignKey(
+        MedicineDonation,
+        on_delete=models.CASCADE
+    )
+
+    medicine_name = models.CharField(max_length=255)
+
     quantity = models.PositiveIntegerField()
+
     category = models.CharField(max_length=50)
+
     expiry_date = models.DateField()
+
     added_at = models.DateTimeField(auto_now_add=True)

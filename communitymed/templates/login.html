@@ -1,36 +1,48 @@
 
 {% load static %}
-
-{% block extra_head %}
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-{% endblock %}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block extra_head %}
+      <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  {% endblock %}
+  <title>Document</title>
+</head>
 <body>
-      <header class="auth-header">
-    <div class="header-container">
-        <a href="{% url 'home' %}" class="back-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            <span>Back</span>
-        </a>
-        <div class="logo-small">Medi-Share</div>
-    </div>
-</header>
-  <div class="login">
-    <h2>Login</h2>
-    <form method="POST">
-      {% csrf_token %}
-      <div class="field">
-        <input type="email" name="email" placeholder="Email" required />
-      </div>
-      <div class="field">
-        <input type="password" name="password" placeholder="Password" required />
-      </div>
-      <button type="submit">Login</button>
-    </form>
-    {% if error %}
-      <p class="error">{{ error }}</p>
-    {% endif %}
+  
+  <header class="auth-header">
+  <div class="header-container">
+    <a href="{% url 'home' %}" class="back-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back</span>
+    </a>
+    <div class="logo-small">Medi-Share</div>
   </div>
+  </header>
+  <div class="login">
+  <h2>Login</h2>
+  <form method="POST">
+  {% csrf_token %}
+  <div class="field">
+    <input type="email" name="email" placeholder="Email" required />
+  </div>
+  <div class="field">
+    <input type="password" name="password" placeholder="Password" required id="pass"/>
+    <input type="checkbox" onclick="showpass()">Show Password
+  </div>
+  <button type="submit">Login</button>
+  </form>
+  {% if error %}
+  <p class="error">{{ error }}</p>
+  {% endif %}
+  </div>
+  
+  <script src="{% static 'js/showpass.js' %}"></script>
+</body>
+</html>
+

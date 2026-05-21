@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from .models import MedicineRequest
+from inventory.models import UnitInventory
 
 User = get_user_model()
 
@@ -95,10 +96,26 @@ def register_user(request):
 
 
 @login_required
+@login_required
 def user_dashboard(request):
+
     if request.user.role != 'user':
         return redirect('login')
-    return render(request, 'user/dashboard.html')
+
+    medicines = UnitInventory.objects.select_related(
+        'unit',
+        'donation'
+    ).order_by('-added_at')
+
+    context = {
+        'medicines': medicines
+    }
+
+    return render(
+        request,
+        'user/dashboard.html',
+        context
+    )
 
 
 def user_logout(request):
