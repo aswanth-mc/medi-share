@@ -1,0 +1,133 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Unit Inventory</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/unit/inventory.css' %}">
+
+</head>
+
+<body>
+
+<div class="inventory-container">
+
+    <div class="inventory-header">
+
+        <h1>Medicine Inventory</h1>
+
+        <p>
+            Available medicines in your unit
+        </p>
+
+    </div>
+
+    <div class="inventory-grid">
+
+        {% for item in inventory_items %}
+
+        <div class="inventory-card">
+
+            <div class="inventory-image">
+
+                <img src="{{ item.donation.image.url }}"
+                     alt="{{ item.medicine_name }}">
+
+            </div>
+
+            <div class="inventory-content">
+
+                <div class="top-section">
+
+                    <h2>
+                        {{ item.medicine_name }}
+                    </h2>
+
+                    <span class="category">
+                        {{ item.category }}
+                    </span>
+
+                </div>
+
+                <div class="inventory-details">
+
+                    <div class="detail-row">
+
+                        <span>Quantity</span>
+
+                        <strong>
+                            {{ item.quantity }}
+                        </strong>
+
+                    </div>
+
+                    <div class="detail-row">
+
+                        <span>Expiry Date</span>
+
+                        <strong>
+                            {{ item.expiry_date }}
+                        </strong>
+
+                    </div>
+
+                    <div class="detail-row">
+
+                        <span>Added</span>
+
+                        <strong>
+                            {{ item.added_at|date:"d M Y" }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                {% if item.quantity < 5 %}
+
+                <div class="stock-alert low">
+                    Low Stock
+                </div>
+
+                {% else %}
+
+                <div class="stock-alert good">
+                    In Stock
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <h2>No Medicines Available</h2>
+
+            <p>
+                Inventory is currently empty.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

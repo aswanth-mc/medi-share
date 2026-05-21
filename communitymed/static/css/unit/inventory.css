@@ -1,0 +1,189 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+
+    font-family: "Segoe UI", sans-serif;
+
+    background: #f4f7fb;
+
+    color: #1e293b;
+}
+
+.inventory-container {
+
+    padding: 30px;
+}
+
+.inventory-header {
+
+    margin-bottom: 30px;
+}
+
+.inventory-header h1 {
+
+    font-size: 32px;
+
+    margin-bottom: 8px;
+}
+
+.inventory-header p {
+
+    color: #64748b;
+}
+
+.inventory-grid {
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 24px;
+}
+
+.inventory-card {
+
+    background: white;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+
+    transition: 0.3s;
+}
+
+.inventory-card:hover {
+
+    transform: translateY(-5px);
+}
+
+.inventory-image {
+
+    width: 100%;
+
+    height: 220px;
+
+    overflow: hidden;
+}
+
+.inventory-image img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.inventory-content {
+
+    padding: 22px;
+}
+
+.top-section {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.top-section h2 {
+
+    font-size: 22px;
+}
+
+.category {
+
+    background: #dbeafe;
+
+    color: #2563eb;
+
+    padding: 6px 12px;
+
+    border-radius: 50px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.inventory-details {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.detail-row {
+
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.detail-row span {
+
+    color: #64748b;
+}
+
+.stock-alert {
+
+    padding: 10px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-weight: 600;
+}
+
+.stock-alert.low {
+
+    background: #fee2e2;
+
+    color: #dc2626;
+}
+
+.stock-alert.good {
+
+    background: #dcfce7;
+
+    color: #15803d;
+}
+
+.empty-state {
+
+    background: white;
+
+    padding: 60px;
+
+    border-radius: 22px;
+
+    text-align: center;
+}
+
+@media(max-width:768px){
+
+    .inventory-container {
+
+        padding: 18px;
+    }
+
+    .inventory-header h1 {
+
+        font-size: 26px;
+    }
+}
