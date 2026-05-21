@@ -31,10 +31,20 @@ class MedicineDonation(models.Model):
         return self.medicine_name
     
 class UnitInventory(models.Model):
+
     unit = models.ForeignKey(User, on_delete=models.CASCADE)
-    donation = models.ForeignKey(MedicineDonation, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+
+    donation = models.ForeignKey(
+        MedicineDonation,
+        on_delete=models.CASCADE
+    )
+
+    medicine_name = models.CharField(max_length=255)
+
     quantity = models.PositiveIntegerField()
+
     category = models.CharField(max_length=50)
+
     expiry_date = models.DateField()
+
     added_at = models.DateTimeField(auto_now_add=True)
