@@ -18,26 +18,48 @@ class User(AbstractUser):
 
 
 class MedicineRequest(models.Model):
-    CATEGORY_CHOICES = (
-        ('tablet', 'Tablet'),
-        ('syrup', 'Syrup'),
-        ('injection', 'Injection'),
-        ('other', 'Other'),
-    )
 
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
+        ('completed', 'Completed'),
     )
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    selected_unit = models.ForeignKey('units.PalliativeUnit', on_delete=models.CASCADE, null=True, blank=True)
-    medicine_name = models.CharField(max_length=255)
-    quantity = models.IntegerField()
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    unit = models.ForeignKey(
+        'units.PalliativeUnit',
+        on_delete=models.CASCADE
+    )
+
+    inventory = models.ForeignKey(
+        'inventory.UnitInventory',
+        on_delete=models.CASCADE
+    )
+
+    quantity = models.PositiveIntegerField()
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+
+    requested_at = models.DateTimeField(auto_now_add=True)
+
+    approved_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
-        return self.medicine_name
+        return f"{self.user.username} requested {self.inventory.medicine_name}"

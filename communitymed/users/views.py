@@ -124,29 +124,33 @@ def user_logout(request):
 
 
 @login_required
-def request_medicine(request):
+def request_medicine(request, inventory_id):
+
     if request.user.role != 'user':
         return redirect('home')
 
+    inventory = UnitInventory.objects.get(
+        id=inventory_id
+    )
+
     if request.method == "POST":
-        medicine_name = request.POST.get('medicine_name')
+
         quantity = request.POST.get('quantity')
-        category = request.POST.get('category') 
-       
 
         MedicineRequest.objects.create(
+
             user=request.user,
-            medicine_name=medicine_name,
-            quantity=quantity,
-            category=category,  
-            selected_unit = PalliativeUnit.objects.get( id=selected_unit_id)
 
+            inventory=inventory,
 
+            unit=inventory.unit.palliativeunit,
+
+            quantity=quantity
         )
 
         return redirect('user_dashboard')
 
-    return render(request, 'user/request_medicine.html')
+    return redirect('user_dashboard')
 
 @login_required
 def add_donation(request):
