@@ -283,7 +283,7 @@ def collect_donation(request, donation_id):
 
         donation=donation,
 
-        name=donation.medicine_name,
+        medicine_name=donation.medicine_name,
 
         quantity=donation.quantity,
 
