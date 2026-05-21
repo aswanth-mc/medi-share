@@ -107,7 +107,7 @@ def unit_dashboard(request):
     )
 
     incoming_requests = MedicineRequest.objects.filter(
-        selected_unit__isnull=True,
+        unit__isnull=True,
         status='pending'
     )
 
