@@ -4,16 +4,8 @@ from django.shortcuts import (
     get_object_or_404
 )
 
-from django.contrib.auth import (
-    authenticate,
-    login,
-    logout
-)
-
 from django.contrib.auth.decorators import login_required
-
 from django.contrib.auth import get_user_model
-
 from django.utils import timezone
 
 from inventory.models import (
@@ -22,7 +14,6 @@ from inventory.models import (
 )
 
 from .models import PalliativeUnit
-
 from users.models import MedicineRequest
 
 User = get_user_model()
@@ -96,18 +87,14 @@ def unit_dashboard(request):
     if request.user.role != 'unit':
         return redirect('home')
 
-    try:
-        current_unit = request.user.palliativeunit
-
-    except AttributeError:
-        return redirect('home')
+    current_unit = request.user.palliativeunit
 
     donations = MedicineDonation.objects.filter(
         selected_unit=current_unit
     )
 
     incoming_requests = MedicineRequest.objects.filter(
-        unit__isnull=True,
+        selected_unit=current_unit,
         status='pending'
     )
 
@@ -208,15 +195,11 @@ def approve_donation(request, donation_id):
         id=donation_id
     )
 
-    # SECURITY CHECK
-
     if donation.selected_unit != request.user.palliativeunit:
         return redirect('unit_dashboard')
 
     donation.status = 'approved'
-
     donation.approved_at = timezone.now()
-
     donation.save()
 
     return redirect('unit_donations')
@@ -237,13 +220,10 @@ def reject_donation(request, donation_id):
         id=donation_id
     )
 
-    # SECURITY CHECK
-
     if donation.selected_unit != request.user.palliativeunit:
         return redirect('unit_dashboard')
 
     donation.status = 'rejected'
-
     donation.save()
 
     return redirect('unit_donations')
@@ -264,18 +244,12 @@ def collect_donation(request, donation_id):
         id=donation_id
     )
 
-    # SECURITY CHECK
-
     if donation.selected_unit != request.user.palliativeunit:
         return redirect('unit_dashboard')
 
     donation.status = 'collected'
-
     donation.collected_at = timezone.now()
-
     donation.save()
-
-    # ADD TO INVENTORY
 
     UnitInventory.objects.create(
 
@@ -293,3 +267,111 @@ def collect_donation(request, donation_id):
     )
 
     return redirect('unit_donations')
+
+
+# ==============================
+# INCOMING REQUESTS PAGE
+# ==============================
+
+@login_required
+def incoming_requests(request):
+
+    if request.user.role != 'unit':
+        return redirect('home')
+
+    current_unit = request.user.palliativeunit
+
+    requests = MedicineRequest.objects.filter(
+        selected_unit=current_unit
+    ).order_by('-created_at')
+
+    context = {
+        'requests': requests
+    }
+
+    return render(
+        request,
+        'unit/incoming_requests.html',
+        context
+    )
+
+
+# ==============================
+# APPROVE REQUEST
+# ==============================
+
+@login_required
+def approve_request(request, request_id):
+
+    if request.user.role != 'unit':
+        return redirect('home')
+
+    medicine_request = get_object_or_404(
+        MedicineRequest,
+        id=request_id
+    )
+
+    if medicine_request.selected_unit != request.user.palliativeunit:
+        return redirect('incoming_requests')
+
+    inventory = medicine_request.inventory
+
+    if inventory.quantity < medicine_request.quantity:
+        return redirect('incoming_requests')
+
+    # reduce stock
+    inventory.quantity -= medicine_request.quantity
+    inventory.save()
+
+    medicine_request.status = 'approved'
+    medicine_request.save()
+
+    return redirect('incoming_requests')
+
+
+# ==============================
+# REJECT REQUEST
+# ==============================
+
+@login_required
+def reject_request(request, request_id):
+
+    if request.user.role != 'unit':
+        return redirect('home')
+
+    medicine_request = get_object_or_404(
+        MedicineRequest,
+        id=request_id
+    )
+
+    if medicine_request.selected_unit != request.user.palliativeunit:
+        return redirect('incoming_requests')
+
+    medicine_request.status = 'rejected'
+    medicine_request.save()
+
+    return redirect('incoming_requests')
+
+
+# ==============================
+# COMPLETE REQUEST
+# ==============================
+
+@login_required
+def complete_request(request, request_id):
+
+    if request.user.role != 'unit':
+        return redirect('home')
+
+    medicine_request = get_object_or_404(
+        MedicineRequest,
+        id=request_id
+    )
+
+    if medicine_request.selected_unit != request.user.palliativeunit:
+        return redirect('incoming_requests')
+
+    medicine_request.status = 'complete'
+    medicine_request.save()
+
+    return redirect('incoming_requests')
