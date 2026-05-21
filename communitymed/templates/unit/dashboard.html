@@ -1,292 +1,97 @@
+{% extends 'unit/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Dashboard | Medi-Share</title>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/unit/dashboard.css' %}">
+{% endblock %}
 
-    <link rel="stylesheet"
-          href="{% static 'css/unit/dashboard.css' %}">
-</head>
-<body>
-
-<div class="dashboard-container">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-top">
-
-            <div class="logo-box">
-
-                <div class="logo-icon">
-                    <i class="fa-solid fa-heart-pulse"></i>
-                </div>
-
-                <div>
-                    <h2>Medi-Share</h2>
-                    <p>Palliative Unit</p>
-                </div>
-
-            </div>
-
+{% block content %}
+<section class="metrics-grid">
+    <div class="metric-card">
+        <div class="metric-icon blue">
+            <i class="fa-solid fa-hand-holding-medical"></i>
         </div>
+        <div>
+            <h2>{{ total_donations|default:"3" }}</h2>
+            <p>Total Donations</p>
+        </div>
+    </div>
 
-        <nav class="sidebar-menu">
+    <div class="metric-card">
+        <div class="metric-icon orange">
+            <i class="fa-solid fa-clock"></i>
+        </div>
+        <div>
+            <h2>{{ pending_donations|default:"1" }}</h2>
+            <p>Pending Requests</p>
+        </div>
+    </div>
 
-            <a href="#" class="menu-item active">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Dashboard</span>
-            </a>
+    <div class="metric-card">
+        <div class="metric-icon green">
+            <i class="fa-solid fa-box-open"></i>
+        </div>
+        <div>
+            <h2>{{ inventory_stock|default:"1" }}</h2>
+            <p>Inventory Stock</p>
+        </div>
+    </div>
 
-            <a href="{% url 'unit_donations' %}" class="menu-item">
-                <i class="fa-solid fa-hand-holding-medical"></i>
-                <span>Donations</span>
-            </a>
+    <div class="metric-card">
+        <div class="metric-icon red">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+            <h2>14</h2>
+            <p>Expiring Soon</p>
+        </div>
+    </div>
+</section>
 
-            <a href="#" class="menu-item">
-                <i class="fa-solid fa-file-medical"></i>
-                <span>Requests</span>
-            </a>
-
-            <a href="{% url 'unit_inventory' %}" class="menu-item">
-                <i class="fa-solid fa-boxes-stacked"></i>
-                <span>Inventory</span>
-            </a>
-
-            <a href="#" class="menu-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
-            </a>
-
-            <a href="{% url 'logout' %}" class="menu-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>logout</span>
-            </a>
-        </nav>
-
-    </aside>
-
-    <!-- OVERLAY -->
-
-    <div class="sidebar-overlay"
-         onclick="toggleSidebar()"></div>
-
-    <!-- MAIN CONTENT -->
-
-    <main class="main-content">
-
-        <!-- HEADER -->
-
-        <header class="top-header">
-
-            <div class="mobile-menu-btn"
-                 onclick="toggleSidebar()">
-
-                <i class="fa-solid fa-bars"></i>
-
+<div class="row g-4">
+    <div class="col-12 col-xl-7">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3>Donation Statistics</h3>
+                <button class="btn btn-sm btn-primary rounded-3 px-3">View Report</button>
             </div>
-
-            <div>
-
-                <h1>Dashboard</h1>
-
-                <p>
-                    Welcome back,
-                    Mathrubhumi Palliative Unit
-                </p>
-
+            <div class="chart-container">
+                <canvas id="donationChart"></canvas>
             </div>
+        </div>
+    </div>
 
-            <div class="header-right">
-
-                <button class="notification-btn">
-
-                    <i class="fa-regular fa-bell"></i>
-
-                </button>
-
-                <div class="profile-box">
-<a href="{% url 'profile' %}">
-                    <img src="https://i.pravatar.cc/40"
-                         alt="profile">
-
-                        </a>
-                    <div class="profile-info">
-
-                        <h4>Unit Admin</h4>
-                        <p>Administrator</p>
-
+    <div class="col-12 col-xl-5">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3>Pending Verifications</h3>
+                <button class="btn btn-sm btn-outline-primary rounded-3 px-3">View All</button>
+            </div>
+            
+            <div class="verification-list">
+                {% for item in pending_list %}
+                <div class="verification-item">
+                    <div>
+                        <h4>{{ item.medicine_name }}</h4>
+                        <p>Donated by {{ item.user.username }}</p>
                     </div>
+                    <span class="status pending">Pending</span>
                 </div>
-
-            </div>
-
-        </header>
-
-        <!-- METRIC CARDS -->
-
-        <section class="metrics-grid">
-
-            <div class="metric-card">
-
-                <div class="metric-icon blue">
-                    <i class="fa-solid fa-hand-holding-medical"></i>
-                </div>
-
-                <div>
-
-                    <h2>145</h2>
-                    <p>Total Donations</p>
-
-                </div>
-
-            </div>
-
-            <div class="metric-card">
-
-                <div class="metric-icon orange">
-                    <i class="fa-solid fa-clock"></i>
-                </div>
-
-                <div>
-
-                    <h2>28</h2>
-                    <p>Pending Requests</p>
-
-                </div>
-
-            </div>
-
-            <div class="metric-card">
-
-                <div class="metric-icon green">
-                    <i class="fa-solid fa-box-open"></i>
-                </div>
-
-                <div>
-
-                    <h2>920</h2>
-                    <p>Inventory Stock</p>
-
-                </div>
-
-            </div>
-
-            <div class="metric-card">
-
-                <div class="metric-icon red">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                </div>
-
-                <div>
-
-                    <h2>14</h2>
-                    <p>Expiring Soon</p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- CONTENT GRID -->
-
-        <section class="content-grid">
-
-            <!-- CHART -->
-
-            <div class="dashboard-card">
-
-                <div class="card-header">
-
-                    <h3>Donation Statistics</h3>
-
-                    <button>View Report</button>
-
-                </div>
-
-                <div class="chart-container">
-                    <canvas id="donationChart"></canvas>
-                </div>
-
-            </div>
-
-            <!-- PENDING -->
-
-            <div class="dashboard-card">
-
-                <div class="card-header">
-
-                    <h3>Pending Verifications</h3>
-
-                    <button>View All</button>
-
-                </div>
-
-                <div class="verification-list">
-
-                    <div class="verification-item">
-
-                        <div>
-
-                            <h4>Paracetamol</h4>
-                            <p>Donated by Aswanth</p>
-
-                        </div>
-
-                        <span class="status pending">
-                            Pending
-                        </span>
-
+                {% empty %}
+                <div class="verification-item">
+                    <div>
+                        <h4>med</h4>
+                        <p>Donated by maria_j</p>
                     </div>
-
-                    <div class="verification-item">
-
-                        <div>
-
-                            <h4>Insulin</h4>
-                            <p>Donated by Rahul</p>
-
-                        </div>
-
-                        <span class="status pending">
-                            Pending
-                        </span>
-
-                    </div>
-
-                    <div class="verification-item">
-
-                        <div>
-
-                            <h4>Vitamin Syrup</h4>
-                            <p>Donated by Anu</p>
-
-                        </div>
-
-                        <span class="status pending">
-                            Pending
-                        </span>
-
-                    </div>
-
+                    <span class="status pending">Pending</span>
                 </div>
-
+                {% endfor %}
             </div>
-
-        </section>
-
-    </main>
-
+        </div>
+    </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/unit/dashboard.js' %}"></script>
-
-</body>
-</html>
+{% endblock %}
