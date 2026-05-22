@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}MediShare | Dashboard{% endblock %}
+{% block page_title %}MediShare Dashboard{% endblock %}
+{% block page_subtitle %}A clean overview of units, donations, requests, inventory, and alerts.{% endblock %}
+
+{% block content %}
+  <section class="summary-grid" aria-label="Dashboard summary">
+    <article class="summary-card">
+      <span class="card-icon blue"><i class="bi bi-people"></i></span>
+      <div>
+        <p>Total Users</p>
+        <strong>4,812</strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <span class="card-icon green"><i class="bi bi-hospital"></i></span>
+      <div>
+        <p>Verified Units</p>
+        <strong>126</strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <span class="card-icon orange"><i class="bi bi-hourglass-split"></i></span>
+      <div>
+        <p>Pending Verifications</p>
+        <strong>34</strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <span class="card-icon green"><i class="bi bi-capsule"></i></span>
+      <div>
+        <p>Total Donations</p>
+        <strong>8,940</strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <span class="card-icon blue"><i class="bi bi-clipboard2-pulse"></i></span>
+      <div>
+        <p>Total Requests</p>
+        <strong>2,318</strong>
+      </div>
+    </article>
+
+    <article class="summary-card">
+      <span class="card-icon red"><i class="bi bi-box-seam"></i></span>
+      <div>
+        <p>Inventory Count</p>
+        <strong>15,672</strong>
+      </div>
+    </article>
+  </section>
+
+  <section class="dashboard-grid">
+    <article class="panel wide">
+      <div class="section-heading">
+        <div>
+          <h2>Pending Unit Verification</h2>
+          <p>Review submitted licenses before allowing units to manage medicine requests.</p>
+        </div>
+        <a href="#" class="text-link">View all</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table align-middle minimal-table">
+          <thead>
+            <tr>
+              <th>Unit</th>
+              <th>Location</th>
+              <th>License</th>
+              <th>Status</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Grace Palliative Care Trust</strong>
+                <span>Dr. Anjana Menon</span>
+              </td>
+              <td>Kozhikode</td>
+              <td><a href="#" class="file-link"><i class="bi bi-file-earmark-medical"></i> Preview</a></td>
+              <td><span class="badge-soft orange">Pending</span></td>
+              <td class="text-end">
+                <button class="btn-action approve" type="button">Approve</button>
+                <button class="btn-action reject" type="button">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Hope Home Nursing Unit</strong>
+                <span>Sr. Maria Joseph</span>
+              </td>
+              <td>Malappuram</td>
+              <td><a href="#" class="file-link"><i class="bi bi-file-earmark-text"></i> Preview</a></td>
+              <td><span class="badge-soft orange">Pending</span></td>
+              <td class="text-end">
+                <button class="btn-action approve" type="button">Approve</button>
+                <button class="btn-action reject" type="button">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Care Bridge Medical Aid</strong>
+                <span>Admin Office</span>
+              </td>
+              <td>Thrissur</td>
+              <td><a href="#" class="file-link"><i class="bi bi-file-earmark-check"></i> Preview</a></td>
+              <td><span class="badge-soft orange">Pending</span></td>
+              <td class="text-end">
+                <button class="btn-action approve" type="button">Approve</button>
+                <button class="btn-action reject" type="button">Reject</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <aside class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Recent Activity</h2>
+          <p>Latest platform updates.</p>
+        </div>
+      </div>
+
+      <ul class="activity-list">
+        <li><i class="bi bi-hospital"></i><span><strong>New unit registered</strong><small>12 minutes ago</small></span></li>
+        <li><i class="bi bi-check-circle"></i><span><strong>Donation approved</strong><small>28 minutes ago</small></span></li>
+        <li><i class="bi bi-clipboard-check"></i><span><strong>Request completed</strong><small>1 hour ago</small></span></li>
+        <li><i class="bi bi-box"></i><span><strong>Inventory updated</strong><small>2 hours ago</small></span></li>
+      </ul>
+    </aside>
+  </section>
+
+  <section class="dashboard-grid">
+    <article class="panel">
+      <h2>Monthly Donations</h2>
+      <div class="simple-chart">
+        <span style="height: 45%"></span>
+        <span style="height: 62%"></span>
+        <span style="height: 55%"></span>
+        <span style="height: 80%"></span>
+        <span style="height: 70%"></span>
+      </div>
+    </article>
+
+    <article class="panel">
+      <h2>Request Statistics</h2>
+      <div class="metric-list">
+        <div><span>Completed</span><strong>1,820</strong></div>
+        <div><span>Pending</span><strong>318</strong></div>
+        <div><span>Urgent</span><strong>42</strong></div>
+      </div>
+    </article>
+
+    <article class="panel">
+      <h2>Medicine Categories</h2>
+      <div class="category-list">
+        <span><i class="dot blue"></i> Diabetes</span>
+        <span><i class="dot green"></i> Pain Relief</span>
+        <span><i class="dot orange"></i> Antibiotics</span>
+        <span><i class="dot red"></i> Critical Care</span>
+      </div>
+    </article>
+  </section>
+
+  <section class="dashboard-grid">
+    <article class="panel wide">
+      <div class="section-heading">
+        <div>
+          <h2>Emergency Alerts</h2>
+          <p>Urgent needs shared with verified care units.</p>
+        </div>
+      </div>
+
+      <div class="alert-list">
+        <div class="alert-item danger">
+          <strong>Urgent need for insulin in Kozhikode</strong>
+          <span>Priority request from a verified palliative care unit.</span>
+        </div>
+        <div class="alert-item warning">
+          <strong>Low stock: wound care supplies</strong>
+          <span>Sterile dressing kits are below recommended stock.</span>
+        </div>
+      </div>
+    </article>
+
+    <aside class="panel">
+      <h2>Post Alert</h2>
+      <form class="alert-form">
+        <input class="form-control" type="text" value="Urgent need for insulin in Kozhikode" aria-label="Alert title">
+        <select class="form-select" aria-label="Priority">
+          <option>High Priority</option>
+          <option>Moderate Priority</option>
+          <option>Information Only</option>
+        </select>
+        <textarea class="form-control" rows="3" aria-label="Alert description">Verified units nearby should check availability.</textarea>
+        <button class="primary-button" type="button">Publish Alert</button>
+      </form>
+    </aside>
+  </section>
+{% endblock %}
