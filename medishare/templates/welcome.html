@@ -1,0 +1,352 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommunityMed | Share Medicines. Save Lives</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/welcome/welcome.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container py-2">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#home" aria-label="CommunityMed home">
+        <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+        <span>CommunityMed</span>
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1 pt-3 pt-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#how-it-works">How It Works</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#login">Login</a></li>
+          <li class="nav-item ms-lg-2"><a class="btn btn-primary btn-sm" href="#register">Register</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main id="home">
+    <section class="hero">
+      <div class="container position-relative">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6 fade-up">
+            <span class="eyebrow"><i class="bi bi-shield-check"></i> Verified healthcare sharing community</span>
+            <h1 class="hero-title">Share Medicines. Save Lives.</h1>
+            <p class="hero-copy">CommunityMed connects donors, palliative care units, and patients to reduce medicine waste and support people in need with safe, verified medicine sharing.</p>
+            <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
+              <a href="#register" class="btn btn-primary"><i class="bi bi-capsule-pill me-2"></i>Donate Medicine</a>
+              <a href="#features" class="btn btn-outline-primary"><i class="bi bi-search-heart me-2"></i>Find Medicines</a>
+            </div>
+            <div class="d-flex flex-wrap gap-3 mt-4 text-secondary fw-semibold">
+              <span><i class="bi bi-check-circle-fill text-success me-1"></i>Unit verified</span>
+              <span><i class="bi bi-check-circle-fill text-success me-1"></i>Safe collection</span>
+              <span><i class="bi bi-check-circle-fill text-success me-1"></i>Community first</span>
+            </div>
+          </div>
+           <div class="col-lg-6 hero-visual fade-up">
+            <div class="medical-orbit">
+              <div class="hero-panel">
+                <div class="hero-image" role="img" aria-label="Healthcare professional helping a patient"></div>
+                <div class="d-flex align-items-center gap-3 mt-3">
+                  <span class="icon-badge"><i class="bi bi-clipboard2-pulse fs-4"></i></span>
+                  <div>
+                    <h2 class="h5 mb-1">Medicine request matched</h2>
+                    <p class="small text-secondary mb-0">Nearby palliative unit can review and coordinate collection.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="floating-card top">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="icon-badge blue"><i class="bi bi-hospital fs-4"></i></span>
+                  <div>
+                    <strong class="d-block">42 verified units</strong>
+                    <span class="small text-secondary">ready to support requests</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="floating-card bottom">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="icon-badge yellow"><i class="bi bi-heart-fill fs-4"></i></span>
+                  <div>
+                    <strong class="d-block">Care with dignity</strong>
+                    <span class="small text-secondary">safe sharing for every family</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="text-center fade-up">
+          <span class="section-kicker">How It Works</span>
+          <h2 class="section-title">A calm, transparent flow from donation to safe collection.</h2>
+          <p class="section-copy">Every step is designed around trust, verification, and simple access for donors, patients, and palliative care teams.</p>
+        </div>
+
+        <div class="row g-4 mt-4">
+          <div class="col-md-6 col-lg-3 fade-up">
+            <article class="soft-card step-card">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="icon-badge"><i class="bi bi-capsule fs-4"></i></span>
+                <span class="step-number">1</span>
+              </div>
+              <h3 class="h5">Donate Medicines</h3>
+              <p class="text-secondary mb-0">Donors submit usable medicines with expiry and quantity details through a simple form.</p>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-3 fade-up">
+            <article class="soft-card step-card">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="icon-badge blue"><i class="bi bi-patch-check fs-4"></i></span>
+                <span class="step-number">2</span>
+              </div>
+              <h3 class="h5">Units Verify Donations</h3>
+              <p class="text-secondary mb-0">Registered palliative units check safety, suitability, and availability before listing.</p>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-3 fade-up">
+            <article class="soft-card step-card">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="icon-badge"><i class="bi bi-person-heart fs-4"></i></span>
+                <span class="step-number">3</span>
+              </div>
+              <h3 class="h5">Users Request Medicines</h3>
+              <p class="text-secondary mb-0">Patients or caregivers find needed medicines and place requests with clear status updates.</p>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-3 fade-up">
+            <article class="soft-card step-card">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="icon-badge yellow"><i class="bi bi-bag-check fs-4"></i></span>
+                <span class="step-number">4</span>
+              </div>
+              <h3 class="h5">Safe Collection Process</h3>
+              <p class="text-secondary mb-0">Approved requests move to coordinated pickup or handover through trusted local units.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pt-0" id="features">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5 fade-up">
+            <span class="section-kicker">Platform Features</span>
+            <h2 class="section-title text-start mx-0">Built for clarity, compassion, and reliable medicine access.</h2>
+            <p class="section-copy text-start mx-0">CommunityMed gives healthcare teams the structure they need while keeping the experience simple for families and elderly users.</p>
+            <a class="btn btn-primary mt-4" href="#register"><i class="bi bi-person-plus me-2"></i>Join the Community</a>
+          </div>
+
+          <div class="col-lg-7 fade-up">
+            <div class="feature-list">
+              <div class="feature-row">
+                <span class="icon-badge"><i class="bi bi-hospital fs-4"></i></span>
+                <div>
+                  <h3 class="h5 mb-1">Verified Palliative Units</h3>
+                  <p class="text-secondary mb-0">Trusted healthcare organizations review donations and guide safe distribution.</p>
+                </div>
+              </div>
+
+              <div class="feature-row">
+                <span class="icon-badge blue"><i class="bi bi-box-seam fs-4"></i></span>
+                <div>
+                  <h3 class="h5 mb-1">Real-time Inventory</h3>
+                  <p class="text-secondary mb-0">Clear availability, expiry awareness, and easy filtering help reduce medicine waste.</p>
+                </div>
+              </div>
+
+              <div class="feature-row">
+                <span class="icon-badge"><i class="bi bi-ui-checks-grid fs-4"></i></span>
+                <div>
+                  <h3 class="h5 mb-1">Medicine Request System</h3>
+                  <p class="text-secondary mb-0">Patients and caregivers can request medicines with approachable, guided steps.</p>
+                </div>
+              </div>
+
+              <div class="feature-row">
+                <span class="icon-badge yellow"><i class="bi bi-shield-lock fs-4"></i></span>
+                <div>
+                  <h3 class="h5 mb-1">Safe Distribution</h3>
+                  <p class="text-secondary mb-0">Verification, status tracking, and collection coordination protect every participant.</p>
+                </div>
+              </div>
+
+              <div class="feature-row">
+                <span class="icon-badge blue"><i class="bi bi-people fs-4"></i></span>
+                <div>
+                  <h3 class="h5 mb-1">Community Support</h3>
+                  <p class="text-secondary mb-0">A shared care network helps donors turn unused medicines into meaningful support.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+                  <div class="stat-card">
+                <strong class="counter" data-target="12840">0</strong>
+                <span>Medicines Shared</span>
+              </div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="stat-card">
+                <strong class="counter" data-target="42">0</strong>
+                <span>Registered Units</span>
+              </div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="stat-card">
+                <strong class="counter" data-target="7600">0</strong>
+                <span>Lives Supported</span>
+              </div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="stat-card">
+                <strong class="counter" data-target="3100">0</strong>
+                <span>Active Donors</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pt-0" id="trust">
+      <div class="container">
+        <div class="trust-panel fade-up">
+          <div class="row align-items-center g-5">
+            <div class="col-lg-5">
+              <span class="section-kicker">Trust & Safety</span>
+              <h2 class="section-title text-start mx-0">Verified Healthcare Community Platform</h2>
+              <p class="section-copy text-start mx-0">CommunityMed is designed around responsible medicine sharing, unit verification, clear request records, and safe handover coordination.</p>
+            </div>
+
+            <div class="col-lg-7">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="soft-card">
+                    <span class="icon-badge"><i class="bi bi-shield-check fs-4"></i></span>
+                    <h3 class="h5 mt-3">Verified Units</h3>
+                    <p class="text-secondary mb-0">Only approved care units can verify and coordinate donations.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="soft-card">
+                    <span class="icon-badge blue"><i class="bi bi-file-medical fs-4"></i></span>
+                    <h3 class="h5 mt-3">Clear Records</h3>
+                    <p class="text-secondary mb-0">Donation and request flows stay transparent from submission to collection.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="soft-card">
+                    <span class="icon-badge yellow"><i class="bi bi-calendar2-check fs-4"></i></span>
+                    <h3 class="h5 mt-3">Expiry Awareness</h3>
+                    <p class="text-secondary mb-0">Medicine details support safer review and better inventory decisions.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="soft-card">
+                    <span class="icon-badge"><i class="bi bi-hand-thumbs-up fs-4"></i></span>
+                    <h3 class="h5 mt-3">Respectful Access</h3>
+                    <p class="text-secondary mb-0">The interface stays simple, readable, and calming for all age groups.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pt-0" id="register">
+      <div class="container">
+        <div class="cta text-center fade-up">
+          <span class="badge-soft bg-white"><i class="bi bi-heart-pulse"></i> Community care starts here</span>
+          <h2 class="display-5 fw-bold mt-4 mb-3">Help medicines reach the people who need them most.</h2>
+          <p class="fs-5 mx-auto mb-4" style="max-width: 720px;">Register as a donor, patient, or palliative care unit and become part of a safer medicine sharing network.</p>
+          <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+            <a href="#" class="btn btn-light text-success"><i class="bi bi-person-plus me-2"></i>Create Account</a>
+            <a href="#login" class="btn btn-outline-light"><i class="bi bi-box-arrow-in-right me-2"></i>Login</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="login">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="#home">
+            <span class="brand-mark"><i class="bi bi-heart-pulse-fill"></i></span>
+            <span>CommunityMed</span>
+          </a>
+          <p class="mb-4">A healthcare-focused medicine donation and sharing platform for donors, patients, and palliative care units.</p>
+          <div class="d-flex gap-2">
+            <a class="social-link" href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a class="social-link" href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a class="social-link" href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a class="social-link" href="#" aria-label="Email"><i class="bi bi-envelope"></i></a>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h3 class="h6">Quick Links</h3>
+          <ul class="list-unstyled d-grid gap-2 mt-3">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#features">Features</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <h3 class="h6">For Community</h3>
+          <ul class="list-unstyled d-grid gap-2 mt-3">
+            <li><a href="#register">Donors</a></li>
+            <li><a href="#register">Patients</a></li>
+            <li><a href="#register">Palliative Units</a></li>
+            <li><a href="#trust">Safety Promise</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3">
+          <h3 class="h6">Contact</h3>
+          <ul class="list-unstyled d-grid gap-2 mt-3">
+            <li><i class="bi bi-envelope text-success me-2"></i>support@communitymed.org</li>
+            <li><i class="bi bi-telephone text-success me-2"></i>+91 98765 43210</li>
+            <li><i class="bi bi-geo-alt text-success me-2"></i>Community healthcare network</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-top mt-5 pt-4 d-flex flex-column flex-md-row justify-content-between gap-2">
+        <span>&copy; 2026 CommunityMed. All rights reserved.</span>
+        <span>Designed for safe, compassionate medicine sharing.</span>
+      </div>
+    </div>
+  </footer>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="{% static 'js/welcome/welcome.js' %}"></script>
+</body>
+</html>
