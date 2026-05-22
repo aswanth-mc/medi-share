@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediShare | User Registration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="{% static 'css/user/register.css' %}">
+</head>
+<body>
+  <main class="registration-page">
+    <section class="registration-info">
+      <a href="{% url 'welcome' %}" class="brand">
+        <span class="brand-icon">M</span>
+        <span>MediShare</span>
+      </a>
+
+      <div class="intro">
+        <span class="eyebrow">Community care access</span>
+        <h1>Create your MediShare account</h1>
+        <p>Register to request support, share medicine availability, and stay connected with verified care units near you.</p>
+      </div>
+
+      <div class="trust-list">
+        <div>
+          <strong>Safe</strong>
+          <span>Location-aware medicine assistance.</span>
+        </div>
+        <div>
+          <strong>Simple</strong>
+          <span>Clear registration for all users.</span>
+        </div>
+        <div>
+          <strong>Community-first</strong>
+          <span>Built for local palliative care support.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-container" aria-labelledby="registration-title">
+      <div class="form-header">
+        <span class="form-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </span>
+        <div>
+          <h2 id="registration-title">User Registration</h2>
+          <p>Enter your details and choose your location.</p>
+        </div>
+      </div>
+
+      <form method="POST" class="registration-form">
+        {% csrf_token %}
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="Your username" autocomplete="username" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Create a password" autocomplete="new-password" required>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" id="phone" placeholder="Phone number" autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="location-section">
+          <div class="section-label">
+            <label for="location_name">Select Location</label>
+            <span>Click on the map to choose your area.</span>
+          </div>
+
+          <div id="map"></div>
+
+          <input type="text" name="location_name" id="location_name" readonly placeholder="Selected location will appear here">
+          <input type="hidden" name="latitude" id="latitude">
+          <input type="hidden" name="longitude" id="longitude">
+        </div>
+
+        <button type="submit">Register</button>
+      </form>
+
+      {% if error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
+
+      <div class="footer">
+        Already have an account? <a href="{% url 'login' %}">Login</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="{% static 'js/map/locationPicker.js' %}"></script>
+</body>
+</html>
