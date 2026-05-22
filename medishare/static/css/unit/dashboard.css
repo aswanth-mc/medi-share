@@ -1,0 +1,275 @@
+.overview-panel {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.section-kicker {
+  display: inline-flex;
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.overview-panel h2,
+.dashboard-card h2,
+.trust-card h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.overview-panel p,
+.card-heading p,
+.trust-card p {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.primary-action,
+.secondary-action,
+.text-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 14px;
+  font-weight: 800;
+  border-radius: 999px;
+}
+
+.primary-action {
+  color: #ffffff;
+  background: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.secondary-action {
+  color: var(--primary-dark);
+  background: #ffffff;
+  border: 1px solid rgba(45, 156, 219, 0.35);
+}
+
+.text-action {
+  min-height: auto;
+  padding: 0;
+  color: var(--primary-dark);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.metric-card,
+.dashboard-card,
+.trust-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 108px;
+  padding: 18px;
+}
+
+.metric-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 14px;
+}
+
+.blue {
+  color: var(--primary-dark);
+  background: var(--hover);
+}
+
+.orange {
+  color: var(--warning);
+  background: rgba(242, 153, 74, 0.12);
+}
+
+.green {
+  color: var(--success);
+  background: rgba(39, 174, 96, 0.1);
+}
+
+.red {
+  color: var(--danger);
+  background: rgba(235, 87, 87, 0.1);
+}
+
+.metric-card h2 {
+  margin: 0;
+  font-size: 1.55rem;
+  font-weight: 800;
+}
+
+.metric-card p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+  gap: 22px;
+}
+
+.dashboard-card,
+.trust-card {
+  padding: 18px;
+}
+
+.card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.chart-container {
+  min-height: 320px;
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+#donationChart {
+  width: 100%;
+  max-height: 300px;
+}
+
+.verification-list,
+.priority-list {
+  display: grid;
+  gap: 12px;
+}
+
+.verification-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.item-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--primary-dark);
+  background: var(--hover);
+  border-radius: 12px;
+}
+
+.verification-item h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.verification-item p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.status {
+  padding: 6px 9px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  border-radius: 999px;
+}
+
+.status.pending {
+  color: var(--warning);
+  background: rgba(242, 153, 74, 0.12);
+}
+
+.support-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 22px;
+}
+
+.priority-list div {
+  display: flex;
+  gap: 10px;
+  padding: 12px 0;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.priority-list div:last-child {
+  border-bottom: 0;
+}
+
+.priority-list i {
+  color: var(--primary);
+}
+
+.trust-card {
+  text-align: center;
+}
+
+.trust-card i {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--success);
+  font-size: 2rem;
+}
+
+@media (max-width: 1180px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid,
+  .support-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .overview-panel,
+  .card-heading {
+    display: grid;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .verification-item {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .status {
+    grid-column: 2;
+    width: fit-content;
+  }
+}
