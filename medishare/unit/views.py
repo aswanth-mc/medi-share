@@ -44,4 +44,4 @@ def register_unit(request):
     )
 
 def unit_dashboard(request):
-    return render(request, 'dashboard.html')
+    return render(request, 'unit_dashboard.html')
