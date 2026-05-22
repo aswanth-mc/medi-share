@@ -101,4 +101,4 @@ def user_login(request):
 #===============================
 
 def user_dashboard(request):
-    return render(request, 'dashboard.html')
+    return render(request, 'user_dashboard.html')
