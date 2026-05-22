@@ -59,4 +59,7 @@ def welcome_view(request):
 #     return render(request, 'login.html')
 
 def user_login(request):
-    return render(request, 'login.html')
+    return render(request, 'auth/login.html')
+
+def register_choice(request):
+    return render(request, 'auth/register_choice.html')
