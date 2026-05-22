@@ -94,3 +94,11 @@ def user_login(request):
         )
 
     return render(request, 'auth/login.html')
+
+
+#===============================
+# USER DASHBOARD
+#===============================
+
+def user_dashboard(request):
+    return render(request, 'dashboard.html')
