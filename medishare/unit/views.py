@@ -19,7 +19,6 @@ def register_unit(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         phone = request.POST.get('phone')
-
         location_name = request.POST.get('location_name')
         latitude = request.POST.get('latitude')
         longitude = request.POST.get('longitude')

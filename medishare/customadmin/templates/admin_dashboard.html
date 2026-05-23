@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "admin_base.html" %}
 
 {% block title %}MediShare | Dashboard{% endblock %}
 {% block page_title %}MediShare Dashboard{% endblock %}
@@ -80,45 +80,25 @@
             </tr>
           </thead>
           <tbody>
+            {% for unit in pending_units %}
             <tr>
               <td>
-                <strong>Grace Palliative Care Trust</strong>
-                <span>Dr. Anjana Menon</span>
+                <strong>{{unit.name}}</strong>
+                <span>{{unit.email}}</span>
               </td>
-              <td>Kozhikode</td>
+              <td>{{unit.location_name}}</td>
               <td><a href="#" class="file-link"><i class="bi bi-file-earmark-medical"></i> Preview</a></td>
               <td><span class="badge-soft orange">Pending</span></td>
               <td class="text-end">
-                <button class="btn-action approve" type="button">Approve</button>
-                <button class="btn-action reject" type="button">Reject</button>
+                <a href="{% url 'approve_unit' unit.id %}"> <button class="btn-action approve" type="button"> Approve </button> </a>
+                <a href="{% url 'reject_unit' unit.id %}"> <button class="btn-action reject" type="button"> Reject </button> </a>
               </td>
             </tr>
-            <tr>
-              <td>
-                <strong>Hope Home Nursing Unit</strong>
-                <span>Sr. Maria Joseph</span>
-              </td>
-              <td>Malappuram</td>
-              <td><a href="#" class="file-link"><i class="bi bi-file-earmark-text"></i> Preview</a></td>
-              <td><span class="badge-soft orange">Pending</span></td>
-              <td class="text-end">
-                <button class="btn-action approve" type="button">Approve</button>
-                <button class="btn-action reject" type="button">Reject</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Care Bridge Medical Aid</strong>
-                <span>Admin Office</span>
-              </td>
-              <td>Thrissur</td>
-              <td><a href="#" class="file-link"><i class="bi bi-file-earmark-check"></i> Preview</a></td>
-              <td><span class="badge-soft orange">Pending</span></td>
-              <td class="text-end">
-                <button class="btn-action approve" type="button">Approve</button>
-                <button class="btn-action reject" type="button">Reject</button>
-              </td>
-            </tr>
+             {% empty %} 
+             <tr> 
+              <td colspan="5" class="text-center"> No pending units found </td> 
+            </tr> 
+            {% endfor %} 
           </tbody>
         </table>
       </div>
