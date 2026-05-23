@@ -1,38 +1,57 @@
-from django.http import HttpResponse
+```python
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
+
+# ==========================================
+# WELCOME PAGE
+# ==========================================
 
 def welcome_view(request):
     return render(request, 'welcome.html')
 
 
+# ==========================================
+# REGISTER CHOICE PAGE
+# ==========================================
+
 def register_choice(request):
     return render(request, 'auth/register_choice.html')
 
 
-#===============================
+# ==========================================
 # USER REGISTER
-#===============================
+# ==========================================
 
 def register_user(request):
+
     if request.method == "POST":
+
+        username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        username = request.POST.get('username')
         phone = request.POST.get('phone')
+
         location_name = request.POST.get('location_name')
         latitude = request.POST.get('latitude')
         longitude = request.POST.get('longitude')
 
+        # CHECK EMAIL EXISTS
         if User.objects.filter(email=email).exists():
-            return render(request, 'register.html', {
-                'error': 'Email already exists'
-            })
-        
+
+            return render(
+                request,
+                'auth/register.html',
+                {
+                    'error': 'Email already exists'
+                }
+            )
+
+        # CREATE USER
         user = User.objects.create_user(
             username=username,
             email=email,
@@ -45,12 +64,14 @@ def register_user(request):
         )
 
         return redirect('login')
-    return render(request,'register.html')
+
+    return render(request, 'auth/register.html')
 
 
-#===============================
+# ==========================================
 # USER LOGIN
-#===============================
+# ==========================================
+
 def user_login(request):
 
     if request.method == "POST":
@@ -62,10 +83,13 @@ def user_login(request):
             user_obj = User.objects.get(email=email)
 
         except User.DoesNotExist:
+
             return render(
                 request,
                 'auth/login.html',
-                {'error': 'Invalid email or password'}
+                {
+                    'error': 'Invalid email or password'
+                }
             )
 
         user = authenticate(
@@ -78,6 +102,7 @@ def user_login(request):
 
             login(request, user)
 
+            # ROLE BASED REDIRECT
             if user.role == 'admin':
                 return redirect('admin_dashboard')
 
@@ -89,16 +114,35 @@ def user_login(request):
 
         return render(
             request,
-            'login.html',
-            {'error': 'Invalid email or password'}
+            'auth/login.html',
+            {
+                'error': 'Invalid email or password'
+            }
         )
 
     return render(request, 'auth/login.html')
 
 
-#===============================
+# ==========================================
 # USER DASHBOARD
-#===============================
+# ==========================================
 
+@login_required
 def user_dashboard(request):
+
+    if request.user.role != 'user':
+        return redirect('login')
+
     return render(request, 'user_dashboard.html')
+
+
+# ==========================================
+# LOGOUT
+# ==========================================
+
+def user_logout(request):
+
+    logout(request)
+
+    return redirect('login')
+
