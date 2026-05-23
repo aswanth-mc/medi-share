@@ -13,23 +13,23 @@
       <span class="card-icon blue"><i class="bi bi-people"></i></span>
       <div>
         <p>Total Users</p>
-        <strong>4,812</strong>
+        <strong>{{ total_users }}</strong>
       </div>
     </article>
 
     <article class="summary-card">
       <span class="card-icon green"><i class="bi bi-hospital"></i></span>
       <div>
-        <p>Verified Units</p>
-        <strong>126</strong>
+         <p>Verified Units</p>
+        <strong>{{ verified_units }}</strong>
       </div>
     </article>
 
     <article class="summary-card">
       <span class="card-icon orange"><i class="bi bi-hourglass-split"></i></span>
       <div>
-        <p>Pending Verifications</p>
-        <strong>34</strong>
+      <p>Pending Verifications</p>
+        <strong>{{ pending_count }}</strong>
       </div>
     </article>
 
@@ -65,7 +65,7 @@
           <h2>Pending Unit Verification</h2>
           <p>Review submitted licenses before allowing units to manage medicine requests.</p>
         </div>
-        <a href="#" class="text-link">View all</a>
+        <span class="text-link">{{ total_units }} total</span>
       </div>
 
       <div class="table-responsive">
@@ -87,11 +87,25 @@
                 <span>{{unit.email}}</span>
               </td>
               <td>{{unit.location_name}}</td>
-              <td><a href="#" class="file-link"><i class="bi bi-file-earmark-medical"></i> Preview</a></td>
+              <td>
+                {% if unit.license_file %}
+                  <a href="{{ unit.license_file.url }}" class="file-link" target="_blank" rel="noopener">
+                    <i class="bi bi-file-earmark-medical"></i> Preview
+                  </a>
+                {% else %}
+                  <span>No file</span>
+                {% endif %}
+              </td>
               <td><span class="badge-soft orange">Pending</span></td>
               <td class="text-end">
-                <a href="{% url 'approve_unit' unit.id %}"> <button class="btn-action approve" type="button"> Approve </button> </a>
-                <a href="{% url 'reject_unit' unit.id %}"> <button class="btn-action reject" type="button"> Reject </button> </a>
+                <form class="inline-action" method="POST" action="{% url 'approve_unit' unit.id %}">
+                  {% csrf_token %}
+                  <button class="btn-action approve" type="submit">Approve</button>
+                </form>
+                <form class="inline-action" method="POST" action="{% url 'reject_unit' unit.id %}">
+                  {% csrf_token %}
+                  <button class="btn-action reject" type="submit">Reject</button>
+                </form>
               </td>
             </tr>
              {% empty %} 

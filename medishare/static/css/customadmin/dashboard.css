@@ -98,6 +98,10 @@
   font-weight: 700;
 }
 
+.inline-action {
+  display: inline-block;
+  margin-left: 6px;
+}
 .minimal-table {
   margin: 0;
 }

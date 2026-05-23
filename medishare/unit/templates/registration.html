@@ -28,6 +28,10 @@
                 <h2>Palliative Unit Registration</h2>
                 <p>Join the Medi-Share network to support those in need.</p>
             </div>
+
+            {% if error %}
+                <p class="form-error" role="alert">{{ error }}</p>
+            {% endif %}
     
             <form method="POST" enctype="multipart/form-data" class="grid-form">
                 {% csrf_token %}
