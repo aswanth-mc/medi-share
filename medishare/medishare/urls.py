@@ -25,6 +25,7 @@ urlpatterns = [
     path('customadmin/', include('customadmin.urls')),
     path('unit/', include('unit.urls')),
     path('donation/', include('donations.urls')),
+    path('inventory/', include('inventory.urls')),
 ]
 
 if settings.DEBUG:
