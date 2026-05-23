@@ -1,76 +1,112 @@
-
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
+from django.contrib.auth import logout
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
+
+from .models import PalliativeUnit
 
 User = get_user_model()
 
 
-# ==========================================
+# ===============================
 # UNIT REGISTER
-# ==========================================
+# ===============================
 
 def register_unit(request):
 
     if request.method == "POST":
 
-        username = request.POST.get('username')
+        username = request.POST.get('name')
+
         email = request.POST.get('email')
+
         password = request.POST.get('password')
+
         phone = request.POST.get('phone')
 
         location_name = request.POST.get('location_name')
+
         latitude = request.POST.get('latitude')
+
         longitude = request.POST.get('longitude')
 
-        # CHECK EMAIL EXISTS
+        license_number = request.POST.get('license_number')
+
+        license_file = request.FILES.get('license_file')
+
+        # CHECK EMAIL
         if User.objects.filter(email=email).exists():
 
             return render(
                 request,
-                'unit/register_unit.html',
+                'registration.html',
                 {
                     'error': 'Email already exists'
                 }
             )
 
-        # CREATE UNIT USER
-        unit = User.objects.create_user(
+        # CREATE USER
+        user = User.objects.create_user(
             username=username,
             email=email,
             password=password,
-            role='unit',
+            role='unit'
+        )
+
+        # CREATE UNIT PROFILE
+        PalliativeUnit.objects.create(
+            user=user,
+
+            name=username,
+
+            email=email,
+
             phone=phone,
+
             location_name=location_name,
+
             latitude=latitude,
-            longitude=longitude
+
+            longitude=longitude,
+
+            license_number=license_number,
+
+            license_file=license_file
         )
 
         return redirect('unit_login')
 
-    return render(request, 'unit/register_unit.html')
+    return render(
+        request,
+        'registration.html'
+    )
 
 
-# ==========================================
+# ===============================
 # UNIT LOGIN
-# ==========================================
+# ===============================
 
 def unit_login(request):
 
     if request.method == "POST":
 
         email = request.POST.get('email')
+
         password = request.POST.get('password')
 
         try:
-            user_obj = User.objects.get(email=email)
+
+            user_obj = User.objects.get(
+                email=email,
+                role='unit'
+            )
 
         except User.DoesNotExist:
 
             return render(
                 request,
-                'unit/unit_login.html',
+                'unit/login.html',
                 {
                     'error': 'Invalid email or password'
                 }
@@ -82,7 +118,19 @@ def unit_login(request):
             password=password
         )
 
-        if user is not None and user.role == 'unit':
+        if user is not None:
+
+            unit = PalliativeUnit.objects.get(user=user)
+
+            if not unit.is_verified:
+
+                return render(
+                    request,
+                    'auth/login.html',
+                    {
+                        'error': 'Your unit is not verified yet'
+                    }
+                )
 
             login(request, user)
 
@@ -90,35 +138,33 @@ def unit_login(request):
 
         return render(
             request,
-            'unit/unit_login.html',
+            'auth/login.html',
             {
                 'error': 'Invalid email or password'
             }
         )
 
-    return render(request, 'unit/unit_login.html')
+    return render(request, 'auth/login.html')
 
 
-# ==========================================
+# ===============================
 # UNIT DASHBOARD
-# ==========================================
+# ===============================
 
-@login_required 
-def unit_dashboard(request): 
-    if request.user.role != 'unit': 
-        return redirect('login') 
-    if request.user.verification_status != 'approved': 
-        return render( request, 'unit/pending_approval.html' ) 
-    return render( request, 'unit_dashboard.html' )
+def unit_dashboard(request):
+
+    return render(
+        request,
+        'unit/dashboard.html'
+    )
 
 
-# ==========================================
+# ===============================
 # LOGOUT
-# ==========================================
+# ===============================
 
 def unit_logout(request):
 
     logout(request)
 
     return redirect('unit_login')
-
