@@ -103,13 +103,13 @@ def unit_login(request):
 # UNIT DASHBOARD
 # ==========================================
 
-@login_required
-def unit_dashboard(request):
-
-    if request.user.role != 'unit':
-        return redirect('login')
-
-    return render(request, 'unit_dashboard.html')
+@login_required 
+def unit_dashboard(request): 
+    if request.user.role != 'unit': 
+        return redirect('login') 
+    if request.user.verification_status != 'approved': 
+        return render( request, 'unit/pending_approval.html' ) 
+    return render( request, 'unit_dashboard.html' )
 
 
 # ==========================================
