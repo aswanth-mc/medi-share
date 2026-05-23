@@ -1,47 +1,124 @@
+```python
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
-from user.views import User
-from .models import PalliativeUnit
-
-# Create your views here.
 User = get_user_model()
 
-# ==============================
+
+# ==========================================
 # UNIT REGISTER
-# ==============================
+# ==========================================
 
 def register_unit(request):
 
     if request.method == "POST":
 
-        email = request.POST['email']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        phone = request.POST.get('phone')
 
-        user = User.objects.create_user(
-            username=email,
+        location_name = request.POST.get('location_name')
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
+
+        # CHECK EMAIL EXISTS
+        if User.objects.filter(email=email).exists():
+
+            return render(
+                request,
+                'unit/register_unit.html',
+                {
+                    'error': 'Email already exists'
+                }
+            )
+
+        # CREATE UNIT USER
+        unit = User.objects.create_user(
+            username=username,
             email=email,
             password=password,
             role='unit',
+            phone=phone,
+            location_name=location_name,
+            latitude=latitude,
+            longitude=longitude
         )
 
-        PalliativeUnit.objects.create(
-            user=user,
-            name=request.POST['name'],
-            license_number=request.POST['license_number'],
-            license_file=request.FILES['license_file'],
-            location_name=request.POST['location_name'],
-            latitude=request.POST['latitude'],
-            longitude=request.POST['longitude'],
-            phone=request.POST['phone'],
+        return redirect('unit_login')
+
+    return render(request, 'unit/register_unit.html')
+
+
+# ==========================================
+# UNIT LOGIN
+# ==========================================
+
+def unit_login(request):
+
+    if request.method == "POST":
+
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        try:
+            user_obj = User.objects.get(email=email)
+
+        except User.DoesNotExist:
+
+            return render(
+                request,
+                'unit/unit_login.html',
+                {
+                    'error': 'Invalid email or password'
+                }
+            )
+
+        user = authenticate(
+            request,
+            username=user_obj.username,
+            password=password
         )
 
+        if user is not None and user.role == 'unit':
+
+            login(request, user)
+
+            return redirect('unit_dashboard')
+
+        return render(
+            request,
+            'unit/unit_login.html',
+            {
+                'error': 'Invalid email or password'
+            }
+        )
+
+    return render(request, 'unit/unit_login.html')
+
+
+# ==========================================
+# UNIT DASHBOARD
+# ==========================================
+
+@login_required
+def unit_dashboard(request):
+
+    if request.user.role != 'unit':
         return redirect('login')
 
-    return render(
-        request,
-        'registration.html'
-    )
-
-def unit_dashboard(request):
     return render(request, 'unit_dashboard.html')
+
+
+# ==========================================
+# LOGOUT
+# ==========================================
+
+def unit_logout(request):
+
+    logout(request)
+
+    return redirect('unit_login')
+
