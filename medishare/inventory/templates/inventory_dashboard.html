@@ -1,0 +1,99 @@
+{% extends "unit_base.html" %}
+{% load static %}
+
+{% block title %}Inventory Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="inventory-page">
+
+    <div class="inventory-header">
+        <div>
+            <h1>Medicine Inventory</h1>
+            <p>Manage collected medicines and stock availability.</p>
+        </div>
+
+        <a href="#" class="add-btn">
+            + Add Medicine
+        </a>
+    </div>
+
+    <div class="inventory-grid">
+
+        {% for item in inventory_items %}
+
+        <div class="inventory-card">
+
+            <div class="medicine-image">
+
+                {% if item.medicine_image %}
+                    <img src="{{ item.medicine_image.url }}" alt="">
+                {% else %}
+                    <img src="{% static 'images/default-medicine.png' %}" alt="">
+                {% endif %}
+
+            </div>
+
+            <div class="medicine-content">
+
+                <div class="medicine-top">
+                    <h3>{{ item.medicine_name }}</h3>
+
+                    <span class="stock-badge">
+                        {{ item.quantity }} Units
+                    </span>
+                </div>
+
+                <div class="medicine-info">
+
+                    <p>
+                        <strong>Expiry:</strong>
+                        {{ item.expiry_date }}
+                    </p>
+
+                    <p>
+                        <strong>Added:</strong>
+                        {{ item.created_at|date:"d M Y" }}
+                    </p>
+
+                </div>
+
+                <div class="medicine-description">
+                    {{ item.description }}
+                </div>
+
+                <div class="medicine-actions">
+
+                    <button class="edit-btn">
+                        Edit
+                    </button>
+
+                    <button class="delete-btn">
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <h2>No Inventory Available</h2>
+
+            <p>
+                Medicines received from donations will appear here.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

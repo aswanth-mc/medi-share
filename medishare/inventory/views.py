@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from donations.models import Donation
 from inventory.models import Inventory
+from unit.models import PalliativeUnit
 # Create your views here.
 
 
@@ -27,3 +28,22 @@ def receive_donation(request, donation_id):
     donation.save()
 
     return redirect('incoming_donations')
+
+@login_required
+def inventory_dashboard(request):
+
+    unit = PalliativeUnit.objects.get(
+        user=request.user
+    )
+
+    inventory_items = Inventory.objects.filter(
+        unit=unit
+    ).order_by('-created_at')
+
+    return render(
+        request,
+        'inventory_dashboard.html',
+        {
+            'inventory_items': inventory_items
+        }
+    )

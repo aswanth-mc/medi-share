@@ -7,4 +7,10 @@ urlpatterns = [
         views.receive_donation,
         name='receive_donation'
     ),
+    path(
+        'inventory-dashboard/',
+        views.inventory_dashboard,
+        name='inventory_dashboard'
+    ),
+
 ]
