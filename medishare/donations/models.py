@@ -10,7 +10,10 @@ class Donation(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('accepted', 'Accepted'),
-        ('completed', 'Completed'),
+        ('pickup_pending', 'Pickup Pending'),
+        ('collected', 'Collected'),
+        ('received', 'Received'),
+        ('rejected', 'Rejected'),
     )
 
     donor = models.ForeignKey(
