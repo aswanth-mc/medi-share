@@ -28,7 +28,7 @@ def register_unit(request):
 
             return render(
                 request,
-                'unit/register_unit.html',
+                'registration.html',
                 {
                     'error': 'Email already exists'
                 }
@@ -48,7 +48,7 @@ def register_unit(request):
 
         return redirect('unit_login')
 
-    return render(request, 'unit/register_unit.html')
+    return render(request, 'registration.html')
 
 
 # ==========================================
@@ -69,7 +69,7 @@ def unit_login(request):
 
             return render(
                 request,
-                'unit/unit_login.html',
+                'auth/login.html',
                 {
                     'error': 'Invalid email or password'
                 }
@@ -89,13 +89,13 @@ def unit_login(request):
 
         return render(
             request,
-            'unit/unit_login.html',
+            'auth/login.html',
             {
                 'error': 'Invalid email or password'
             }
         )
 
-    return render(request, 'unit/unit_login.html')
+    return render(request, 'auth/login.html')
 
 
 # ==========================================
