@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Donation</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/user/create_donation.css' %}">
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body>
+
+<header class="auth-header">
+
+    <div class="header-container">
+
+        <a href="{% url 'user_dashboard' %}" class="back-link">
+
+            ← Back
+
+        </a>
+
+        <div class="logo-small">
+            Medi-Share
+        </div>
+
+    </div>
+
+</header>
+
+<div class="auth-wrapper">
+
+    <div class="donation-card">
+
+        <div class="card-header">
+
+            <h2>Donate Medicines</h2>
+
+            <p>
+                Help nearby palliative units support patients in need.
+            </p>
+
+        </div>
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              class="grid-form">
+
+            {% csrf_token %}
+
+            <!-- Medicine Name -->
+
+            <div class="form-group full-width">
+
+                <label>Medicine Name</label>
+
+                <input type="text"
+                       name="medicine_name"
+                       placeholder="e.g. Paracetamol 500mg"
+                       required>
+
+            </div>
+
+            <!-- Quantity -->
+
+            <div class="form-group">
+
+                <label>Quantity</label>
+
+                <input type="number"
+                       name="quantity"
+                       placeholder="e.g. 10"
+                       required>
+
+            </div>
+
+            <!-- Expiry Date -->
+
+            <div class="form-group">
+
+                <label>Expiry Date</label>
+
+                <input type="date"
+                       name="expiry_date"
+                       required>
+
+            </div>
+
+            <!-- Medicine Image -->
+
+            <div class="form-group full-width">
+
+                <label>Medicine Image</label>
+
+                <input type="file"
+                       name="medicine_image"
+                       class="file-input"
+                       required>
+
+            </div>
+
+            <!-- Description -->
+
+            <div class="form-group full-width">
+
+                <label>Description</label>
+
+                <textarea name="description"
+                          rows="4"
+                          placeholder="Add medicine details..."></textarea>
+
+            </div>
+
+            <!-- Location Section -->
+
+            <div class="location-section full-width">
+
+                <label>Select Pickup Location</label>
+
+                <div id="map"></div>
+
+                <input type="text"
+                       name="pickup_location"
+                       id="location_name"
+                       readonly
+                       placeholder="Selected location">
+
+                <input type="hidden"
+                       name="latitude"
+                       id="latitude">
+
+                <input type="hidden"
+                       name="longitude"
+                       id="longitude">
+
+            </div>
+
+            <!-- Submit -->
+
+            <button type="submit"
+                    class="btn-submit">
+
+                Submit Donation
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="{% static 'js/map/locationPicker.js' %}"></script>
+
+</body>
+</html>

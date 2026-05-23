@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'user',
     'unit',
     'customadmin',
+    'donations',
     
 ]
 AUTH_USER_MODEL = 'user.User'
