@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth import get_user_model
-from unit .models import PalliativeUnit
+from unit.models import PalliativeUnit
 # Create your views here.
 
 User = get_user_model()
@@ -17,8 +17,21 @@ def admin_dashboard(request):
         return redirect('welcome')
     
     pending_units = PalliativeUnit.objects.filter(is_verified=False)
+    verified_units = PalliativeUnit.objects.filter(is_verified=True).count()
+    total_units = pending_units.count() + verified_units
+    total_users = User.objects.filter(role='user').count()
 
-    return render(request, 'admin_dashboard.html', {'pending_units': pending_units})
+    return render(
+        request,
+        'admin_dashboard.html',
+        {
+            'pending_units': pending_units,
+            'pending_count': pending_units.count(),
+            'verified_units': verified_units,
+            'total_units': total_units,
+            'total_users': total_users,
+        }
+    )
 
 
 
