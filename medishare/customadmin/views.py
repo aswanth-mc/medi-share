@@ -23,7 +23,7 @@ def admin_dashboard(request):
 
     return render(
         request,
-        'admin_dashboard.html',
+        '03-admin/admin_dashboard.html',
         {
             'pending_units': pending_units,
             'pending_count': pending_units.count(),
