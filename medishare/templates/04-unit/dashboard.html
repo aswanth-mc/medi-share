@@ -14,7 +14,7 @@
       <h2>Manage donations, requests, and stock with clarity.</h2>
       <p>Review incoming medicine donations, monitor pending actions, and keep inventory safe for patients.</p>
     </div>
-    <a href="" class="primary-action">
+    <a href="{% url 'unit_donations' %}" class="primary-action">
       <i class="bi bi-hand-holding-medical"></i> Review Donations
     </a>
   </section>
@@ -82,7 +82,7 @@
             <span class="item-icon"><i class="bi bi-capsule"></i></span>
             <div>
               <h3>{{ item.medicine_name }}</h3>
-              <p>Donated by {{ item.user.username }}</p>
+              <p>Donated by {{ item.donor.username }}</p>
             </div>
             <span class="status pending">Pending</span>
           </div>

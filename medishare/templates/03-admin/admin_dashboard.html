@@ -1,4 +1,4 @@
-{% extends "03-admin/admin_base.html" %}
+{% extends "admin_base.html" %}
 
 {% block title %}MediShare | Dashboard{% endblock %}
 {% block page_title %}MediShare Dashboard{% endblock %}
@@ -20,7 +20,7 @@
     <article class="summary-card">
       <span class="card-icon green"><i class="bi bi-hospital"></i></span>
       <div>
-         <p>Verified Units</p>
+        <p>Verified Units</p>
         <strong>{{ verified_units }}</strong>
       </div>
     </article>
@@ -28,7 +28,7 @@
     <article class="summary-card">
       <span class="card-icon orange"><i class="bi bi-hourglass-split"></i></span>
       <div>
-      <p>Pending Verifications</p>
+        <p>Pending Verifications</p>
         <strong>{{ pending_count }}</strong>
       </div>
     </article>
@@ -37,7 +37,7 @@
       <span class="card-icon green"><i class="bi bi-capsule"></i></span>
       <div>
         <p>Total Donations</p>
-        <strong>8,940</strong>
+        <strong>{{ total_donations }}</strong>
       </div>
     </article>
 
@@ -138,12 +138,15 @@
   <section class="dashboard-grid">
     <article class="panel">
       <h2>Monthly Donations</h2>
-      <div class="simple-chart">
-        <span style="height: 45%"></span>
-        <span style="height: 62%"></span>
-        <span style="height: 55%"></span>
-        <span style="height: 80%"></span>
-        <span style="height: 70%"></span>
+      <div class="recent-donation-list">
+        {% for donation in recent_donations %}
+          <div>
+            <strong>{{ donation.medicine_name }}</strong>
+            <span>{{ donation.get_status_display }}</span>
+          </div>
+        {% empty %}
+          <p class="muted-text">No donations submitted yet.</p>
+        {% endfor %}
       </div>
     </article>
 
