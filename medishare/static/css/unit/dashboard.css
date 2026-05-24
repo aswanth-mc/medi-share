@@ -129,6 +129,10 @@
 .chart-card{
     min-height:380px;
 }
+.chart-card canvas{
+    width:100% !important;
+    height:300px !important;
+}
 
 .inventory-health{
     display:flex;

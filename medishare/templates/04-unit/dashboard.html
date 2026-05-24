@@ -170,41 +170,39 @@
 
             </div>
 
-            <div class="health-wrapper">
+            <div class="health-circle">
 
-                <div class="health-circle">
+    <svg>
 
-                    <svg>
+        <circle
+            cx="70"
+            cy="70"
+            r="60"
+            class="bg-circle"
+        ></circle>
 
-                        <circle
-                            cx="70"
-                            cy="70"
-                            r="60"
-                        ></circle>
+       <circle
+    cx="70"
+    cy="70"
+    r="60"
+    class="progress-circle"
+    style="
+        stroke-dasharray: 377;
+        stroke-dashoffset: calc(377 - (377 * {{ inventory_health }}) / 100);
+    "
+></circle>
 
-                        <circle
-                            cx="70"
-                            cy="70"
-                            r="60"
-                            class="progress-circle"
-                        ></circle>
+    </svg>
 
-                    </svg>
+    <div class="health-text">
 
-                    <div class="health-text">
+        <h2>{{ inventory_health }}%</h2>
 
-                        <h2>
-                            78%
-                        </h2>
+        <p>Healthy</p>
 
-                        <p>
-                            Healthy
-                        </p>
+    </div>
 
-                    </div>
-
-                </div>
-
+</div>
             </div>
 
         </div>
@@ -388,6 +386,7 @@
 
 {% block extra_scripts %}
 
+
 <script>
 
 const ctx = document.getElementById('donationChart');
@@ -398,26 +397,27 @@ new Chart(ctx, {
 
     data: {
 
-        labels: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun'
-        ],
+        labels: {{ chart_labels|safe }},
 
         datasets: [{
 
             label: 'Donations',
 
-            data: [12, 19, 8, 15, 22, 17],
+            data: {{ chart_data|safe }},
+
+            borderWidth: 3,
 
             tension: 0.4,
 
             fill: true,
 
-            borderWidth: 3,
+            backgroundColor: 'rgba(45, 156, 240, 0.2)',
+
+            borderColor: '#2d9cf0',
+
+            pointBackgroundColor: '#2d9cf0',
+
+            pointRadius: 5,
 
         }]
 
@@ -426,6 +426,8 @@ new Chart(ctx, {
     options: {
 
         responsive: true,
+
+        maintainAspectRatio: false,
 
         plugins: {
 
@@ -452,5 +454,6 @@ new Chart(ctx, {
 });
 
 </script>
+
 
 {% endblock %}
