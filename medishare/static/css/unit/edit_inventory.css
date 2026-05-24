@@ -1,0 +1,207 @@
+/* ==========================================
+   PAGE
+========================================== */
+
+.edit-page {
+    padding: 40px;
+    min-height: 100vh;
+    background: #f5f7fb;
+}
+
+
+/* ==========================================
+   CARD
+========================================== */
+
+.edit-card {
+    max-width: 800px;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.edit-header {
+    margin-bottom: 30px;
+}
+
+.edit-header h1 {
+    font-size: 2rem;
+    color: #1f2937;
+    margin-bottom: 10px;
+}
+
+.edit-header p {
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+
+/* ==========================================
+   FORM
+========================================== */
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+
+/* ==========================================
+   FORM GROUP
+========================================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #374151;
+}
+
+
+/* ==========================================
+   INPUTS
+========================================== */
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    background: #ffffff;
+    transition: 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+
+/* ==========================================
+   IMAGE PREVIEW
+========================================== */
+
+.image-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.image-preview label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.image-preview img {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+
+/* ==========================================
+   BUTTON GROUP
+========================================== */
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+
+/* ==========================================
+   CANCEL BUTTON
+========================================== */
+
+.cancel-btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    text-decoration: none;
+    background: #e5e7eb;
+    color: #374151;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: #d1d5db;
+}
+
+
+/* ==========================================
+   SAVE BUTTON
+========================================== */
+
+.save-btn {
+    padding: 12px 26px;
+    border: none;
+    border-radius: 12px;
+    background: #10b981;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.save-btn:hover {
+    background: #059669;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .edit-page {
+        padding: 20px;
+    }
+
+    .edit-card {
+        padding: 24px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .cancel-btn,
+    .save-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: auto;
+    }
+}

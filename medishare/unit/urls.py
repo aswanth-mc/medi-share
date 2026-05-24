@@ -25,4 +25,8 @@ path(
     views.delete_inventory_item,
     name='delete_inventory_item'
 ),
+path('requests/', views.unit_requests, name='unit_requests'),
+    path('approve-request/<int:request_id>/', views.approve_request, name='approve_request'),
+    path('reject-request/<int:request_id>/', views.reject_request, name='reject_request'),
+    path('collect-request/<int:request_id>/', views.collect_request, name='collect_request'),
 ]

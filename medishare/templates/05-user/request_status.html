@@ -1,0 +1,93 @@
+{% extends '05-user/base.html' %}
+{% load static %}
+
+{% block title %}MediShare | Request Status{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/user/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+  {% if messages %}
+    <div class="flash-messages" role="status">
+      {% for message in messages %}
+        <p class="flash-message flash-{{ message.tags }}">{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <section class="search-panel">
+    <div>
+      <span class="section-kicker">Your requests</span>
+      <h2>Request status</h2>
+      <p>Track medicine requests from submission until the unit hands over your medicine.</p>
+    </div>
+
+    <a href="{% url 'user_dashboard' %}#available-medicines" class="btn-theme">
+      <i class="bi bi-search-heart"></i> Find Medicines
+    </a>
+  </section>
+
+  <section class="catalog-section">
+    <div class="section-heading">
+      <div>
+        <h2>My Requests</h2>
+        <p>Pending, approved, rejected, and fulfilled requests appear here.</p>
+      </div>
+    </div>
+
+    <div class="medicine-grid">
+      {% for medicine_request in medicine_requests %}
+        <article class="medicine-card">
+          <div class="medicine-image">
+            <img src="{{ medicine_request.donation.medicine_image.url }}" alt="{{ medicine_request.donation.medicine_name }}">
+          </div>
+
+          <div class="medicine-body">
+            <div class="medicine-title-row">
+              <div>
+                <h3>{{ medicine_request.donation.medicine_name }}</h3>
+                <p>Requested {{ medicine_request.created_at|date:"M d, Y" }}</p>
+              </div>
+              <span class="stock-badge status-{{ medicine_request.status }}">
+                {{ medicine_request.get_status_display }}
+              </span>
+            </div>
+
+            <dl class="medicine-meta">
+              <div>
+                <dt>Unit</dt>
+                <dd>{{ medicine_request.unit.name }}</dd>
+              </div>
+              <div>
+                <dt>Expiry</dt>
+                <dd>{{ medicine_request.donation.expiry_date|date:"M d, Y" }}</dd>
+              </div>
+              <div>
+                <dt>Quantity</dt>
+                <dd>1 unit</dd>
+              </div>
+            </dl>
+
+            {% if medicine_request.status == 'pending' %}
+              <p class="request-hint">Waiting for {{ medicine_request.unit.name }} to review your request.</p>
+            {% elif medicine_request.status == 'approved' %}
+              <p class="request-hint">Approved. Visit {{ medicine_request.unit.name }} to collect your medicine.</p>
+            {% elif medicine_request.status == 'rejected' %}
+              <p class="request-hint">This request was rejected by the unit.</p>
+            {% elif medicine_request.status == 'fulfilled' %}
+              <p class="request-hint">The unit marked this medicine as collected.</p>
+            {% endif %}
+          </div>
+        </article>
+      {% empty %}
+        <div class="empty-state">
+          <i class="bi bi-clock-history"></i>
+          <h3>No requests yet</h3>
+          <p>Browse available medicines and submit a request to see status updates here.</p>
+          <a href="{% url 'user_dashboard' %}#available-medicines" class="btn-theme">Browse Medicines</a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

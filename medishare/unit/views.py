@@ -1,11 +1,12 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import get_object_or_404, render, redirect
 
-from unit.models import PalliativeUnit
-from user.models import MedicineDonation
+from .models import PalliativeUnit
+from user.models import MedicineDonation, MedicineRequest
 
 User = get_user_model()
 
@@ -131,6 +132,10 @@ def unit_dashboard(request):
     pending_donations = MedicineDonation.objects.filter(status='pending', unit=unit)[:5]
     accepted_donations = MedicineDonation.objects.filter(unit=unit, status='accepted')
     collected_donations = MedicineDonation.objects.filter(unit=unit, status='collected')
+    pending_requests_count = MedicineRequest.objects.filter(
+        unit=unit,
+        status='pending',
+    ).count()
 
     return render(
         request,
@@ -142,6 +147,7 @@ def unit_dashboard(request):
             'pending_donations': MedicineDonation.objects.filter(status='pending', unit=unit).count(),
             'inventory_stock': collected_donations.count(),
             'expiring_soon': accepted_donations.count(),
+            'pending_requests_count': pending_requests_count,
         }
     )
 
@@ -186,7 +192,7 @@ def unit_donations(request):
 
     return render(
         request,
-        '04-unit/incoming_donations.html',
+        '04-unit/unit_donations.html',
         {
             'unit': unit,
             'pending_donations': pending_donations,
@@ -247,14 +253,127 @@ def collect_donation(request, donation_id):
 
 
 # ==========================================
-# UNIT LOGOUT
+# UNIT MEDICINE REQUESTS
 # ==========================================
 
-def unit_logout(request):
+@login_required
+def unit_requests(request):
 
-    logout(request)
+    if request.user.role != 'unit':
+        return redirect('login')
 
-    return redirect('login')
+    unit = get_object_or_404(PalliativeUnit, user=request.user)
+
+    if not unit.is_verified:
+        return redirect('verification_pending')
+
+    all_requests = (
+        MedicineRequest.objects
+        .filter(unit=unit)
+        .select_related('requester', 'donation')
+    )
+
+    return render(
+        request,
+        '04-unit/unit_request.html',
+        {
+            'unit': unit,
+            'pending_requests': all_requests.filter(status='pending'),
+            'approved_requests': all_requests.filter(status='approved'),
+            'rejected_requests': all_requests.filter(status='rejected'),
+            'fulfilled_requests': all_requests.filter(status='fulfilled'),
+        }
+    )
+
+
+@login_required
+def approve_request(request, request_id):
+
+    if request.user.role != 'unit':
+        return redirect('login')
+
+    unit = get_object_or_404(PalliativeUnit, user=request.user, is_verified=True)
+    medicine_request = get_object_or_404(
+        MedicineRequest,
+        id=request_id,
+        unit=unit,
+        status='pending',
+    )
+
+    if request.method == 'POST':
+        medicine_request.status = 'approved'
+        medicine_request.save()
+        messages.success(
+            request,
+            f'Approved request for {medicine_request.donation.medicine_name}.',
+        )
+
+    return redirect('unit_requests')
+
+
+@login_required
+def reject_request(request, request_id):
+
+    if request.user.role != 'unit':
+        return redirect('login')
+
+    unit = get_object_or_404(PalliativeUnit, user=request.user, is_verified=True)
+    medicine_request = get_object_or_404(
+        MedicineRequest,
+        id=request_id,
+        unit=unit,
+        status='pending',
+    )
+
+    if request.method == 'POST':
+        medicine_request.status = 'rejected'
+        medicine_request.save()
+        messages.success(
+            request,
+            f'Rejected request for {medicine_request.donation.medicine_name}.',
+        )
+
+    return redirect('unit_requests')
+
+
+@login_required
+def collect_request(request, request_id):
+
+    if request.user.role != 'unit':
+        return redirect('login')
+
+    unit = get_object_or_404(PalliativeUnit, user=request.user, is_verified=True)
+    medicine_request = get_object_or_404(
+        MedicineRequest,
+        id=request_id,
+        unit=unit,
+        status='approved',
+    )
+
+    if request.method != 'POST':
+        return redirect('unit_requests')
+
+    with transaction.atomic():
+        donation = MedicineDonation.objects.select_for_update().get(
+            pk=medicine_request.donation_id
+        )
+
+        if donation.quantity < medicine_request.quantity:
+            messages.error(request, 'This medicine is no longer in stock.')
+            return redirect('unit_requests')
+
+        medicine_request.status = 'fulfilled'
+        medicine_request.save()
+
+        donation.quantity -= medicine_request.quantity
+        donation.save()
+
+    messages.success(
+        request,
+        f'Marked {medicine_request.donation.medicine_name} as collected for {medicine_request.requester.username}.',
+    )
+    return redirect('unit_requests')
+
 
 # ==========================================
 # INVENTORY DASHBOARD
@@ -354,6 +473,7 @@ def edit_inventory_item(request, donation_id):
             'item': item
         }
     )
+
 # ==========================================
 # DELETE INVENTORY ITEM
 # ==========================================
@@ -380,3 +500,14 @@ def delete_inventory_item(request, donation_id):
     item.delete()
 
     return redirect('inventory_dashboard')
+
+
+# ==========================================
+# UNIT LOGOUT
+# ==========================================
+
+def unit_logout(request):
+
+    logout(request)
+
+    return redirect('login')

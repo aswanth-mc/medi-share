@@ -1,13 +1,19 @@
 
+from pyexpat.errors import messages
+from urllib import request
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.db.models import Count, F, Q, Sum
+from django.utils import timezone
+from django.contrib import messages
 
 from .utils.geo import find_nearest_unit
 
-from .models import MedicineDonation
+from .models import MedicineDonation, MedicineRequest
 
 User = get_user_model()
 
@@ -140,11 +146,180 @@ def user_dashboard(request):
 
     donations = MedicineDonation.objects.filter(donor=request.user)
 
+    available_medicines = (
+        MedicineDonation.objects
+        .filter(
+            status='collected',
+            unit__isnull=False,
+            unit__is_verified=True,
+            quantity__gt=0,
+        )
+        .select_related('unit')
+        .exclude(expiry_date__lt=timezone.now().date())
+        .annotate(
+            reserved=Count(
+                'medicine_requests',
+                filter=Q(medicine_requests__status__in=['pending', 'approved']),
+            )
+        )
+        .filter(quantity__gt=F('reserved'))
+    )
+
+    search_query = request.GET.get('q', '').strip()
+    if search_query:
+        available_medicines = available_medicines.filter(
+            medicine_name__icontains=search_query
+        )
+
     return render(
         request,
         '05-user/dashboard.html',
         {
             'donations': donations,
+            'available_medicines': available_medicines,
+            'search_query': search_query,
+        }
+    )
+
+
+# ==========================================
+# REQUEST MEDICINE FROM UNIT INVENTORY
+# ==========================================
+
+@login_required
+def request_medicine(request, donation_id):
+
+    if request.user.role != 'user':
+        return redirect('login')
+
+    if request.method != 'POST':
+        return redirect('user_dashboard')
+
+    donation = get_object_or_404(
+        MedicineDonation,
+        id=donation_id,
+        status='collected',
+        unit__isnull=False,
+        unit__is_verified=True,
+    )
+
+    requested_quantity = request.POST.get('quantity')
+
+    # EMPTY CHECK
+    if not requested_quantity:
+
+        messages.error(
+            request,
+            'Please enter quantity.'
+        )
+
+        return redirect('user_dashboard')
+
+    # INTEGER CHECK
+    try:
+
+        requested_quantity = int(requested_quantity)
+
+    except ValueError:
+
+        messages.error(
+            request,
+            'Invalid quantity.'
+        )
+
+        return redirect('user_dashboard')
+
+    # NEGATIVE CHECK
+    if requested_quantity < 1:
+
+        messages.error(
+            request,
+            'Quantity must be at least 1.'
+        )
+
+        return redirect('user_dashboard')
+
+    # EXPIRED MEDICINE
+    if donation.expiry_date < timezone.now().date():
+
+        messages.error(
+            request,
+            'This medicine has expired.'
+        )
+
+        return redirect('user_dashboard')
+
+    # AVAILABLE STOCK
+    approved_reserved = (
+        MedicineRequest.objects.filter(
+            donation=donation,
+            status__in=['pending', 'approved']
+        )
+        .aggregate(total=Sum('quantity'))['total']
+        or 0
+    )
+
+    available_stock = donation.quantity - approved_reserved
+
+    if requested_quantity > available_stock:
+
+        messages.error(
+            request,
+            f'Only {available_stock} medicines available.'
+        )
+
+        return redirect('user_dashboard')
+
+    # EXISTING REQUEST
+    if MedicineRequest.objects.filter(
+        requester=request.user,
+        donation=donation,
+        status__in=['pending', 'approved'],
+    ).exists():
+
+        messages.error(
+            request,
+            'You already requested this medicine.'
+        )
+
+        return redirect('request_status')
+
+    # CREATE REQUEST
+    MedicineRequest.objects.create(
+        requester=request.user,
+        donation=donation,
+        unit=donation.unit,
+        quantity=requested_quantity,
+    )
+
+    messages.success(
+        request,
+        f'Request sent for {requested_quantity} quantity of {donation.medicine_name}.'
+    )
+
+    return redirect('request_status')
+
+# ==========================================
+# REQUEST STATUS
+# ==========================================
+
+@login_required
+def request_status(request):
+
+    if request.user.role != 'user':
+        return redirect('login')
+
+    medicine_requests = (
+        MedicineRequest.objects
+        .filter(requester=request.user)
+        .select_related('donation', 'unit')
+    )
+
+    return render(
+        request,
+        '05-user/request_status.html',
+        {
+            'medicine_requests': medicine_requests,
         }
     )
 
@@ -169,21 +344,21 @@ def donate_medicine(request):
         medicine_image = request.FILES.get('medicine_image')
 
         if not medicine_name:
-            return render(request, '05-user/donate_medicine.html', {'error': 'Medicine name is required'})
+            return render(request, 'donate_medicine.html', {'error': 'Medicine name is required'})
 
         if not expiry_date:
-            return render(request, '05-user/donate_medicine.html', {'error': 'Expiry date is required'})
+            return render(request, 'donate_medicine.html', {'error': 'Expiry date is required'})
 
         if not quantity:
-            return render(request, '05-user/donate_medicine.html', {'error': 'Quantity is required'})
+            return render(request, 'donate_medicine.html', {'error': 'Quantity is required'})
 
         if not medicine_image:
-            return render(request, '05-user/donate_medicine.html', {'error': 'Medicine image is required'})
+            return render(request, 'donate_medicine.html', {'error': 'Medicine image is required'})
 
         if not latitude or not longitude:
             return render(
                 request,
-                '05-user/donate_medicine.html',
+                'donate_medicine.html',
                 {'error': 'Please select a pickup location on the map.'},
             )
 
@@ -191,7 +366,7 @@ def donate_medicine(request):
         if not nearest_unit:
             return render(
                 request,
-                '05-user/donate_medicine.html',
+                'donate_medicine.html',
                 {
                     'error': (
                         'No verified unit is available near this location. '
@@ -214,7 +389,7 @@ def donate_medicine(request):
 
         return redirect('user_dashboard')
 
-    return render(request, '05-user/donate_medicine.html')
+    return render(request, 'donate_medicine.html')
 
 
 # ==========================================
@@ -240,6 +415,8 @@ def cancel_donation(request, donation_id):
     return redirect('user_dashboard')
 
 
+
+
 # ==========================================
 # LOGOUT
 # ==========================================
@@ -249,4 +426,6 @@ def user_logout(request):
     logout(request)
 
     return redirect('login')
+
+
 
