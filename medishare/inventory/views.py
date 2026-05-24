@@ -42,7 +42,7 @@ def inventory_dashboard(request):
 
     return render(
         request,
-        'inventory_dashboard.html',
+        '04-unit/inventory_dashboard.html',
         {
             'inventory_items': inventory_items
         }

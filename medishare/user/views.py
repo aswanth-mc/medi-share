@@ -12,7 +12,7 @@ User = get_user_model()
 # ==========================================
 
 def welcome_view(request):
-    return render(request, 'welcome.html')
+    return render(request, '01-welcome/welcome.html')
 
 
 # ==========================================
@@ -20,7 +20,7 @@ def welcome_view(request):
 # ==========================================
 
 def register_choice(request):
-    return render(request, 'auth/register_choice.html')
+    return render(request, '02-auth/register_choice.html')
 
 
 # ==========================================
@@ -45,7 +45,7 @@ def register_user(request):
 
             return render(
                 request,
-                'auth/register.html',
+                '03-user/registration.html',
                 {
                     'error': 'Email already exists'
                 }
@@ -65,7 +65,7 @@ def register_user(request):
 
         return redirect('login')
 
-    return render(request, 'registration.html')
+    return render(request, '03-user/registration.html')
 
 
 # ==========================================
@@ -86,7 +86,7 @@ def user_login(request):
 
             return render(
                 request,
-                'auth/login.html',
+                '02-auth/login.html',
                 {
                     'error': 'Invalid email or password'
                 }
@@ -114,13 +114,13 @@ def user_login(request):
 
         return render(
             request,
-            'auth/login.html',
+            '02-auth/login.html',
             {
                 'error': 'Invalid email or password'
             }
         )
 
-    return render(request, 'auth/login.html')
+    return render(request, '02-auth/login.html')
 
 
 # ==========================================
@@ -133,7 +133,7 @@ def user_dashboard(request):
     if request.user.role != 'user':
         return redirect('login')
 
-    return render(request, 'user_dashboard.html')
+    return render(request, '05-user/dashboard.html')
 
 
 # ==========================================

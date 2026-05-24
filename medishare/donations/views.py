@@ -36,7 +36,7 @@ def create_donation(request):
 
         return redirect('user_dashboard')
 
-    return render(request, 'donation/create_donation.html')
+    return render(request, '05-user/create_donation.html')
 
 @login_required
 def incoming_donations(request):
@@ -49,7 +49,7 @@ def incoming_donations(request):
 
     return render(
         request,
-        'unit/incoming_donations.html',
+        '04-unit/incoming_donations.html',
         {
             'donations': donations
         }
@@ -64,7 +64,7 @@ def accept_donation(request, donation_id):
 
     donation.save()
 
-    return redirect('incoming_donations')
+    return redirect('04-unit/incoming_donations.html')
 
 @login_required
 def collect_donation(request, donation_id):
@@ -75,4 +75,4 @@ def collect_donation(request, donation_id):
 
     donation.save()
 
-    return redirect('incoming_donations')
+    return redirect('04-unit/incoming_donations.html')

@@ -33,7 +33,7 @@ def register_unit(request):
         if not username:
             return render(
                 request,
-                'registration.html',
+                '04-unit/registration.html',
                 {
                     'error': 'Unit name is required'
                 }
@@ -42,7 +42,7 @@ def register_unit(request):
         if not email:
             return render(
                 request,
-                'registration.html',
+                '04-unit/registration.html',
                 {
                     'error': 'Email is required'
                 }
@@ -53,7 +53,7 @@ def register_unit(request):
 
             return render(
                 request,
-                'registration.html',
+                '04-unit/registration.html',
                 {
                     'error': 'Email already exists'
                 }
@@ -62,7 +62,7 @@ def register_unit(request):
         if User.objects.filter(username=username).exists():
             return render(
                 request,
-                'registration.html',
+                '04-unit/registration.html',
                 {
                     'error': 'Unit name already exists'
                 }
@@ -71,7 +71,7 @@ def register_unit(request):
         if not license_file:
             return render(
                 request,
-                'registration.html',
+                '04-unit/registration.html',
                 {
                     'error': 'Verification document is required'
                 }
@@ -104,7 +104,7 @@ def register_unit(request):
 
         return redirect('verification_pending')
 
-    return render(request, 'registration.html')
+    return render(request, '04-unit/registration.html')
 
 
 # ==========================================
@@ -129,7 +129,7 @@ def unit_dashboard(request):
 
     return render(
         request,
-        'unit_dashboard.html',
+        '04-unit/dashboard.html',
         {
             'unit': unit
         }
@@ -148,7 +148,7 @@ def verification_pending(request):
 
     return render(
         request,
-        'verification_pending.html'
+        '04-unit/verification_pending.html'
     )
 
 
