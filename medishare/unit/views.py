@@ -3,8 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
+import json
 from django.shortcuts import get_object_or_404, render, redirect
-
 from .models import PalliativeUnit
 from user.models import MedicineDonation, MedicineRequest
 
@@ -125,31 +125,110 @@ def unit_dashboard(request):
     except PalliativeUnit.DoesNotExist:
         return redirect('login')
 
-    # CHECK VERIFIED
+    
     if not unit.is_verified:
         return redirect('verification_pending')
 
+    total_donations = MedicineDonation.objects.filter( unit=unit ).count()
     pending_donations = MedicineDonation.objects.filter(status='pending', unit=unit)[:5]
     accepted_donations = MedicineDonation.objects.filter(unit=unit, status='accepted')
     collected_donations = MedicineDonation.objects.filter(unit=unit, status='collected')
-    pending_requests_count = MedicineRequest.objects.filter(
-        unit=unit,
-        status='pending',
-    ).count()
+    pending_requests_count = MedicineRequest.objects.filter(unit=unit,status='pending').count()
+    inventory_stock = collected_donations.count()
+    pending_requests_count = MedicineRequest.objects.filter(unit=unit,status='pending').count()
+    approved_requests_count = MedicineRequest.objects.filter( unit=unit, status='approved' ).count()
+    fulfilled_requests_count = MedicineRequest.objects.filter( unit=unit, status='fulfilled' ).count()
+
+    recent_requests = ( MedicineRequest.objects .filter(unit=unit) .select_related('requester', 'donation') .order_by('-created_at')[:5] )
+    inventory_preview = ( MedicineDonation.objects .filter( unit=unit, status='collected' ) .order_by('-created_at')[:6] )
+
+    # monthly donations
+    from django.db.models.functions import ExtractMonth 
+    from django.db.models import Count 
+    import json
+
+    monthly_data = ( MedicineDonation.objects .filter(unit=unit) .annotate(month=ExtractMonth('created_at')) .values('month') .annotate(total=Count('id')) .order_by('month') )
+    month_labels=[]
+    month_totals=[]
+    month_names = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]    
+    for item in monthly_data: 
+        month_labels.append( month_names[item['month']-1] ) 
+        month_totals.append( item['total'] )
+
+# INVENTORY HEALTH
+
+    total_inventory = (
+    MedicineDonation.objects
+        .filter(
+            unit=unit,
+            status='collected'
+        )
+        .count()
+        )
+
+    healthy_inventory = (
+        MedicineDonation.objects
+            .filter(
+                unit=unit,
+                status='collected',
+                quantity__gt=0
+            )
+            .count()
+)
+
+    if total_inventory > 0:
+
+        inventory_health = int(
+            (healthy_inventory / total_inventory) * 100
+        )
+
+    else:
+
+        inventory_health = 0
+
+
+    dash_offset = 377 - (
+        (inventory_health / 100) * 377
+    )
 
     return render(
-        request,
-        '04-unit/dashboard.html',
-        {
-            'unit': unit,
-            'pending_list': pending_donations,
-            'total_donations': accepted_donations.count() + collected_donations.count(),
-            'pending_donations': MedicineDonation.objects.filter(status='pending', unit=unit).count(),
-            'inventory_stock': collected_donations.count(),
-            'expiring_soon': accepted_donations.count(),
-            'pending_requests_count': pending_requests_count,
-        }
-    )
+    request,
+    '04-unit/dashboard.html',
+    {
+        'unit': unit,
+
+        'total_donations':
+            accepted_donations.count()
+            + collected_donations.count(),
+
+        'pending_donations':
+            pending_donations.count(),
+
+        'inventory_stock':
+            inventory_stock,
+
+        'pending_requests_count':
+            pending_requests_count,
+
+        'recent_requests':
+            recent_requests,
+
+        'inventory_preview':
+            inventory_preview,
+
+        'chart_labels':
+            json.dumps(month_labels),
+
+        'chart_data':
+            json.dumps(month_totals),
+
+        'inventory_health':
+            inventory_health,
+
+        'dash_offset':
+            dash_offset,
+    }
+)
 
 
 # ==========================================

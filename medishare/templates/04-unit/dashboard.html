@@ -4,250 +4,456 @@
 {% block title %}MediShare | Unit Dashboard{% endblock %}
 
 {% block extra_head %}
-  <link rel="stylesheet" href="{% static 'css/unit/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/unit/dashboard.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
-{
 {% block content %}
-  {% if messages %}
-    <div class="flash-messages" role="status">
-      {% for message in messages %}
-        <p class="flash-message flash-{{ message.tags }}">{{ message }}</p>
-      {% endfor %}
-    </div>
-  {% endif %}
 
-  <section class="search-panel" id="available-medicines">
-    <div>
-      <span class="section-kicker">Find medicines</span>
-      <h2>Available medicines from verified units</h2>
-      <p>Browse collected inventory and request medicines you need from nearby palliative care units.</p>
-    </div>
+<div class="dashboard-container">
 
-    <form method="get" class="search-box" action="{% url 'user_dashboard' %}#available-medicines">
-      <div class="input-group flex-grow-1">
-        <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input
-          type="search"
-          name="q"
-          class="form-control"
-          placeholder="Search by medicine name"
-          value="{{ search_query }}"
-          aria-label="Search medicines"
-        >
-      </div>
-      <button type="submit" class="btn-theme">Search</button>
-    </form>
-  </section>
+    <!-- HERO -->
 
-  <section class="catalog-section">
-    <div class="section-heading">
-      <div>
-        <h2>Available Medicines</h2>
-        <p>Request medicines currently held by verified units.</p>
-      </div>
-    </div>
+    <section class="hero-section">
 
-    <div class="medicine-grid">
-      {% for item in available_medicines %}
-        <article class="medicine-card">
-          <div class="medicine-image">
-            <img src="{{ item.medicine_image.url }}" alt="{{ item.medicine_name }}">
-          </div>
+        <div class="hero-left">
 
-          <div class="medicine-body">
-            <div class="medicine-title-row">
-              <div>
-                <h3>{{ item.medicine_name }}</h3>
-                <p>Available at {{ item.unit.name }}</p>
-              </div>
-              <span class="stock-badge">In stock</span>
-            </div>
+            <span class="hero-tag">
+                UNIT DASHBOARD
+            </span>
 
-            <dl class="medicine-meta">
-              <div>
-                <dt>Quantity</dt>
-                <dd>{{ item.quantity }}</dd>
-              </div>
-              <div>
-                <dt>Expiry</dt>
-                <dd>{{ item.expiry_date|date:"M d, Y" }}</dd>
-              </div>
-              <div>
-                <dt>Unit</dt>
-                <dd>{{ item.unit.name }}</dd>
-              </div>
-            </dl>
+            <h1>
+                Welcome back,
+                {{ unit.name }}
+            </h1>
 
-            <div class="card-actions">
-              <form method="POST" action="{% url 'request_medicine' item.id %}">
-                {% csrf_token %}
-                <button class="btn-theme full-button" type="submit">
-                  <i class="bi bi-send"></i> Request
-                </button>
-              </form>
-              <button
-                type="button"
-                class="btn-outline-theme find-unit-btn full-button"
-                data-bs-toggle="modal"
-                data-bs-target="#findUnitModal"
-                data-unit-name="{{ item.unit.name }}"
-                data-unit-location="{{ item.unit.location_name }}"
-                data-unit-lat="{{ item.unit.latitude }}"
-                data-unit-lng="{{ item.unit.longitude }}"
-              >
-                <i class="bi bi-geo-alt"></i> Find Unit
-              </button>
-            </div>
-          </div>
-        </article>
-      {% empty %}
-        <div class="empty-state">
-          <i class="bi bi-bag"></i>
-          <h3>No medicines available</h3>
-          <p>
-            {% if search_query %}
-              No results for "{{ search_query }}". Try a different search term.
-            {% else %}
-              Collected medicines from verified units will appear here when inventory is available.
-            {% endif %}
-          </p>
+            <p>
+                Manage donations, medicine requests,
+                and inventory from one place.
+            </p>
+
         </div>
-      {% endfor %}
-    </div>
-  </section>
 
-  <section class="search-panel donate-panel">
-    <div>
-      <span class="section-kicker">Medicine donation</span>
-      <h2>Donate unused medicines safely</h2>
-      <p>Add the medicine name, image, expiry date, quantity, and pickup location for unit review.</p>
-    </div>
+    </section>
 
-    <a href="{% url 'donate_medicine' %}" class="btn-theme">
-      <i class="bi bi-plus-circle"></i> Donate Medicine
-    </a>
-  </section>
+    <!-- STATISTICS -->
 
-  <section class="dashboard-grid">
-    <div class="medicine-area">
-      <div class="section-heading">
-        <div>
-          <h2>My Medicine Donations</h2>
-          <p>Track each donation from submission to collection.</p>
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                <i class="bi bi-capsule-pill"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <h3>
+                    {{ total_donations }}
+                </h3>
+
+                <p>
+                    Total Donations
+                </p>
+
+            </div>
+
         </div>
-      </div>
 
-      <div class="medicine-grid">
-        {% for donation in donations %}
-          <article class="medicine-card">
-            <div class="medicine-image">
-              <img src="{{ donation.medicine_image.url }}" alt="{{ donation.medicine_name }}">
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+                <i class="bi bi-hourglass-split"></i>
             </div>
 
-            <div class="medicine-body">
-              <div class="medicine-title-row">
-                <div>
-                  <h3>{{ donation.medicine_name }}</h3>
-                  <p>Submitted {{ donation.created_at|date:"M d, Y" }}</p>
-                </div>
-                <span class="stock-badge status-{{ donation.status }}">{{ donation.get_status_display }}</span>
-              </div>
+            <div class="stat-info">
 
-              <dl class="medicine-meta">
-                <div>
-                  <dt>Quantity</dt>
-                  <dd>{{ donation.quantity }}</dd>
-                </div>
-                <div>
-                  <dt>Expiry</dt>
-                  <dd>{{ donation.expiry_date }}</dd>
-                </div>
-                <div>
-                  <dt>Pickup</dt>
-                  <dd>{{ donation.pickup_location|default:"Not selected" }}</dd>
-                </div>
-                {% if donation.unit %}
-                  <div>
-                    <dt>Unit</dt>
-                    <dd>{{ donation.unit.name }}</dd>
-                  </div>
-                {% endif %}
-              </dl>
+                <h3>
+                    {{ pending_donations }}
+                </h3>
 
-              {% if donation.status == 'pending' %}
-                <form method="POST" action="{% url 'cancel_donation' donation.id %}">
-                  {% csrf_token %}
-                  <button class="btn-outline-theme full-button" type="submit">Cancel Donation</button>
-                </form>
-              {% endif %}
+                <p>
+                    Pending Donations
+                </p>
+
             </div>
-          </article>
-        {% empty %}
-          <div class="empty-state">
-            <i class="bi bi-capsule"></i>
-            <h3>No donations yet</h3>
-            <p>Your submitted medicines will appear here after you donate.</p>
-          </div>
-        {% endfor %}
-      </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+                <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <h3>
+                    {{ inventory_stock }}
+                </h3>
+
+                <p>
+                    Inventory Medicines
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon red">
+                <i class="bi bi-bell"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <h3>
+                    {{ pending_requests_count }}
+                </h3>
+
+                <p>
+                    Medicine Requests
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CHART + INVENTORY -->
+
+    <section class="dashboard-row">
+
+        <!-- GRAPH -->
+
+        <div class="dashboard-card chart-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Monthly Donations
+                    </h2>
+
+                    <p>
+                        Donation activity overview
+                    </p>
+
+                </div>
+
+            </div>
+
+            <canvas id="donationChart"></canvas>
+
+        </div>
+
+        <!-- INVENTORY HEALTH -->
+
+        <div class="dashboard-card inventory-health">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Inventory Health
+                    </h2>
+
+                    <p>
+                        Current medicine stock level
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="health-circle">
+
+    <svg>
+
+        <circle
+            cx="70"
+            cy="70"
+            r="60"
+            class="bg-circle"
+        ></circle>
+
+       <circle
+    cx="70"
+    cy="70"
+    r="60"
+    class="progress-circle"
+    style="
+        stroke-dasharray: 377;
+        stroke-dashoffset: calc(377 - (377 * {{ inventory_health }}) / 100);
+    "
+></circle>
+
+    </svg>
+
+    <div class="health-text">
+
+        <h2>{{ inventory_health }}%</h2>
+
+        <p>Healthy</p>
+
     </div>
 
-    <aside class="help-column">
-      <section class="side-card">
-        <h2>Donation Flow</h2>
-        <div class="workflow-steps">
-          <div class="step">
-            <span>1</span>
+</div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- RECENT REQUESTS -->
+
+    <section class="dashboard-card">
+
+        <div class="card-header">
+
             <div>
-              <h3>Submit Medicine</h3>
-              <p>Add the medicine details and pickup location.</p>
-            </div>
-          </div>
-          <div class="step">
-            <span>2</span>
-            <div>
-              <h3>Unit Review</h3>
-              <p>Your nearest verified unit reviews and accepts your donation.</p>
-            </div>
-          </div>
-          <div class="step">
-            <span>3</span>
-            <div>
-              <h3>Collection</h3>
-              <p>The unit marks the donation as collected after pickup.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section class="trust-banner">
-        <i class="bi bi-shield-check"></i>
-        <h2>Safe Review</h2>
-        <p>Only verified units can accept medicine donations on MediShare.</p>
-      </section>
-    </aside>
-  </section>
+                <h2>
+                    Recent Medicine Requests
+                </h2>
 
-  <div class="modal fade" id="findUnitModal" tabindex="-1" aria-labelledby="findUnitModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div>
-            <h2 class="modal-title h5" id="findUnitModalLabel">Find Unit</h2>
-            <p class="modal-subtitle" id="findUnitLocation"></p>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <p>
+                    Latest requests from users
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'unit_requests' %}"
+                class="view-all-btn"
+            >
+                View All
+            </a>
+
         </div>
-        <div class="modal-body">
-          <div id="unitMap" role="img" aria-label="Unit location map"></div>
+
+        <div class="table-wrapper">
+
+            <table class="dashboard-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>User</th>
+
+                        <th>Medicine</th>
+
+                        <th>Quantity</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for request in recent_requests %}
+
+                    <tr>
+
+                        <td>
+                            {{ request.requester.username }}
+                        </td>
+
+                        <td>
+                            {{ request.donation.medicine_name }}
+                        </td>
+
+                        <td>
+                            {{ request.quantity }}
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge status-{{ request.status }}">
+
+                                {{ request.status }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            No recent requests
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
         </div>
-      </div>
-    </div>
-  </div>
+
+    </section>
+
+    <!-- INVENTORY PREVIEW -->
+
+    <section class="dashboard-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Inventory Preview
+                </h2>
+
+                <p>
+                    Recently collected medicines
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'inventory_dashboard' %}"
+                class="view-all-btn"
+            >
+                View Inventory
+            </a>
+
+        </div>
+
+        <div class="inventory-preview-grid">
+
+            {% for item in inventory_preview %}
+
+            <div class="inventory-preview-card">
+
+                <img
+                    src="{{ item.medicine_image.url }}"
+                    alt="{{ item.medicine_name }}"
+                >
+
+                <div class="preview-content">
+
+                    <h3>
+                        {{ item.medicine_name }}
+                    </h3>
+
+                    <p>
+                        Qty :
+                        {{ item.quantity }}
+                    </p>
+
+                    <small>
+                        Exp :
+                        {{ item.expiry_date }}
+                    </small>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="empty-box">
+
+                No inventory available
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
 {% endblock %}
 
 {% block extra_scripts %}
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="{% static 'js/user/unitMapModal.js' %}"></script>
+
+
+<script>
+
+const ctx = document.getElementById('donationChart');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: {{ chart_labels|safe }},
+
+        datasets: [{
+
+            label: 'Donations',
+
+            data: {{ chart_data|safe }},
+
+            borderWidth: 3,
+
+            tension: 0.4,
+
+            fill: true,
+
+            backgroundColor: 'rgba(45, 156, 240, 0.2)',
+
+            borderColor: '#2d9cf0',
+
+            pointBackgroundColor: '#2d9cf0',
+
+            pointRadius: 5,
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+
 {% endblock %}
