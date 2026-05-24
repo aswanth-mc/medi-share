@@ -7,4 +7,9 @@ urlpatterns = [
         views.create_donation,
         name='create_donation'
     ),
+    path(
+        'incoming/',
+        views.incoming_donations,
+        name='incoming_donations'
+    ),
 ]
