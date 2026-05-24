@@ -358,14 +358,14 @@ def collect_request(request, request_id):
             pk=medicine_request.donation_id
         )
 
-        if donation.quantity < 1:
+        if donation.quantity < medicine_request.quantity:
             messages.error(request, 'This medicine is no longer in stock.')
             return redirect('unit_requests')
 
         medicine_request.status = 'fulfilled'
         medicine_request.save()
 
-        donation.quantity -= 1
+        donation.quantity -= medicine_request.quantity
         donation.save()
 
     messages.success(

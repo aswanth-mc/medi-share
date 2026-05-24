@@ -1,12 +1,13 @@
 
 from pyexpat.errors import messages
+from urllib import request
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-from django.db.models import Count, F, Q
+from django.db.models import Count, F, Q, Sum
 from django.utils import timezone
 from django.contrib import messages
 
@@ -202,34 +203,101 @@ def request_medicine(request, donation_id):
         unit__is_verified=True,
     )
 
+    requested_quantity = request.POST.get('quantity')
+
+    # EMPTY CHECK
+    if not requested_quantity:
+
+        messages.error(
+            request,
+            'Please enter quantity.'
+        )
+
+        return redirect('user_dashboard')
+
+    # INTEGER CHECK
+    try:
+
+        requested_quantity = int(requested_quantity)
+
+    except ValueError:
+
+        messages.error(
+            request,
+            'Invalid quantity.'
+        )
+
+        return redirect('user_dashboard')
+
+    # NEGATIVE CHECK
+    if requested_quantity < 1:
+
+        messages.error(
+            request,
+            'Quantity must be at least 1.'
+        )
+
+        return redirect('user_dashboard')
+
+    # EXPIRED MEDICINE
     if donation.expiry_date < timezone.now().date():
-        messages.error(request, 'This medicine has expired and can no longer be requested.')
+
+        messages.error(
+            request,
+            'This medicine has expired.'
+        )
+
         return redirect('user_dashboard')
 
-    if donation.available_quantity() < 1:
-        messages.error(request, 'This medicine is no longer available.')
+    # AVAILABLE STOCK
+    approved_reserved = (
+        MedicineRequest.objects.filter(
+            donation=donation,
+            status__in=['pending', 'approved']
+        )
+        .aggregate(total=Sum('quantity'))['total']
+        or 0
+    )
+
+    available_stock = donation.quantity - approved_reserved
+
+    if requested_quantity > available_stock:
+
+        messages.error(
+            request,
+            f'Only {available_stock} medicines available.'
+        )
+
         return redirect('user_dashboard')
 
+    # EXISTING REQUEST
     if MedicineRequest.objects.filter(
         requester=request.user,
         donation=donation,
         status__in=['pending', 'approved'],
     ).exists():
-        messages.error(request, 'You already have an active request for this medicine.')
+
+        messages.error(
+            request,
+            'You already requested this medicine.'
+        )
+
         return redirect('request_status')
 
+    # CREATE REQUEST
     MedicineRequest.objects.create(
         requester=request.user,
         donation=donation,
         unit=donation.unit,
+        quantity=requested_quantity,
     )
 
     messages.success(
         request,
-        f'Your request for {donation.medicine_name} was sent to {donation.unit.name}.',
+        f'Request sent for {requested_quantity} quantity of {donation.medicine_name}.'
     )
-    return redirect('request_status')
 
+    return redirect('request_status')
 
 # ==========================================
 # REQUEST STATUS

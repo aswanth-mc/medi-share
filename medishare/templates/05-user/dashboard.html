@@ -80,12 +80,34 @@
             </dl>
 
             <div class="card-actions">
-              <form method="POST" action="{% url 'request_medicine' item.id %}">
-                {% csrf_token %}
-                <button class="btn-theme full-button" type="submit">
-                  <i class="bi bi-send"></i> Request
-                </button>
-              </form>
+              <form method="POST" action="{% url 'request_medicine' item.id %}" class="request-form">
+
+    {% csrf_token %}
+
+    <div class="quantity-box">
+
+        <label>Quantity</label>
+
+        <input
+            type="number"
+            name="quantity"
+            min="1"
+            max="{{ item.quantity }}"
+            value="1"
+            required
+        >
+
+    </div>
+
+    <button class="btn-theme full-button" type="submit">
+
+        <i class="bi bi-send"></i>
+
+        Request
+
+    </button>
+
+</form>
               <button
                 type="button"
                 class="btn-outline-theme find-unit-btn full-button"

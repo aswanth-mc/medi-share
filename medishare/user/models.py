@@ -83,6 +83,7 @@ class MedicineRequest(models.Model):
         ('pending', 'Pending'),
         ('approved', 'Approved'),
         ('fulfilled', 'Fulfilled'),
+        ('rejected', 'Rejected'),
         ('cancelled', 'Cancelled'),
     )
 
@@ -101,6 +102,7 @@ class MedicineRequest(models.Model):
         on_delete=models.CASCADE,
         related_name='medicine_requests'
     )
+    quantity  = models.PositiveIntegerField(default=1)
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,

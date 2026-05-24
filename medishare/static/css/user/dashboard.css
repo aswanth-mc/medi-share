@@ -473,3 +473,33 @@
     display: grid;
   }
 }
+.request-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quantity-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.quantity-box label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+}
+
+.quantity-box input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #dcdcdc;
+    outline: none;
+    font-size: 15px;
+}
+
+.quantity-box input:focus {
+    border-color: #2e8b57;
+}

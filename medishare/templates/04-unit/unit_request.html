@@ -78,6 +78,10 @@
             <div>
               <h3>{{ medicine_request.donation.medicine_name }}</h3>
               <p>{{ medicine_request.requester.username }} · 1 unit</p>
+              <p>
+    <strong>Requested Quantity:</strong>
+    {{ request.quantity }}
+</p>
               <small>Approved {{ medicine_request.updated_at|date:"M d, Y" }}</small>
             </div>
             <form method="POST" action="{% url 'collect_request' medicine_request.id %}">
