@@ -1,3 +1,5 @@
+from urllib import request
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -17,6 +19,8 @@ def create_donation(request):
         quantity = request.POST.get('quantity')
         expiry_date = request.POST.get('expiry_date')
         description = request.POST.get('description')
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
         medicine_image = request.FILES.get('medicine_image')
 
         nearest_unit = PalliativeUnit.objects.filter(
@@ -31,6 +35,8 @@ def create_donation(request):
             expiry_date=expiry_date,
             medicine_image=medicine_image,
             description=description,
+            latitude=latitude,
+            longitude=longitude,
             status='pending'
         )
 
@@ -64,7 +70,7 @@ def accept_donation(request, donation_id):
 
     donation.save()
 
-    return redirect('04-unit/incoming_donations.html')
+    return redirect('incoming_donations')
 
 @login_required
 def collect_donation(request, donation_id):
@@ -75,4 +81,4 @@ def collect_donation(request, donation_id):
 
     donation.save()
 
-    return redirect('04-unit/incoming_donations.html')
+    return redirect('incoming_donations')
