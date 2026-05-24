@@ -1,22 +1,38 @@
 {% extends "04-unit/base.html" %}
 {% load static %}
 
-{% block title %}Inventory Dashboard{% endblock %}
+{% block title %}
+MediShare | Inventory Dashboard
+{% endblock %}
+
+{% block extra_head %}
+<link
+    rel="stylesheet"
+    href="{% static 'css/unit/inventory_dashboard.css' %}"
+>
+{% endblock %}
 
 {% block content %}
 
 <div class="inventory-page">
 
-    <div class="inventory-header">
+    <!-- HEADER -->
+
+    <div class="page-header">
+
         <div>
+
             <h1>Medicine Inventory</h1>
-            <p>Manage collected medicines and stock availability.</p>
+
+            <p>
+                Manage medicines collected by your unit.
+            </p>
+
         </div>
 
-        <a href="#" class="add-btn">
-            + Add Medicine
-        </a>
     </div>
+
+    <!-- INVENTORY GRID -->
 
     <div class="inventory-grid">
 
@@ -24,27 +40,31 @@
 
         <div class="inventory-card">
 
+            <!-- IMAGE -->
+
             <div class="medicine-image">
 
-                {% if item.medicine_image %}
-                    <img src="{{ item.medicine_image.url }}" alt="">
-                {% else %}
-                    <img src="{% static 'images/default-medicine.png' %}" alt="">
-                {% endif %}
+                <img
+                    src="{{ item.medicine_image.url }}"
+                    alt="{{ item.medicine_name }}"
+                >
 
             </div>
 
-            <div class="medicine-content">
+            <!-- CONTENT -->
 
-                <div class="medicine-top">
-                    <h3>{{ item.medicine_name }}</h3>
+            <div class="inventory-content">
 
-                    <span class="stock-badge">
-                        {{ item.quantity }} Units
-                    </span>
-                </div>
+                <h3>
+                    {{ item.medicine_name }}
+                </h3>
 
-                <div class="medicine-info">
+                <div class="inventory-details">
+
+                    <p>
+                        <strong>Quantity:</strong>
+                        {{ item.quantity }}
+                    </p>
 
                     <p>
                         <strong>Expiry:</strong>
@@ -52,25 +72,43 @@
                     </p>
 
                     <p>
-                        <strong>Added:</strong>
-                        {{ item.created_at|date:"d M Y" }}
+                        <strong>Status:</strong>
+
+                        <span class="status-badge">
+                            Available
+                        </span>
                     </p>
 
                 </div>
 
-                <div class="medicine-description">
+                {% if item.description %}
+
+                <div class="description-box">
+
                     {{ item.description }}
+
                 </div>
 
-                <div class="medicine-actions">
+                {% endif %}
 
-                    <button class="edit-btn">
+                <!-- ACTIONS -->
+
+                <div class="inventory-actions">
+
+                    <a
+                        href="{% url 'edit_inventory_item' item.id %}"
+                        class="edit-btn"
+                    >
                         Edit
-                    </button>
+                    </a>
 
-                    <button class="delete-btn">
+                    <a
+                        href="{% url 'delete_inventory_item' item.id %}"
+                        class="delete-btn"
+                        onclick="return confirm('Delete this medicine?')"
+                    >
                         Delete
-                    </button>
+                    </a>
 
                 </div>
 
@@ -82,10 +120,17 @@
 
         <div class="empty-state">
 
-            <h2>No Inventory Available</h2>
+            <img
+                src="{% static 'images/empty-box.png' %}"
+                alt=""
+            >
+
+            <h2>
+                No Medicines Available
+            </h2>
 
             <p>
-                Medicines received from donations will appear here.
+                Medicines collected by your unit will appear here.
             </p>
 
         </div>

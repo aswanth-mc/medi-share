@@ -255,3 +255,128 @@ def unit_logout(request):
     logout(request)
 
     return redirect('login')
+
+# ==========================================
+# INVENTORY DASHBOARD
+# ==========================================
+
+@login_required
+def inventory_dashboard(request):
+
+    # ONLY UNIT ACCESS
+    if request.user.role != 'unit':
+        return redirect('login')
+
+    try:
+        unit = PalliativeUnit.objects.get(
+            user=request.user
+        )
+
+    except PalliativeUnit.DoesNotExist:
+
+        return redirect('login')
+
+    # CHECK VERIFIED
+    if not unit.is_verified:
+
+        return redirect('verification_pending')
+
+    # INVENTORY ITEMS
+    inventory_items = MedicineDonation.objects.filter(
+        unit=unit,
+        status='collected'
+    ).order_by('-created_at')
+
+    return render(
+        request,
+        '04-unit/inventory_dashboard.html',
+        {
+            'inventory_items': inventory_items,
+            'unit': unit
+        }
+    )
+
+# ==========================================
+# EDIT INVENTORY ITEM
+# ==========================================
+
+@login_required
+def edit_inventory_item(request, donation_id):
+
+    if request.user.role != 'unit':
+        return redirect('login')
+
+    unit = get_object_or_404(
+        PalliativeUnit,
+        user=request.user,
+        is_verified=True
+    )
+
+    item = get_object_or_404(
+        MedicineDonation,
+        id=donation_id,
+        unit=unit,
+        status='collected'
+    )
+
+    if request.method == "POST":
+
+        item.medicine_name = request.POST.get(
+            'medicine_name'
+        )
+
+        item.quantity = request.POST.get(
+            'quantity'
+        )
+
+        item.expiry_date = request.POST.get(
+            'expiry_date'
+        )
+
+        item.description = request.POST.get(
+            'description'
+        )
+
+        # OPTIONAL IMAGE UPDATE
+        if request.FILES.get('medicine_image'):
+            item.medicine_image = request.FILES.get(
+                'medicine_image'
+            )
+
+        item.save()
+
+        return redirect('inventory_dashboard')
+
+    return render(
+        request,
+        '04-unit/edit_inventory_item.html',
+        {
+            'item': item
+        }
+    )
+# ==========================================
+# DELETE INVENTORY ITEM
+# ==========================================
+
+@login_required
+def delete_inventory_item(request, donation_id):
+
+    if request.user.role != 'unit':
+        return redirect('login')
+
+    unit = get_object_or_404(
+        PalliativeUnit,
+        user=request.user,
+        is_verified=True
+    )
+
+    item = get_object_or_404(
+        MedicineDonation,
+        id=donation_id,
+        unit=unit,
+        status='collected'
+    )
+
+    item.delete()
+
+    return redirect('inventory_dashboard')
