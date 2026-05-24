@@ -26,7 +26,7 @@ def admin_dashboard(request):
 
     return render(
         request,
-        '03-admin/dashboard.html',
+        '03-admin/admin_dashboard.html',
         {
             'pending_units': pending_units,
             'pending_count': pending_units.count(),
@@ -120,3 +120,33 @@ def remove_donation(request, donation_id):
         donation.save()
 
     return redirect('admin_donations')
+
+
+# ==========================================
+# UNIT DASHBOARD
+# ==========================================
+@login_required
+def units_page(request):
+
+    units = PalliativeUnit.objects.all().order_by('-created_at')
+
+    total_units = units.count()
+
+    verified_units = units.filter(
+        is_verified=True
+    ).count()
+
+    pending_units = units.filter(
+        is_verified=False
+    ).count()
+
+    return render(
+        request,
+        '03-admin/units.html',
+        {
+            'units': units,
+            'total_units': total_units,
+            'verified_units': verified_units,
+            'pending_units': pending_units,
+        }
+    )

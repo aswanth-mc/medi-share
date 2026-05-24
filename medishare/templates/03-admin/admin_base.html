@@ -28,8 +28,8 @@
       </div>
 
       <nav class="side-nav">
-        <a class="side-link active" href="#"><i class="bi bi-grid"></i> Dashboard</a>
-        <a class="side-link" href="#"><i class="bi bi-hospital"></i> Units</a>
+        <a class="side-link " href="{% url 'admin_dashboard' %}"><i class="bi bi-grid"></i> Dashboard</a>
+        <a class="side-link" href="{% url 'units_page' %}"><i class="bi bi-hospital"></i> Units</a>
         <a class="side-link" href="#"><i class="bi bi-people"></i> Users</a>
         <a class="side-link" href="{% url 'admin_donations' %}"><i class="bi bi-capsule"></i> Donations</a>
         <a class="side-link" href="#"><i class="bi bi-clipboard2-pulse"></i> Medicine Requests</a>

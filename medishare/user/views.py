@@ -50,7 +50,7 @@ def register_user(request):
 
             return render(
                 request,
-                '05-user/register.html',
+                '05-user/registration.html',
                 {
                     'error': 'Email already exists'
                 }
@@ -70,7 +70,7 @@ def register_user(request):
 
         return redirect('login')
 
-    return render(request, '05-user/register.html')
+    return render(request, '05-user/registration.html')
 
 
 # ==========================================
