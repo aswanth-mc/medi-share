@@ -62,5 +62,55 @@ class MedicineDonation(models.Model):
     class Meta:
         ordering = ['-created_at']
 
+    def reserved_quantity(self):
+        return self.medicine_requests.filter(
+            status__in=['pending', 'approved']
+        ).count()
+
+    def available_quantity(self):
+        return max(0, self.quantity - self.reserved_quantity())
+
     def __str__(self):
         return f'{self.medicine_name} donated by {self.donor.username}'
+
+    def __str__(self):
+        return f'{self.medicine_name} donated by {self.donor.username}'
+    
+
+class MedicineRequest(models.Model):
+
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('fulfilled', 'Fulfilled'),
+        ('cancelled', 'Cancelled'),
+    )
+
+    requester = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='medicine_requests'
+    )
+    donation = models.ForeignKey(
+        MedicineDonation,
+        on_delete=models.CASCADE,
+        related_name='medicine_requests'
+    )
+    unit = models.ForeignKey(
+        'unit.PalliativeUnit',
+        on_delete=models.CASCADE,
+        related_name='medicine_requests'
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.donation.medicine_name} requested by {self.requester.username}'
