@@ -1,0 +1,144 @@
+{% extends "04-unit/base.html" %}
+{% load static %}
+
+{% block title %}
+MediShare | Inventory Dashboard
+{% endblock %}
+
+{% block extra_head %}
+<link
+    rel="stylesheet"
+    href="{% static 'css/unit/inventory_dashboard.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="inventory-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Medicine Inventory</h1>
+
+            <p>
+                Manage medicines collected by your unit.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- INVENTORY GRID -->
+
+    <div class="inventory-grid">
+
+        {% for item in inventory_items %}
+
+        <div class="inventory-card">
+
+            <!-- IMAGE -->
+
+            <div class="medicine-image">
+
+                <img
+                    src="{{ item.medicine_image.url }}"
+                    alt="{{ item.medicine_name }}"
+                >
+
+            </div>
+
+            <!-- CONTENT -->
+
+            <div class="inventory-content">
+
+                <h3>
+                    {{ item.medicine_name }}
+                </h3>
+
+                <div class="inventory-details">
+
+                    <p>
+                        <strong>Quantity:</strong>
+                        {{ item.quantity }}
+                    </p>
+
+                    <p>
+                        <strong>Expiry:</strong>
+                        {{ item.expiry_date }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+
+                        <span class="status-badge">
+                            Available
+                        </span>
+                    </p>
+
+                </div>
+
+                {% if item.description %}
+
+                <div class="description-box">
+
+                    {{ item.description }}
+
+                </div>
+
+                {% endif %}
+
+                <!-- ACTIONS -->
+
+                <div class="inventory-actions">
+
+                    <a
+                        href="{% url 'edit_inventory_item' item.id %}"
+                        class="edit-btn"
+                    >
+                        Edit
+                    </a>
+
+                    <a
+                        href="{% url 'delete_inventory_item' item.id %}"
+                        class="delete-btn"
+                        onclick="return confirm('Delete this medicine?')"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <img
+                src="{% static 'images/empty-box.png' %}"
+                alt=""
+            >
+
+            <h2>
+                No Medicines Available
+            </h2>
+
+            <p>
+                Medicines collected by your unit will appear here.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
