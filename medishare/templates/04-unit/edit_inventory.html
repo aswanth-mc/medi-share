@@ -1,0 +1,165 @@
+{% extends "04-unit/base.html" %}
+{% load static %}
+
+{% block title %}
+Edit Inventory Medicine
+{% endblock %}
+
+{% block extra_head %}
+<link
+    rel="stylesheet"
+    href="{% static 'css/unit/edit_inventory.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="edit-page">
+
+    <div class="edit-card">
+
+        <!-- HEADER -->
+
+        <div class="edit-header">
+
+            <h1>Edit Medicine</h1>
+
+            <p>
+                Update medicine inventory details.
+            </p>
+
+        </div>
+
+        <!-- FORM -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="edit-form"
+        >
+
+            {% csrf_token %}
+
+            <!-- MEDICINE NAME -->
+
+            <div class="form-group">
+
+                <label>
+                    Medicine Name
+                </label>
+
+                <input
+                    type="text"
+                    name="medicine_name"
+                    value="{{ item.medicine_name }}"
+                    required
+                >
+
+            </div>
+
+            <!-- QUANTITY -->
+
+            <div class="form-group">
+
+                <label>
+                    Quantity
+                </label>
+
+                <input
+                    type="number"
+                    name="quantity"
+                    value="{{ item.quantity }}"
+                    required
+                >
+
+            </div>
+
+            <!-- EXPIRY -->
+
+            <div class="form-group">
+
+                <label>
+                    Expiry Date
+                </label>
+
+                <input
+                    type="date"
+                    name="expiry_date"
+                    value="{{ item.expiry_date|date:'Y-m-d' }}"
+                    required
+                >
+
+            </div>
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    rows="5"
+                >{{ item.description }}</textarea>
+
+            </div>
+
+            <!-- CURRENT IMAGE -->
+
+            <div class="image-preview">
+
+                <label>
+                    Current Medicine Image
+                </label>
+
+                <img
+                    src="{{ item.medicine_image.url }}"
+                    alt="{{ item.medicine_name }}"
+                >
+
+            </div>
+
+            <!-- CHANGE IMAGE -->
+
+            <div class="form-group">
+
+                <label>
+                    Change Image
+                </label>
+
+                <input
+                    type="file"
+                    name="medicine_image"
+                >
+
+            </div>
+
+            <!-- BUTTONS -->
+
+            <div class="button-group">
+
+                <a
+                    href="{% url 'inventory_dashboard' %}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

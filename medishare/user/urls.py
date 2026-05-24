@@ -7,5 +7,9 @@ urlpatterns = [
     path('register-choice/', views.register_choice, name='register_choice'),
     path('register/', views.register_user, name='register_user'),
     path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
+    path('donate-medicine/', views.donate_medicine, name='donate_medicine'),
+    path('cancel-donation/<int:donation_id>/', views.cancel_donation, name='cancel_donation'),
+    path('request-medicine/<int:donation_id>/', views.request_medicine, name='request_medicine'),
+    path('request-status/', views.request_status, name='request_status'),
     path('logout/', views.user_logout, name='logout'),
 ]

@@ -1,0 +1,88 @@
+{% extends '04-unit/base.html' %}
+{% load static %}
+
+{% block title %}MediShare | Unit Donations{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/unit/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+  <section class="overview-panel">
+    <div>
+      <span class="section-kicker">Donation review</span>
+      <h2>Review and collect medicine donations.</h2>
+      <p>Accept suitable donations, coordinate pickup, and mark them collected after handover.</p>
+    </div>
+  </section>
+
+  <section class="dashboard-grid">
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <h2>Available Donations</h2>
+          <p>New user donations waiting for a verified unit.</p>
+        </div>
+      </div>
+
+      <div class="donation-list">
+        {% for donation in pending_donations %}
+          <div class="donation-row">
+            <img src="{{ donation.medicine_image.url }}" alt="{{ donation.medicine_name }}">
+            <div>
+              <h3>{{ donation.medicine_name }}</h3>
+              <p>{{ donation.quantity }} item(s) · Expires {{ donation.expiry_date }}</p>
+              <small>{{ donation.pickup_location|default:"Pickup location not selected" }}</small>
+            </div>
+            <form method="POST" action="{% url 'accept_donation' donation.id %}">
+              {% csrf_token %}
+              <button class="primary-action" type="submit">Accept</button>
+            </form>
+          </div>
+        {% empty %}
+          <div class="empty-state compact">
+            <i class="bi bi-inbox"></i>
+            <h3>No pending donations</h3>
+            <p>New user donations will appear here.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <h2>My Unit Donations</h2>
+          <p>Donations accepted by {{ unit.name }}.</p>
+        </div>
+      </div>
+
+      <div class="donation-list">
+        {% for donation in unit_donations %}
+          <div class="donation-row">
+            <img src="{{ donation.medicine_image.url }}" alt="{{ donation.medicine_name }}">
+            <div>
+              <h3>{{ donation.medicine_name }}</h3>
+              <p>{{ donation.quantity }} item(s) · Expires {{ donation.expiry_date }}</p>
+              <small>{{ donation.get_status_display }}</small>
+            </div>
+            {% if donation.status == 'accepted' %}
+              <form method="POST" action="{% url 'collect_donation' donation.id %}">
+                {% csrf_token %}
+                <button class="secondary-action" type="submit">Collected</button>
+              </form>
+            {% else %}
+              <span class="status pending">{{ donation.get_status_display }}</span>
+            {% endif %}
+          </div>
+        {% empty %}
+          <div class="empty-state compact">
+            <i class="bi bi-box-seam"></i>
+            <h3>No accepted donations</h3>
+            <p>Accepted donations will move into this list.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+{% endblock %}

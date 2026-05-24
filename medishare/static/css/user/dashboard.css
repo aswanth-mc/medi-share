@@ -276,6 +276,99 @@
   color: var(--muted);
 }
 
+.donation-form-panel {
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.donation-form {
+  display: grid;
+  gap: 20px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label,
+.section-label label {
+  color: var(--text);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.field input,
+.location-section input {
+  min-height: 46px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.section-label {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.section-label span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+#map {
+  width: 100%;
+  height: 320px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.form-error {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  color: #b42318;
+  background: #fff1f0;
+  border: 1px solid #ffccc7;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.full-button {
+  width: 100%;
+}
+
+.status-accepted {
+  color: var(--primary-dark);
+  background: var(--hover);
+}
+
+.status-collected {
+  color: var(--success);
+  background: rgba(39, 174, 96, 0.1);
+}
+
+.status-removed {
+  color: var(--danger);
+  background: rgba(235, 87, 87, 0.1);
+}
+
 .modal-content {
   border: 0;
   border-radius: 18px;
@@ -296,6 +389,58 @@
   margin: 4px 0 0;
   color: var(--muted);
   font-size: 0.86rem;
+}
+
+.catalog-section {
+  margin-bottom: 24px;
+}
+
+.donate-panel {
+  margin-bottom: 24px;
+}
+
+.flash-messages {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.flash-message {
+  margin: 0;
+  padding: 12px 14px;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+.flash-success {
+  color: #027a48;
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+}
+
+.flash-error {
+  color: #b42318;
+  background: #fff1f0;
+  border: 1px solid #ffccc7;
+}
+
+.card-actions form {
+  margin: 0;
+}
+
+.card-actions .full-button {
+  width: 100%;
+}
+
+.find-unit-btn {
+  cursor: pointer;
+}
+
+#unitMap {
+  width: 100%;
+  height: 320px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
 }
 
 @media (max-width: 1280px) {
@@ -321,4 +466,40 @@
     grid-template-columns: 1fr;
     display: grid;
   }
+
+  .field-grid,
+  .form-actions {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+}
+.request-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quantity-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.quantity-box label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+}
+
+.quantity-box input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #dcdcdc;
+    outline: none;
+    font-size: 15px;
+}
+
+.quantity-box input:focus {
+    border-color: #2e8b57;
 }

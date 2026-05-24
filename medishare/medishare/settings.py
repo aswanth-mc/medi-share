@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'unit',
     'customadmin',
     
+    
 ]
 AUTH_USER_MODEL = 'user.User'
 
