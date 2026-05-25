@@ -1,0 +1,167 @@
+{% extends '03-admin/admin_base.html' %}
+{% load static %}
+
+{% block title %}Admin Profile - MediShare{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-wrapper">
+        <!-- Profile Hero Section -->
+        <div class="profile-hero">
+            <div class="profile-hero-content">
+                <div class="profile-avatar">
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+                <div class="profile-hero-text">
+                    <h1>{{ user.first_name|default:user.username }}</h1>
+                    <p>Administrator • Member since {{ joined_date|date:"M Y" }}</p>
+                    <div class="profile-badge">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Platform Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Platform Statistics Section -->
+        <div class="stats-grid">
+            <div class="stat-card accent-primary">
+                <div class="stat-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-number">{{ total_users }}</div>
+                <p class="stat-label">Total Users</p>
+            </div>
+            <div class="stat-card accent-accent">
+                <div class="stat-icon">
+                    <i class="bi bi-hospital"></i>
+                </div>
+                <div class="stat-number">{{ total_units }}</div>
+                <p class="stat-label">Total Units</p>
+            </div>
+            <div class="stat-card accent-success">
+                <div class="stat-icon">
+                    <i class="bi bi-gift"></i>
+                </div>
+                <div class="stat-number">{{ total_donations }}</div>
+                <p class="stat-label">Total Donations</p>
+            </div>
+        </div>
+
+        <!-- Additional Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card accent-primary">
+                <div class="stat-icon">
+                    <i class="bi bi-inbox"></i>
+                </div>
+                <div class="stat-number">{{ total_requests }}</div>
+                <p class="stat-label">Total Requests</p>
+            </div>
+            <div class="stat-card accent-success">
+                <div class="stat-icon">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="stat-number">{{ verified_units }}</div>
+                <p class="stat-label">Verified Units</p>
+            </div>
+            <div class="stat-card accent-accent">
+                <div class="stat-icon">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="stat-number">{{ pending_units }}</div>
+                <p class="stat-label">Pending Units</p>
+            </div>
+        </div>
+
+        <!-- Information Grid -->
+        <div class="profile-info-grid">
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-person"></i>
+                    Username
+                </div>
+                <div class="info-card-value">{{ user.username }}</div>
+                <p class="info-card-label">Your unique identifier</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-envelope"></i>
+                    Email
+                </div>
+                <div class="info-card-value">{{ user.email }}</div>
+                <p class="info-card-label">Primary contact email</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-calendar-check"></i>
+                    Joined
+                </div>
+                <div class="info-card-value">{{ joined_date|date:"M d, Y" }}</div>
+                <p class="info-card-label">Member since</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-shield-check"></i>
+                    Account Status
+                </div>
+                <div class="info-card-value text-success">Active</div>
+                <p class="info-card-label">Your account is active</p>
+            </div>
+        </div>
+
+        <!-- Quick Stats Cards -->
+        <div class="profile-info-grid">
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-graph-up"></i>
+                    Platform Status
+                </div>
+                <p class="info-card-label" style="margin: 0; line-height: 1.6;">
+                    <strong>Active Users:</strong> {{ total_users }}<br>
+                    <strong>Active Units:</strong> {{ verified_units }}<br>
+                    <strong>Pending Approvals:</strong> {{ pending_units }}
+                </p>
+            </div>
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-activity"></i>
+                    Platform Activity
+                </div>
+                <p class="info-card-label" style="margin: 0; line-height: 1.6;">
+                    <strong>Total Donations:</strong> {{ total_donations }}<br>
+                    <strong>Total Requests:</strong> {{ total_requests }}<br>
+                    <strong>Units to Verify:</strong> {{ pending_units }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="profile-info-grid" style="margin-top: 2rem;">
+            <div class="info-card text-center" style="cursor: pointer; transition: var(--transition);">
+                <a href="{% url 'admin_edit_profile' %}" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit Profile
+                </a>
+            </div>
+            <div class="info-card text-center" style="cursor: pointer; transition: var(--transition);">
+                <a href="{% url 'admin_change_password' %}" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                    <i class="bi bi-lock"></i>
+                    Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile/profile.js' %}"></script>
+{% endblock %}

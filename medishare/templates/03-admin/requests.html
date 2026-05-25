@@ -1,0 +1,93 @@
+{% extends '03-admin/admin_base.html' %}
+
+{% block title %}Medicine Requests{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+```
+<h1>Medicine Requests</h1>
+
+<p>
+    Track medicine distribution requests.
+</p>
+```
+
+</div>
+
+<div class="dashboard-card">
+
+```
+<table class="dashboard-table">
+
+    <thead>
+
+        <tr>
+
+            <th>Requester</th>
+            <th>Medicine</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Status</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for request in requests %}
+
+        <tr>
+
+            <td>
+                {{ request.requester.username }}
+            </td>
+
+            <td>
+                {{ request.donation.medicine_name }}
+            </td>
+
+            <td>
+                {{ request.quantity }}
+            </td>
+
+            <td>
+                {{ request.unit.name }}
+            </td>
+
+            <td>
+
+                <span class="status-badge status-{{ request.status }}">
+
+                    {{ request.status }}
+
+                </span>
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="5">
+
+                No requests found
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+```
+
+</div>
+
+{% endblock %}

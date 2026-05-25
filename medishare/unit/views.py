@@ -582,6 +582,130 @@ def delete_inventory_item(request, donation_id):
 
 
 # ==========================================
+# UNIT PROFILE
+# ==========================================
+
+@login_required
+def unit_profile(request):
+    """Display unit profile information"""
+    if request.user.role != 'unit':
+        return redirect('login')
+    
+    try:
+        unit = PalliativeUnit.objects.get(user=request.user)
+    except PalliativeUnit.DoesNotExist:
+        return redirect('login')
+    
+    # Get unit statistics
+    total_donations = MedicineDonation.objects.filter(unit=unit).exclude(status='removed').count()
+    inventory_count = MedicineDonation.objects.filter(unit=unit, status='collected').count()
+    pending_requests = MedicineRequest.objects.filter(unit=unit, status='pending').count()
+    
+    context = {
+        'unit': unit,
+        'user': request.user,
+        'total_donations': total_donations,
+        'inventory_count': inventory_count,
+        'pending_requests': pending_requests,
+        'joined_date': unit.created_at,
+    }
+    
+    return render(request, '04-unit/profile.html', context)
+
+
+@login_required
+def unit_edit_profile(request):
+    """Edit unit profile information"""
+    if request.user.role != 'unit':
+        return redirect('login')
+    
+    try:
+        unit = PalliativeUnit.objects.get(user=request.user)
+    except PalliativeUnit.DoesNotExist:
+        return redirect('login')
+    
+    from .forms import UnitProfileEditForm
+    
+    if request.method == 'POST':
+        form = UnitProfileEditForm(request.POST, user=request.user)
+        if form.is_valid():
+            unit.name = form.cleaned_data.get('name')
+            unit.email = form.cleaned_data.get('email')
+            unit.phone = form.cleaned_data.get('phone')
+            unit.location_name = form.cleaned_data.get('location_name')
+            unit.save()
+            
+            # Also update the User email
+            request.user.email = form.cleaned_data.get('email')
+            request.user.save()
+            
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('unit_profile')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
+    else:
+        initial_data = {
+            'name': unit.name,
+            'email': unit.email,
+            'phone': unit.phone,
+            'location_name': unit.location_name,
+        }
+        form = UnitProfileEditForm(initial=initial_data, user=request.user)
+    
+    context = {
+        'form': form,
+        'unit': unit,
+        'user': request.user,
+    }
+    
+    return render(request, '04-unit/edit_profile.html', context)
+
+
+@login_required
+def unit_change_password(request):
+    """Change unit password"""
+    if request.user.role != 'unit':
+        return redirect('login')
+    
+    try:
+        unit = PalliativeUnit.objects.get(user=request.user)
+    except PalliativeUnit.DoesNotExist:
+        return redirect('login')
+    
+    from .forms import CurrentPasswordForm, PasswordChangeForm as UnitPasswordChangeForm
+    
+    if request.method == 'POST':
+        current_form = CurrentPasswordForm(request.user, request.POST)
+        password_form = UnitPasswordChangeForm(request.user, request.POST)
+        
+        if current_form.is_valid() and password_form.is_valid():
+            user = password_form.save()
+            messages.success(request, 'Password changed successfully!')
+            return redirect('unit_profile')
+        else:
+            if current_form.errors:
+                for error in current_form.errors.get('current_password', []):
+                    messages.error(request, error)
+            if password_form.errors:
+                for field, errors in password_form.errors.items():
+                    for error in errors:
+                        messages.error(request, f'{field}: {error}')
+    else:
+        current_form = CurrentPasswordForm(request.user)
+        password_form = UnitPasswordChangeForm(request.user)
+    
+    context = {
+        'current_form': current_form,
+        'password_form': password_form,
+        'unit': unit,
+        'user': request.user,
+    }
+    
+    return render(request, '04-unit/edit_profile.html', context)
+
+# ==========================================
 # UNIT LOGOUT
 # ==========================================
 

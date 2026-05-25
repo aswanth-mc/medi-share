@@ -32,7 +32,7 @@
         <a class="nav-link" href="{% url 'request_status' %}"><i class="bi bi-clock-history"></i><span>Request Status</span></a>
         <a class="nav-link" href="#"><i class="bi bi-box-seam"></i><span>My Orders</span></a>
         <a class="nav-link" href="#"><i class="bi bi-bell"></i><span>Notifications</span></a>
-        <a class="nav-link" href=""><i class="bi bi-person"></i><span>Profile</span></a>
+        <a class="nav-link" href="{% url 'user_profile' %}"><i class="bi bi-person"></i><span>Profile</span></a>
         <a class="nav-link logout-link" href="{% url 'logout' %}"><i class="bi bi-box-arrow-left"></i><span>Logout</span></a>
       </nav>
     </aside>
