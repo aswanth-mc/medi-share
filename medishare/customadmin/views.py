@@ -16,10 +16,6 @@ from django.contrib.auth.decorators import login_required
 # DASHBOARD
 # ==========================================
 
-
-
-
-
 @login_required
 def admin_dashboard(request):
 
@@ -149,7 +145,6 @@ def admin_dashboard(request):
 
     context = {
 
-        # summary
         'total_users': total_users,
         'total_units': total_units,
         'verified_units': verified_units,
@@ -157,21 +152,12 @@ def admin_dashboard(request):
         'total_donations': total_donations,
         'total_requests': total_requests,
         'inventory_count': inventory_count,
-
-        # tables
         'pending_units': pending_units,
         'recent_donations': recent_donations,
-
-        # request stats
         'completed_requests': completed_requests,
         'pending_requests': pending_requests,
-        
-
-        # inventory
         'low_stock_items': low_stock_items,
         'expired_items': expired_items,
-
-        # activity
         'recent_activity': recent_activity,
     }
 

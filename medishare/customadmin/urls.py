@@ -11,23 +11,9 @@ urlpatterns = [
     path('profile/', views.admin_profile, name='admin_profile'),
     path('profile/edit/', views.admin_edit_profile, name='admin_edit_profile'),
     path('profile/change-password/', views.admin_change_password, name='admin_change_password'),
-    path(
-'donations/',
-views.admin_donations,
-name='admin_donations'
-),
-
-path(
-'medicine-requests/',
-views.admin_requests,
-name='admin_requests'
-),
-
-path(
-'inventory-overview/',
-views.inventory_overview,
-name='inventory_overview'
-),
+    path('donations/',views.admin_donations,name='admin_donations'),
+    path('medicine-requests/',views.admin_requests,name='admin_requests'),
+    path('inventory-overview/',views.inventory_overview,name='inventory_overview'),
 
 ]
 
