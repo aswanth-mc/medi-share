@@ -14,6 +14,7 @@ from django.contrib import messages
 from .utils.geo import find_nearest_unit
 
 from .models import MedicineDonation, MedicineRequest
+from .forms import UserProfileEditForm
 
 User = get_user_model()
 
@@ -414,8 +415,104 @@ def cancel_donation(request, donation_id):
 
     return redirect('user_dashboard')
 
+# ==========================================
+# USER PROFILE
+# ==========================================
+
+@login_required
+def user_profile(request):
+    """Display user profile information"""
+    if request.user.role != 'user':
+        return redirect('login')
+    
+    # Get user statistics
+    total_donations = MedicineDonation.objects.filter(donor=request.user).count()
+    total_requests = MedicineRequest.objects.filter(requester=request.user).count()
+    active_requests = MedicineRequest.objects.filter(
+        requester=request.user,
+        status__in=['pending', 'approved']
+    ).count()
+    
+    context = {
+        'user': request.user,
+        'total_donations': total_donations,
+        'total_requests': total_requests,
+        'active_requests': active_requests,
+        'joined_date': request.user.created_at,
+    }
+    
+    return render(request, '05-user/profile.html', context)
 
 
+@login_required
+def user_edit_profile(request):
+    """Edit user profile information"""
+    if request.user.role != 'user':
+        return redirect('login')
+    
+    from .forms import UserProfileEditForm
+    
+    if request.method == 'POST':
+        form = UserProfileEditForm(
+            request.POST,
+            instance=request.user,
+            user=request.user
+        )
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('user_profile')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
+    else:
+        form = UserProfileEditForm(instance=request.user, user=request.user)
+    
+    context = {
+        'form': form,
+        'user': request.user,
+    }
+    
+    return render(request, '05-user/edit_profile.html', context)
+
+
+
+@login_required
+def user_change_password(request):
+    """Change user password"""
+    if request.user.role != 'user':
+        return redirect('login')
+    
+    from .forms import CurrentPasswordForm, PasswordChangeForm
+    
+    if request.method == 'POST':
+        current_form = CurrentPasswordForm(request.user, request.POST)
+        password_form = PasswordChangeForm(request.user, request.POST)
+        
+        if current_form.is_valid() and password_form.is_valid():
+            user = password_form.save()
+            messages.success(request, 'Password changed successfully!')
+            return redirect('user_profile')
+        else:
+            if current_form.errors:
+                for error in current_form.errors.get('current_password', []):
+                    messages.error(request, error)
+            if password_form.errors:
+                for field, errors in password_form.errors.items():
+                    for error in errors:
+                        messages.error(request, f'{field}: {error}')
+    else:
+        current_form = CurrentPasswordForm(request.user)
+        password_form = PasswordChangeForm(request.user)
+    
+    context = {
+        'current_form': current_form,
+        'password_form': password_form,
+        'user': request.user,
+    }
+    
+    return render(request, '05-user/edit_profile.html', context)
 
 # ==========================================
 # LOGOUT

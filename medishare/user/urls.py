@@ -11,5 +11,8 @@ urlpatterns = [
     path('cancel-donation/<int:donation_id>/', views.cancel_donation, name='cancel_donation'),
     path('request-medicine/<int:donation_id>/', views.request_medicine, name='request_medicine'),
     path('request-status/', views.request_status, name='request_status'),
+    path('profile/', views.user_profile, name='user_profile'),
+    path('profile/edit/', views.user_edit_profile, name='user_edit_profile'),
+    path('profile/change-password/', views.user_change_password, name='user_change_password'),
     path('logout/', views.user_logout, name='logout'),
 ]
