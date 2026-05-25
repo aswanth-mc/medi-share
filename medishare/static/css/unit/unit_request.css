@@ -1,0 +1,318 @@
+/* ==========================================
+   PAGE LAYOUT
+========================================== */
+
+.request-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.dashboard-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 28px;
+    border: 1px solid #e6ecf3;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+/* ==========================================
+   OVERVIEW SECTION
+========================================== */
+
+.overview-panel {
+    background: linear-gradient(
+        135deg,
+        #2d9cf0 0%,
+        #56b4ff 100%
+    );
+    border-radius: 28px;
+    padding: 38px;
+    margin-bottom: 28px;
+    color: #ffffff;
+}
+
+.section-kicker {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+
+.overview-panel h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.overview-panel p {
+    max-width: 650px;
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.95;
+}
+
+/* ==========================================
+   CARD HEADER
+========================================== */
+
+.card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.card-heading h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.card-heading p {
+    color: #64748b;
+    font-size: 15px;
+}
+
+/* ==========================================
+   DONATION / REQUEST LIST
+========================================== */
+
+.donation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.donation-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px;
+    border-radius: 20px;
+    border: 1px solid #edf2f7;
+    background: #f8fbff;
+    transition: 0.25s ease;
+}
+
+.donation-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* ==========================================
+   IMAGE
+========================================== */
+
+.donation-row img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid #dbe7f3;
+    flex-shrink: 0;
+}
+
+/* ==========================================
+   CONTENT
+========================================== */
+
+.donation-row div {
+    flex: 1;
+}
+
+.donation-row h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.donation-row p {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 4px;
+    line-height: 1.5;
+}
+
+.donation-row small {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+.request-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.primary-action,
+.secondary-action {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 11px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+.primary-action {
+    background: #2d9cf0;
+    color: #ffffff;
+}
+
+.primary-action:hover {
+    background: #1787dd;
+}
+
+.secondary-action {
+    background: #fff1f2;
+    color: #ef4444;
+}
+
+.secondary-action:hover {
+    background: #ffe4e6;
+}
+
+/* ==========================================
+   STATUS BADGES
+========================================== */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.status.rejected {
+    background: #fff1f2;
+    color: #dc2626;
+}
+
+.status.fulfilled {
+    background: #ecfdf3;
+    color: #16a34a;
+}
+
+/* ==========================================
+   FLASH MESSAGE
+========================================== */
+
+.flash-messages {
+    margin-bottom: 20px;
+}
+
+.flash-message {
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.flash-success {
+    background: #ecfdf3;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+.flash-error {
+    background: #fff1f2;
+    color: #dc2626;
+    border: 1px solid #fecdd3;
+}
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    border-radius: 20px;
+    background: #f8fbff;
+    border: 1px dashed #cbd5e1;
+}
+
+.empty-state i {
+    font-size: 42px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.empty-state.compact {
+    padding: 38px 20px;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 992px) {
+
+    .donation-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .request-actions {
+        width: 100%;
+    }
+
+    .primary-action,
+    .secondary-action {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-card {
+        padding: 20px;
+    }
+
+    .overview-panel {
+        padding: 28px;
+    }
+
+    .overview-panel h2 {
+        font-size: 28px;
+    }
+
+    .card-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .donation-row img {
+        width: 64px;
+        height: 64px;
+    }
+}
