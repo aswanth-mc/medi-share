@@ -663,47 +663,93 @@ def unit_edit_profile(request):
     return render(request, '04-unit/edit_profile.html', context)
 
 
+from django.contrib.auth import update_session_auth_hash
+
 @login_required
 def unit_change_password(request):
-    """Change unit password"""
-    if request.user.role != 'unit':
-        return redirect('login')
-    
-    try:
-        unit = PalliativeUnit.objects.get(user=request.user)
-    except PalliativeUnit.DoesNotExist:
-        return redirect('login')
-    
-    from .forms import CurrentPasswordForm, PasswordChangeForm as UnitPasswordChangeForm
-    
+
+    if request.user.role != 'admin':
+        return redirect('welcome')
+
+    from .forms import CurrentPasswordForm, PasswordChangeForm
+
     if request.method == 'POST':
-        current_form = CurrentPasswordForm(request.user, request.POST)
-        password_form = UnitPasswordChangeForm(request.user, request.POST)
-        
+
+        current_form = CurrentPasswordForm(
+            request.user,
+            request.POST
+        )
+
+        password_form = PasswordChangeForm(
+            request.user,
+            request.POST
+        )
+
         if current_form.is_valid() and password_form.is_valid():
+
             user = password_form.save()
-            messages.success(request, 'Password changed successfully!')
-            return redirect('unit_profile')
+
+            # IMPORTANT
+            update_session_auth_hash(
+                request,
+                user
+            )
+
+            messages.success(
+                request,
+                'Password changed successfully!'
+            )
+
+            return redirect('admin_profile')
+
         else:
+
             if current_form.errors:
-                for error in current_form.errors.get('current_password', []):
-                    messages.error(request, error)
+
+                for error in current_form.errors.get(
+                    'current_password',
+                    []
+                ):
+
+                    messages.error(
+                        request,
+                        error
+                    )
+
             if password_form.errors:
+
                 for field, errors in password_form.errors.items():
+
                     for error in errors:
-                        messages.error(request, f'{field}: {error}')
+
+                        messages.error(
+                            request,
+                            f'{field}: {error}'
+                        )
+
     else:
-        current_form = CurrentPasswordForm(request.user)
-        password_form = UnitPasswordChangeForm(request.user)
-    
+
+        current_form = CurrentPasswordForm(
+            request.user
+        )
+
+        password_form = PasswordChangeForm(
+            request.user
+        )
+
     context = {
+
         'current_form': current_form,
         'password_form': password_form,
-        'unit': unit,
         'user': request.user,
+
     }
-    
-    return render(request, '04-unit/edit_profile.html', context)
+
+    return render(
+        request,
+        '04-unit/edit_profile.html',
+        context
+    )
 
 # ==========================================
 # UNIT LOGOUT
