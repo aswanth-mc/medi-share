@@ -30,6 +30,7 @@ class MedicineDonation(models.Model):
         ('accepted', 'Accepted by Unit'),
         ('collected', 'Collected'),
         ('removed', 'Removed by Admin'),
+        ('cancelled', 'Cancelled '),
     )
 
     donor = models.ForeignKey(

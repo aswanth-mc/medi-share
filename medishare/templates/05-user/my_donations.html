@@ -1,0 +1,140 @@
+{% extends '05-user/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/user/my_donations.css' %}"
+>
+
+{% endblock %}
+
+
+{% block title %}My Donations{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+
+<h1>
+    My Donations
+</h1>
+
+<p>
+    Track all your medicine donations.
+</p>
+
+
+</div>
+
+<div class="donation-grid">
+
+
+{% for donation in donations %}
+
+<div class="donation-card">
+
+    <img
+        src="{{ donation.medicine_image.url }}"
+        alt="{{ donation.medicine_name }}"
+    >
+
+    <div class="donation-content">
+
+        <div class="top-row">
+
+            <h3>
+                {{ donation.medicine_name }}
+            </h3>
+
+            <span class="status-badge status-{{ donation.status }}">
+
+                {{ donation.status }}
+
+            </span>
+
+        </div>
+
+        <div class="meta">
+
+            <p>
+                Quantity :
+                {{ donation.quantity }}
+            </p>
+
+            <p>
+                Expiry :
+                {{ donation.expiry_date }}
+            </p>
+
+            <p>
+                Submitted :
+                {{ donation.created_at|date:"M d, Y" }}
+            </p>
+
+            <p>
+
+                Unit :
+
+                {% if donation.unit %}
+
+                    {{ donation.unit.name }}
+
+                {% else %}
+
+                    Not Assigned
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+        {% if donation.status == 'pending' %}
+
+        <form
+            method="POST"
+            action="{% url 'cancel_donation' donation.id %}"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="cancel-btn"
+            >
+
+                Cancel Donation
+
+            </button>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="empty-box">
+
+    <h3>
+        No donations yet
+    </h3>
+
+    <p>
+        Your medicine donations will appear here.
+    </p>
+
+</div>
+
+{% endfor %}
+
+
+</div>
+
+{% endblock %}
