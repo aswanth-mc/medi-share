@@ -271,7 +271,7 @@ def unit_donations(request):
 
     return render(
         request,
-        '04-unit/unit_donations.html',
+        '04-unit/incoming_donations.html',
         {
             'unit': unit,
             'pending_donations': pending_donations,
