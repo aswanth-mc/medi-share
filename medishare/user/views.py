@@ -394,11 +394,37 @@ def donate_medicine(request):
 
 
 # ==========================================
-# REMOVE OWN PENDING DONATION
+# VIEW DONATION
+# ==========================================
+
+@login_required
+def my_donations(request):
+
+    donations = (
+        MedicineDonation.objects
+        .filter(donor=request.user)
+        .select_related('unit')
+        .order_by('-created_at')
+    )
+
+    return render(
+        request,
+        '05-user/my_donations.html',
+        {
+            'donations': donations
+        }
+    )
+
+
+# ==========================================
+
+# CANCEL DONATION
+
 # ==========================================
 
 @login_required
 def cancel_donation(request, donation_id):
+
 
     if request.user.role != 'user':
         return redirect('login')
@@ -411,9 +437,17 @@ def cancel_donation(request, donation_id):
     )
 
     if request.method == "POST":
-        donation.delete()
 
-    return redirect('user_dashboard')
+        donation.status = 'cancelled'
+        donation.save()
+
+        messages.success(
+            request,
+            'Donation cancelled successfully.'
+        )
+
+    return redirect('my_donations')
+
 
 # ==========================================
 # USER PROFILE
