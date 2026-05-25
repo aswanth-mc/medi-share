@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/auth/register-choice.css' %}">
+{% endblock %}
+</head>
+<body>
+     <header class="auth-header">
+    <div class="header-container">
+        <a href="{% url 'welcome' %}" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back</span>
+        </a>
+        <div class="logo-small">Medi-Share</div>
+    </div>
+</header>
+<div class="container">
+    <div class="badge">SOCIAL CARE PORTAL</div>
+
+    <h1>Choose your <span style="color:#3b7a57;">registration</span> type</h1>
+    <p class="subtitle">
+        Select the profile that best describes who you are.
+    </p>
+
+    <div class="cards">
+
+        <!-- USER CARD -->
+        <div class="card">
+            <div class="icon">👤</div>
+            <h2>General User</h2>
+            <p class="desc">
+                For individuals seeking support, benefits, or community help.
+            </p>
+
+            
+
+            <a href="{% url 'register_user' %}" class="btn">
+                Register as User →
+            </a>
+        </div>
+
+        <!-- UNIT CARD -->
+        <div class="card">
+            <div class="icon">🏥</div>
+            <h2>Palliative Unit</h2>
+            <p class="desc">
+                For healthcare teams and institutions providing care services.
+            </p>
+
+            <a href="{% url 'register_unit' %}" class="btn">
+                Register as Unit →
+        </div>
+
+    </div>
+</div>
+ <!-- footer -->
+   <footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-brand">
+            <h2>Medi-Share</h2>
+            <p>
+                Connecting donors, seekers, and palliative care units
+                through a trusted medicine sharing platform.
+            </p>
+        </div>
+
+        <div class="footer-contact">
+            <p>Kozhikode, Kerala</p>
+            <p>info@medi-share.org</p>
+            <p>+91 98765 43210</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Medi-Share. All rights reserved.</p>
+    </div>
+</footer>
+ 
+</body>
+</html>

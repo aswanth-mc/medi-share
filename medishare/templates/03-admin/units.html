@@ -1,0 +1,217 @@
+{% extends "03-admin/admin_base.html" %}
+{% load static %}
+
+{% block title %}Units Management{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/customadmin/units.css' %}">
+
+<div class="units-page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div>
+            <h1>Units Management</h1>
+            <p>Manage verified and pending palliative units.</p>
+        </div>
+
+        <a href="#" class="add-btn">
+            + Add Unit
+        </a>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-grid">
+
+        <div class="summary-card">
+            <div class="icon blue">
+                <i class="bi bi-hospital"></i>
+            </div>
+
+            <div>
+                <h3>{{ total_units }}</h3>
+                <p>Total Units</p>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="icon green">
+                <i class="bi bi-patch-check"></i>
+            </div>
+
+            <div>
+                <h3>{{ verified_units }}</h3>
+                <p>Verified Units</p>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="icon orange">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+
+            <div>
+                <h3>{{ pending_units }}</h3>
+                <p>Pending Verification</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TABLE SECTION -->
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <div>
+                <h2>Registered Units</h2>
+                <p>View and manage all palliative units.</p>
+            </div>
+
+            <form class="search-form">
+
+                <input
+                    type="text"
+                    placeholder="Search units..."
+                >
+
+            </form>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Unit</th>
+                        <th>Phone</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>License</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for unit in units %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="unit-info">
+
+                                <div class="avatar">
+                                    {{ unit.name|slice:":1" }}
+                                </div>
+
+                                <div>
+                                    <strong>{{ unit.name }}</strong>
+                                    <span>{{ unit.email }}</span>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            {{ unit.phone }}
+                        </td>
+
+                        <td>
+                            {{ unit.location_name }}
+                        </td>
+
+                        <td>
+
+                            {% if unit.is_verified %}
+
+                                <span class="badge verified">
+                                    Verified
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge pending">
+                                    Pending
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ unit.license_file.url }}"
+                                target="_blank"
+                                class="license-link"
+                            >
+                                Preview
+                            </a>
+
+                        </td>
+
+                        <td>
+
+                            {% if not unit.is_verified %}
+
+                            <div class="action-buttons">
+
+                                <a
+                                    href="{% url 'approve_unit' unit.id %}"
+                                    class="approve-btn"
+                                >
+                                    Approve
+                                </a>
+
+                                <a
+                                    href="#"
+                                    class="reject-btn"
+                                >
+                                    Reject
+                                </a>
+
+                            </div>
+
+                            {% else %}
+
+                                <span class="verified-text">
+                                    Approved
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="6" class="empty-row">
+                            No units found
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

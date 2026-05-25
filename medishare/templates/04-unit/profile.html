@@ -1,0 +1,168 @@
+{% extends '04-unit/base.html' %}
+{% load static %}
+
+{% block title %}Unit Profile - MediShare{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/profile/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-wrapper">
+        <!-- Profile Hero Section -->
+        <div class="profile-hero">
+            <div class="profile-hero-content">
+                <div class="profile-avatar">
+                    <i class="bi bi-hospital"></i>
+                </div>
+                <div class="profile-hero-text">
+                    <h1>{{ unit.name }}</h1>
+                    <p>Palliative Unit • Member since {{ joined_date|date:"M Y" }}</p>
+                    {% if unit.is_verified %}
+                    <div class="profile-badge">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Verified Unit</span>
+                    </div>
+                    {% else %}
+                    <div class="profile-badge" style="background: rgba(243, 156, 18, 0.2);">
+                        <i class="bi bi-hourglass-split"></i>
+                        <span>Pending Verification</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="stats-grid">
+            <div class="stat-card accent-primary">
+                <div class="stat-icon">
+                    <i class="bi bi-gift"></i>
+                </div>
+                <div class="stat-number">{{ total_donations }}</div>
+                <p class="stat-label">Total Donations</p>
+            </div>
+            <div class="stat-card accent-accent">
+                <div class="stat-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+                <div class="stat-number">{{ inventory_count }}</div>
+                <p class="stat-label">Inventory Items</p>
+            </div>
+            <div class="stat-card accent-success">
+                <div class="stat-icon">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="stat-number">{{ pending_requests }}</div>
+                <p class="stat-label">Pending Requests</p>
+            </div>
+        </div>
+
+        <!-- Information Grid -->
+        <div class="profile-info-grid">
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-hospital"></i>
+                    Unit Name
+                </div>
+                <div class="info-card-value">{{ unit.name }}</div>
+                <p class="info-card-label">Your unit name</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-envelope"></i>
+                    Email
+                </div>
+                <div class="info-card-value">{{ unit.email }}</div>
+                <p class="info-card-label">Primary contact email</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-telephone"></i>
+                    Phone
+                </div>
+                <div class="info-card-value">{{ unit.phone }}</div>
+                <p class="info-card-label">Contact phone number</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-geo-alt"></i>
+                    Location
+                </div>
+                <div class="info-card-value">{{ unit.location_name }}</div>
+                <p class="info-card-label">Unit location</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-file-earmark"></i>
+                    License Number
+                </div>
+                <div class="info-card-value">{{ unit.license_number }}</div>
+                <p class="info-card-label">Registration license</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-shield-check"></i>
+                    Verification Status
+                </div>
+                <div class="info-card-value">
+                    {% if unit.is_verified %}
+                    <span class="verification-badge">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Verified
+                    </span>
+                    {% else %}
+                    <span style="color: #f39c12;">Pending</span>
+                    {% endif %}
+                </div>
+                <p class="info-card-label">Current status</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-calendar-check"></i>
+                    Joined
+                </div>
+                <div class="info-card-value">{{ joined_date|date:"M d, Y" }}</div>
+                <p class="info-card-label">Member since</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-shield-check"></i>
+                    Account Status
+                </div>
+                <div class="info-card-value text-success">Active</div>
+                <p class="info-card-label">Your unit is active</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="profile-info-grid" style="margin-top: 2rem;">
+            <div class="info-card text-center" style="cursor: pointer; transition: var(--transition);">
+                <a href="{% url 'unit_edit_profile' %}" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit Profile
+                </a>
+            </div>
+            <div class="info-card text-center" style="cursor: pointer; transition: var(--transition);">
+                <a href="{% url 'unit_change_password' %}" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                    <i class="bi bi-lock"></i>
+                    Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile/profile.js' %}"></script>
+{% endblock %}

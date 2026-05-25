@@ -1,0 +1,288 @@
+/* ==========================================
+   PROFILE PAGE
+========================================== */
+
+.profile-container{
+    padding: 2rem;
+}
+
+.profile-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ==========================================
+   HERO SECTION
+========================================== */
+
+.profile-hero{
+    background: #ffffff;
+    border: 1px solid #e7edf3;
+    border-radius: 28px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+.profile-hero-content{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-avatar{
+    width: 90px;
+    height: 90px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #2d9cf0, #1f7fd1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 2.3rem;
+    flex-shrink: 0;
+}
+
+.profile-hero-text h1{
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: .4rem;
+}
+
+.profile-hero-text p{
+    color: #64748b;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.profile-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    background: rgba(39, 174, 96, 0.12);
+    color: #27ae60;
+    font-size: .92rem;
+    font-weight: 600;
+}
+
+/* ==========================================
+   STATS GRID
+========================================== */
+
+.stats-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card{
+    background: #ffffff;
+    border: 1px solid #e7edf3;
+    border-radius: 24px;
+    padding: 1.7rem;
+    position: relative;
+    overflow: hidden;
+    transition: .3s ease;
+}
+
+.stat-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
+}
+
+.stat-icon{
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.accent-primary .stat-icon{
+    background: linear-gradient(135deg, #2d9cf0, #1f7fd1);
+}
+
+.accent-accent .stat-icon{
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.accent-success .stat-icon{
+    background: linear-gradient(135deg, #27ae60, #1f8a4c);
+}
+
+.stat-number{
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: .4rem;
+}
+
+.stat-label{
+    color: #64748b;
+    font-size: .95rem;
+}
+
+/* ==========================================
+   INFO GRID
+========================================== */
+
+.profile-info-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-card{
+    background: #ffffff;
+    border: 1px solid #e7edf3;
+    border-radius: 24px;
+    padding: 1.6rem;
+    transition: .3s ease;
+}
+
+.info-card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.05);
+}
+
+.info-card-header{
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    color: #64748b;
+    font-size: .95rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.info-card-header i{
+    color: #2d9cf0;
+    font-size: 1rem;
+}
+
+.info-card-value{
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.info-card-label{
+    margin-top: .5rem;
+    color: #94a3b8;
+    font-size: .85rem;
+}
+
+/* ==========================================
+   VERIFICATION BADGE
+========================================== */
+
+.verification-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    color: #27ae60;
+    background: rgba(39, 174, 96, 0.12);
+    padding: .45rem .85rem;
+    border-radius: 999px;
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.btn{
+    display: inline-flex;
+    align-items: center;
+    gap: .7rem;
+    padding: .95rem 1.3rem;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .95rem;
+    transition: .3s ease;
+}
+
+.btn i{
+    font-size: 1rem;
+}
+
+.btn-primary{
+    background: linear-gradient(135deg, #2d9cf0, #1f7fd1);
+    color: #ffffff;
+}
+
+.btn-primary:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(45, 156, 240, 0.25);
+}
+
+.btn-secondary{
+    background: #f8fafc;
+    border: 1px solid #dbe5ef;
+    color: #1e293b;
+}
+
+.btn-secondary:hover{
+    background: #eef5fb;
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   TEXT HELPERS
+========================================== */
+
+.text-center{
+    text-align: center;
+}
+
+.text-success{
+    color: #27ae60;
+    font-weight: 700;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px){
+
+    .profile-container{
+        padding: 1rem;
+    }
+
+    .profile-hero{
+        padding: 1.5rem;
+    }
+
+    .profile-hero-content{
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-avatar{
+        width: 75px;
+        height: 75px;
+        font-size: 2rem;
+    }
+
+    .profile-hero-text h1{
+        font-size: 1.7rem;
+    }
+
+    .stats-grid,
+    .profile-info-grid{
+        grid-template-columns: 1fr;
+    }
+
+}

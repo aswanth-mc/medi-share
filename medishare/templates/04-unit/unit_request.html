@@ -1,0 +1,162 @@
+{% extends '04-unit/base.html' %}
+{% load static %}
+
+{% block title %}MediShare | Medicine Requests{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/unit/unit_request.css' %}">
+{% endblock %}
+
+{% block page_title %}Medicine Requests{% endblock %}
+{% block page_subtitle %}Review and manage patient requests for medicines from your inventory.{% endblock %}
+
+
+{% block content %}
+  {% if messages %}
+    <div class="flash-messages" role="status">
+      {% for message in messages %}
+        <p class="flash-message flash-{{ message.tags }}">{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <section class="overview-panel">
+    <div>
+      <span class="section-kicker">Patient requests</span>
+      <h2>Review medicine requests</h2>
+      <p>Approve or reject requests from users who need medicines from your inventory.</p>
+    </div>
+  </section>
+
+  <section class="dashboard-grid request-sections">
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <h2>Pending Requests</h2>
+          <p>Requests waiting for your approval.</p>
+        </div>
+      </div>
+
+      <div class="donation-list">
+        {% for medicine_request in pending_requests %}
+          <div class="donation-row">
+            <img src="{{ medicine_request.donation.medicine_image.url }}" alt="{{ medicine_request.donation.medicine_name }}">
+            <div>
+              <h3>{{ medicine_request.donation.medicine_name }}</h3>
+              <p>Requested by {{ medicine_request.requester.username }} · 1 unit</p>
+              <small>Expires {{ medicine_request.donation.expiry_date|date:"M d, Y" }}</small>
+            </div>
+            <div class="request-actions">
+              <form method="POST" action="{% url 'approve_request' medicine_request.id %}">
+                {% csrf_token %}
+                <button class="primary-action" type="submit">Approve</button>
+              </form>
+              <form method="POST" action="{% url 'reject_request' medicine_request.id %}">
+                {% csrf_token %}
+                <button class="secondary-action" type="submit">Reject</button>
+              </form>
+            </div>
+          </div>
+        {% empty %}
+          <div class="empty-state compact">
+            <i class="bi bi-inbox"></i>
+            <h3>No pending requests</h3>
+            <p>New patient requests will appear here.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <h2>Approved Requests</h2>
+          <p>Ready for handover — mark collected after the user picks up the medicine.</p>
+        </div>
+      </div>
+
+      <div class="donation-list">
+        {% for medicine_request in approved_requests %}
+          <div class="donation-row">
+            <img src="{{ medicine_request.donation.medicine_image.url }}" alt="{{ medicine_request.donation.medicine_name }}">
+            <div>
+              <h3>{{ medicine_request.donation.medicine_name }}</h3>
+              <p>{{ medicine_request.requester.username }} · 1 unit</p>
+              <p>
+    <strong>Requested Quantity:</strong>
+    {{ request.quantity }}
+</p>
+              <small>Approved {{ medicine_request.updated_at|date:"M d, Y" }}</small>
+            </div>
+            <form method="POST" action="{% url 'collect_request' medicine_request.id %}">
+              {% csrf_token %}
+              <button class="primary-action" type="submit">Collect</button>
+            </form>
+          </div>
+        {% empty %}
+          <div class="empty-state compact">
+            <i class="bi bi-check-circle"></i>
+            <h3>No approved requests</h3>
+            <p>Approved requests ready for pickup appear here.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <h2>Rejected Requests</h2>
+          <p>Requests you declined.</p>
+        </div>
+      </div>
+
+      <div class="donation-list">
+        {% for medicine_request in rejected_requests %}
+          <div class="donation-row">
+            <img src="{{ medicine_request.donation.medicine_image.url }}" alt="{{ medicine_request.donation.medicine_name }}">
+            <div>
+              <h3>{{ medicine_request.donation.medicine_name }}</h3>
+              <p>{{ medicine_request.requester.username }} · 1 unit</p>
+              <small>Rejected {{ medicine_request.updated_at|date:"M d, Y" }}</small>
+            </div>
+            <span class="status rejected">Rejected</span>
+          </div>
+        {% empty %}
+          <div class="empty-state compact">
+            <i class="bi bi-x-circle"></i>
+            <h3>No rejected requests</h3>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="dashboard-card">
+      <div class="card-heading">
+        <div>
+          <h2>Fulfilled Requests</h2>
+          <p>Medicines handed over to users.</p>
+        </div>
+      </div>
+
+      <div class="donation-list">
+        {% for medicine_request in fulfilled_requests %}
+          <div class="donation-row">
+            <img src="{{ medicine_request.donation.medicine_image.url }}" alt="{{ medicine_request.donation.medicine_name }}">
+            <div>
+              <h3>{{ medicine_request.donation.medicine_name }}</h3>
+              <p>{{ medicine_request.requester.username }} · 1 unit handed over</p>
+              <small>Fulfilled {{ medicine_request.updated_at|date:"M d, Y" }}</small>
+            </div>
+            <span class="status fulfilled">Fulfilled</span>
+          </div>
+        {% empty %}
+          <div class="empty-state compact">
+            <i class="bi bi-box-seam"></i>
+            <h3>No fulfilled requests</h3>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+{% endblock %}

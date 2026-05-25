@@ -1,0 +1,459 @@
+{% extends '04-unit/base.html' %}
+{% load static %}
+
+{% block title %}MediShare | Unit Dashboard{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/unit/dashboard.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- HERO -->
+
+    <section class="hero-section">
+
+        <div class="hero-left">
+
+            <span class="hero-tag">
+                UNIT DASHBOARD
+            </span>
+
+            <h1>
+                Welcome back,
+                {{ unit.name }}
+            </h1>
+
+            <p>
+                Manage donations, medicine requests,
+                and inventory from one place.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- STATISTICS -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                <i class="bi bi-capsule-pill"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <h3>
+                    {{ total_donations }}
+                </h3>
+
+                <p>
+                    Total Donations
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <h3>
+                    {{ pending_donations }}
+                </h3>
+
+                <p>
+                    Pending Donations
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+                <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <h3>
+                    {{ inventory_stock }}
+                </h3>
+
+                <p>
+                    Inventory Medicines
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon red">
+                <i class="bi bi-bell"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <h3>
+                    {{ pending_requests_count }}
+                </h3>
+
+                <p>
+                    Medicine Requests
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CHART + INVENTORY -->
+
+    <section class="dashboard-row">
+
+        <!-- GRAPH -->
+
+        <div class="dashboard-card chart-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Monthly Donations
+                    </h2>
+
+                    <p>
+                        Donation activity overview
+                    </p>
+
+                </div>
+
+            </div>
+
+            <canvas id="donationChart"></canvas>
+
+        </div>
+
+        <!-- INVENTORY HEALTH -->
+
+        <div class="dashboard-card inventory-health">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Inventory Health
+                    </h2>
+
+                    <p>
+                        Current medicine stock level
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="health-circle">
+
+    <svg>
+
+        <circle
+            cx="70"
+            cy="70"
+            r="60"
+            class="bg-circle"
+        ></circle>
+
+       <circle
+    cx="70"
+    cy="70"
+    r="60"
+    class="progress-circle"
+    style="
+        stroke-dasharray: 377;
+        stroke-dashoffset: calc(377 - (377 * {{ inventory_health }}) / 100);
+    "
+></circle>
+
+    </svg>
+
+    <div class="health-text">
+
+        <h2>{{ inventory_health }}%</h2>
+
+        <p>Healthy</p>
+
+    </div>
+
+</div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- RECENT REQUESTS -->
+
+    <section class="dashboard-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Recent Medicine Requests
+                </h2>
+
+                <p>
+                    Latest requests from users
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'unit_requests' %}"
+                class="view-all-btn"
+            >
+                View All
+            </a>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table class="dashboard-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>User</th>
+
+                        <th>Medicine</th>
+
+                        <th>Quantity</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for request in recent_requests %}
+
+                    <tr>
+
+                        <td>
+                            {{ request.requester.username }}
+                        </td>
+
+                        <td>
+                            {{ request.donation.medicine_name }}
+                        </td>
+
+                        <td>
+                            {{ request.quantity }}
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge status-{{ request.status }}">
+
+                                {{ request.status }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            No recent requests
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+    <!-- INVENTORY PREVIEW -->
+
+    <section class="dashboard-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    Inventory Preview
+                </h2>
+
+                <p>
+                    Recently collected medicines
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'inventory_dashboard' %}"
+                class="view-all-btn"
+            >
+                View Inventory
+            </a>
+
+        </div>
+
+        <div class="inventory-preview-grid">
+
+            {% for item in inventory_preview %}
+
+            <div class="inventory-preview-card">
+
+                <img
+                    src="{{ item.medicine_image.url }}"
+                    alt="{{ item.medicine_name }}"
+                >
+
+                <div class="preview-content">
+
+                    <h3>
+                        {{ item.medicine_name }}
+                    </h3>
+
+                    <p>
+                        Qty :
+                        {{ item.quantity }}
+                    </p>
+
+                    <small>
+                        Exp :
+                        {{ item.expiry_date }}
+                    </small>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="empty-box">
+
+                No inventory available
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+
+<script>
+
+const ctx = document.getElementById('donationChart');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: {{ chart_labels|safe }},
+
+        datasets: [{
+
+            label: 'Donations',
+
+            data: {{ chart_data|safe }},
+
+            borderWidth: 3,
+
+            tension: 0.4,
+
+            fill: true,
+
+            backgroundColor: 'rgba(45, 156, 240, 0.2)',
+
+            borderColor: '#2d9cf0',
+
+            pointBackgroundColor: '#2d9cf0',
+
+            pointRadius: 5,
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+
+{% endblock %}

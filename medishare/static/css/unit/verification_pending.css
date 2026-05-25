@@ -1,0 +1,208 @@
+:root {
+--primary: #108553;
+--light-green: #eef9f3;
+--text-dark: #2d3436;
+--muted: #636e72;
+--border: #dfe6e9;
+--warning: #f39c12;
+--white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+
+body {
+font-family: Arial, Helvetica, sans-serif;
+background: #f5f7f8;
+min-height: 100vh;
+
+
+display: flex;
+justify-content: center;
+align-items: center;
+
+padding: 20px;
+
+
+}
+
+.pending-container {
+width: 100%;
+max-width: 500px;
+}
+
+.pending-card {
+background: var(--white);
+
+
+border-radius: 20px;
+
+padding: 40px;
+
+text-align: center;
+
+box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+
+}
+
+.icon-wrapper {
+width: 90px;
+height: 90px;
+
+
+margin: 0 auto 25px;
+
+border-radius: 50%;
+
+background: rgba(243, 156, 18, 0.12);
+
+display: flex;
+justify-content: center;
+align-items: center;
+
+
+}
+
+.icon-wrapper i {
+font-size: 42px;
+color: var(--warning);
+}
+
+.pending-card h1 {
+font-size: 2rem;
+color: var(--text-dark);
+margin-bottom: 14px;
+}
+
+.message {
+color: var(--muted);
+line-height: 1.7;
+margin-bottom: 28px;
+}
+
+.status-box {
+background: var(--light-green);
+
+
+border-radius: 12px;
+
+padding: 16px;
+
+margin-bottom: 30px;
+
+
+}
+
+.status-label {
+display: block;
+
+
+color: var(--muted);
+
+font-size: 0.9rem;
+
+margin-bottom: 8px;
+
+
+}
+
+.status {
+display: inline-block;
+
+
+padding: 8px 18px;
+
+border-radius: 30px;
+
+font-weight: 600;
+
+
+}
+
+.status.pending {
+background: rgba(243, 156, 18, 0.15);
+color: #d68910;
+}
+
+.info-section {
+display: flex;
+flex-direction: column;
+gap: 16px;
+
+
+margin-bottom: 30px;
+
+
+}
+
+.info-item {
+display: flex;
+align-items: center;
+gap: 12px;
+
+
+background: #fafafa;
+
+padding: 14px;
+
+border-radius: 10px;
+
+text-align: left;
+
+
+}
+
+.info-item i {
+color: var(--primary);
+font-size: 1.1rem;
+}
+
+.info-item span {
+color: var(--text-dark);
+font-size: 0.95rem;
+}
+
+.logout-btn {
+display: inline-block;
+
+
+width: 100%;
+
+padding: 14px;
+
+border-radius: 10px;
+
+background: var(--primary);
+
+color: white;
+
+text-decoration: none;
+
+font-weight: 600;
+
+transition: 0.3s ease;
+
+
+}
+
+.logout-btn:hover {
+background: #0d6d44;
+}
+
+@media (max-width: 600px) {
+
+
+.pending-card {
+    padding: 28px;
+}
+
+.pending-card h1 {
+    font-size: 1.6rem;
+}
+
+
+}

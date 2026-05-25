@@ -1,0 +1,186 @@
+.page-header h1 {
+
+
+font-size: 42px;
+font-weight: 700;
+color: #1F2937;
+
+
+}
+
+.page-header p {
+
+
+color: #6B7280;
+margin-top: 8px;
+
+
+}
+
+.donation-grid {
+
+
+margin-top: 30px;
+
+display: grid;
+
+grid-template-columns:
+    repeat(auto-fit, minmax(320px, 1fr));
+
+gap: 24px;
+
+
+}
+
+.donation-card {
+
+
+background: white;
+
+border-radius: 24px;
+
+overflow: hidden;
+
+box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+
+}
+
+.donation-card img {
+
+
+width: 100%;
+height: 220px;
+object-fit: cover;
+
+
+}
+
+.donation-content {
+
+
+padding: 24px;
+
+
+}
+
+.top-row {
+
+
+display: flex;
+justify-content: space-between;
+align-items: center;
+
+
+}
+
+.top-row h3 {
+
+
+font-size: 22px;
+font-weight: 700;
+
+
+}
+
+.meta {
+
+
+margin-top: 20px;
+
+
+}
+
+.meta p {
+
+
+margin-bottom: 10px;
+color: #4B5563;
+
+
+}
+
+.status-badge {
+
+
+padding: 8px 14px;
+border-radius: 999px;
+font-size: 13px;
+font-weight: 600;
+
+
+}
+
+.status-pending {
+
+
+background: #FFF4E5;
+color: #F2994A;
+
+
+}
+
+.status-accepted {
+
+
+background: #E9F9EF;
+color: #27AE60;
+
+
+}
+
+.status-collected {
+
+
+background: #E3F2FD;
+color: #2D9CDB;
+
+
+}
+
+.status-cancelled {
+
+
+background: #FDECEC;
+color: #EB5757;
+
+
+}
+
+.cancel-btn {
+
+
+margin-top: 20px;
+
+width: 100%;
+
+border: none;
+
+padding: 14px;
+
+border-radius: 12px;
+
+background: #EB5757;
+
+color: white;
+
+font-weight: 600;
+
+cursor: pointer;
+
+
+}
+
+.empty-box {
+
+
+background: white;
+
+padding: 60px;
+
+border-radius: 24px;
+
+text-align: center;
+
+
+}
