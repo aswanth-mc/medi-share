@@ -515,7 +515,7 @@ def user_edit_profile(request):
 from django.contrib.auth import update_session_auth_hash
 
 @login_required
-def admin_change_password(request):
+def user_change_password(request):
 
     if request.user.role != 'admin':
         return redirect('welcome')
