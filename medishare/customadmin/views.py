@@ -1,43 +1,186 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required 
 from django.contrib.auth import get_user_model
-from django.contrib import messages
+from django.db.models import Count, Sum
+from django.utils.timezone import now
+from datetime import timedelta
+
 from unit.models import PalliativeUnit
 from user.models import MedicineDonation, MedicineRequest
-# Create your views here.
 
 User = get_user_model()
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 # ==========================================
 # DASHBOARD
 # ==========================================
 
+
+
+
+
 @login_required
 def admin_dashboard(request):
+
     if request.user.role != 'admin':
         return redirect('welcome')
-    
-    pending_units = PalliativeUnit.objects.filter(is_verified=False)
-    verified_units = PalliativeUnit.objects.filter(is_verified=True).count()
-    total_units = pending_units.count() + verified_units
+
+    # =========================
+    # COUNTS
+    # =========================
+
     total_users = User.objects.filter(role='user').count()
-    total_donations = MedicineDonation.objects.exclude(status='removed').count()
-    recent_donations = MedicineDonation.objects.exclude(status='removed')[:5]
+
+    total_units = PalliativeUnit.objects.count()
+
+    verified_units = PalliativeUnit.objects.filter(
+        is_verified=True
+    ).count()
+
+    pending_count = PalliativeUnit.objects.filter(
+        is_verified=False
+    ).count()
+
+    total_donations = MedicineDonation.objects.count()
+
+    total_requests = MedicineRequest.objects.count()
+
+    inventory_count = MedicineDonation.objects.filter(
+        status='collected'
+    ).aggregate(
+        total=Sum('quantity')
+    )['total'] or 0
+
+    # =========================
+    # PENDING UNITS
+    # =========================
+
+    pending_units = PalliativeUnit.objects.filter(
+        is_verified=False
+    ).order_by('-created_at')
+
+    # =========================
+    # RECENT DONATIONS
+    # =========================
+
+    recent_donations = MedicineDonation.objects.select_related(
+        'donor',
+        'unit'
+    ).order_by('-created_at')[:5]
+
+    # =========================
+    # REQUEST STATS
+    # =========================
+
+    completed_requests = MedicineRequest.objects.filter(
+        status='fulfilled'
+    ).count()
+
+    pending_requests = MedicineRequest.objects.filter(
+        status='pending'
+    ).count()
+
+    urgent_requests = MedicineRequest.objects.filter(
+        quantity__gte=5
+    ).count()
+
+    # =========================
+    # LOW STOCK ITEMS
+    # =========================
+
+    low_stock_items = MedicineDonation.objects.filter(
+        status='collected',
+        quantity__lte=5
+    ).count()
+
+    # =========================
+    # EXPIRED ITEMS
+    # =========================
+
+    expired_items = MedicineDonation.objects.filter(
+        expiry_date__lt=now().date()
+    ).count()
+
+    # =========================
+    # RECENT ACTIVITY
+    # =========================
+
+    recent_activity = []
+
+    latest_units = PalliativeUnit.objects.order_by(
+        '-created_at'
+    )[:2]
+
+    for unit in latest_units:
+        recent_activity.append({
+            'icon': 'hospital',
+            'title': f'{unit.name} registered',
+            'time': unit.created_at,
+        })
+
+    latest_donations = MedicineDonation.objects.order_by(
+        '-created_at'
+    )[:2]
+
+    for donation in latest_donations:
+        recent_activity.append({
+            'icon': 'capsule',
+            'title': f'{donation.medicine_name} donated',
+            'time': donation.created_at,
+        })
+
+    latest_requests = MedicineRequest.objects.order_by(
+        '-created_at'
+    )[:2]
+
+    for req in latest_requests:
+        recent_activity.append({
+            'icon': 'clipboard2-pulse',
+            'title': f'Request for {req.donation.medicine_name}',
+            'time': req.created_at,
+        })
+
+    recent_activity = sorted(
+        recent_activity,
+        key=lambda x: x['time'],
+        reverse=True
+    )[:6]
+
+    context = {
+
+        # summary
+        'total_users': total_users,
+        'total_units': total_units,
+        'verified_units': verified_units,
+        'pending_count': pending_count,
+        'total_donations': total_donations,
+        'total_requests': total_requests,
+        'inventory_count': inventory_count,
+
+        # tables
+        'pending_units': pending_units,
+        'recent_donations': recent_donations,
+
+        # request stats
+        'completed_requests': completed_requests,
+        'pending_requests': pending_requests,
+        
+
+        # inventory
+        'low_stock_items': low_stock_items,
+        'expired_items': expired_items,
+
+        # activity
+        'recent_activity': recent_activity,
+    }
 
     return render(
         request,
         '03-admin/admin_dashboard.html',
-        {
-            'pending_units': pending_units,
-            'pending_count': pending_units.count(),
-            'verified_units': verified_units,
-            'total_units': total_units,
-            'total_users': total_users,
-            'total_donations': total_donations,
-            'recent_donations': recent_donations,
-        }
+        context
     )
+
 
 
 

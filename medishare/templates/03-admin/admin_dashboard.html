@@ -126,12 +126,38 @@
         </div>
       </div>
 
-      <ul class="activity-list">
-        <li><i class="bi bi-hospital"></i><span><strong>New unit registered</strong><small>12 minutes ago</small></span></li>
-        <li><i class="bi bi-check-circle"></i><span><strong>Donation approved</strong><small>28 minutes ago</small></span></li>
-        <li><i class="bi bi-clipboard-check"></i><span><strong>Request completed</strong><small>1 hour ago</small></span></li>
-        <li><i class="bi bi-box"></i><span><strong>Inventory updated</strong><small>2 hours ago</small></span></li>
-      </ul>
+     
+<ul class="activity-list">
+
+    {% for activity in recent_activity %}
+
+    <li>
+
+        <i class="bi bi-{{ activity.icon }}"></i>
+
+        <span>
+
+            <strong>{{ activity.title }}</strong>
+
+            <small>{{ activity.time|timesince }} ago</small>
+
+        </span>
+
+    </li>
+
+    {% empty %}
+
+    <li>
+
+        <span>No recent activity</span>
+
+    </li>
+
+    {% endfor %}
+
+</ul>
+
+
     </aside>
   </section>
 
@@ -152,57 +178,32 @@
 
     <article class="panel">
       <h2>Request Statistics</h2>
-      <div class="metric-list">
-        <div><span>Completed</span><strong>1,820</strong></div>
-        <div><span>Pending</span><strong>318</strong></div>
-        <div><span>Urgent</span><strong>42</strong></div>
-      </div>
-    </article>
+      
+<div class="metric-list">
 
-    <article class="panel">
-      <h2>Medicine Categories</h2>
-      <div class="category-list">
-        <span><i class="dot blue"></i> Diabetes</span>
-        <span><i class="dot green"></i> Pain Relief</span>
-        <span><i class="dot orange"></i> Antibiotics</span>
-        <span><i class="dot red"></i> Critical Care</span>
-      </div>
-    </article>
+    <div>
+
+        <span>Completed</span>
+
+        <strong>{{ completed_requests }}</strong>
+
+    </div>
+
+    <div>
+
+        <span>Pending</span>
+
+        <strong>{{ pending_requests }}</strong>
+
+    </div>
+
+
+
+</div>
+
+
+    
   </section>
 
-  <section class="dashboard-grid">
-    <article class="panel wide">
-      <div class="section-heading">
-        <div>
-          <h2>Emergency Alerts</h2>
-          <p>Urgent needs shared with verified care units.</p>
-        </div>
-      </div>
-
-      <div class="alert-list">
-        <div class="alert-item danger">
-          <strong>Urgent need for insulin in Kozhikode</strong>
-          <span>Priority request from a verified palliative care unit.</span>
-        </div>
-        <div class="alert-item warning">
-          <strong>Low stock: wound care supplies</strong>
-          <span>Sterile dressing kits are below recommended stock.</span>
-        </div>
-      </div>
-    </article>
-
-    <aside class="panel">
-      <h2>Post Alert</h2>
-      <form class="alert-form">
-        <input class="form-control" type="text" value="Urgent need for insulin in Kozhikode" aria-label="Alert title">
-        <select class="form-select" aria-label="Priority">
-          <option>High Priority</option>
-          <option>Moderate Priority</option>
-          <option>Information Only</option>
-        </select>
-        <textarea class="form-control" rows="3" aria-label="Alert description">Verified units nearby should check availability.</textarea>
-        <button class="primary-button" type="button">Publish Alert</button>
-      </form>
-    </aside>
-  </section>
+  
 {% endblock %}
