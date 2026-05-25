@@ -4,8 +4,12 @@
 {% block title %}MediShare | Medicine Requests{% endblock %}
 
 {% block extra_head %}
-  <link rel="stylesheet" href="{% static 'css/unit/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'css/unit/unit_request.css' %}">
 {% endblock %}
+
+{% block page_title %}Medicine Requests{% endblock %}
+{% block page_subtitle %}Review and manage patient requests for medicines from your inventory.{% endblock %}
+
 
 {% block content %}
   {% if messages %}

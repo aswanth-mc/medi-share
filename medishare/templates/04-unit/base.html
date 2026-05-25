@@ -26,11 +26,11 @@
       </a>
 
       <nav class="sidebar-nav">
-        <a class="nav-link active" href="{% url 'unit_dashboard' %}"><i class="bi bi-house-door"></i><span>Dashboard</span></a>
-        <a class="nav-link" href="{% url 'unit_donations' %}"><i class="bi bi-hand-holding-medical"></i><span>Donations</span></a>
+        <a class="nav-link " href="{% url 'unit_dashboard' %}"><i class="bi bi-house-door"></i><span>Dashboard</span></a>
+        <a class="nav-link" href="{% url 'unit_donations' %}"><i class="bi bi-capsule-pill"></i><span>Donations</span></a>
         <a class="nav-link" href="{% url 'unit_requests' %}"><i class="bi bi-file-earmark-medical"></i><span>Requests</span></a>
         <a class="nav-link" href="{% url 'inventory_dashboard' %}"><i class="bi bi-boxes"></i><span>Inventory</span></a>
-        <a class="nav-link" href="#"><i class="bi bi-gear"></i><span>Settings</span></a>
+        <a class="nav-link" href="{% url 'unit_profile' %}"><i class="bi bi-gear"></i><span>Profile</span></a>
         <a class="nav-link logout-link" href="{% url 'unit_logout' %}"><i class="bi bi-box-arrow-left"></i><span>Logout</span></a>
       </nav>
     </aside>
@@ -46,13 +46,9 @@
             <h1>{{ request.user.palliativeunit.name|default:"Verified Care Center" }}</h1>
           </div>
         </div>
-
-        <div class="header-actions">
-          <button class="icon-button" type="button" aria-label="Notifications">
-            <i class="bi bi-bell"></i>
-          </button>
+        <a href="{% url 'unit_profile' %}" class="header-action-link">
           <div class="avatar-circle">UA</div>
-        </div>
+        </a>
       </header>
 
       <main class="unit-content">
