@@ -14,6 +14,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/customadmin/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/customadmin/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'css/customadmin/common.css' %}">
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -30,13 +31,10 @@
       <nav class="side-nav">
         <a class="side-link " href="{% url 'admin_dashboard' %}"><i class="bi bi-grid"></i> Dashboard</a>
         <a class="side-link" href="{% url 'units_page' %}"><i class="bi bi-hospital"></i> Units</a>
-        <a class="side-link" href="#"><i class="bi bi-people"></i> Users</a>
         <a class="side-link" href="{% url 'admin_donations' %}"><i class="bi bi-capsule"></i> Donations</a>
-        <a class="side-link" href="#"><i class="bi bi-clipboard2-pulse"></i> Medicine Requests</a>
-        <a class="side-link" href="#"><i class="bi bi-box-seam"></i> Inventory Overview</a>
-        <a class="side-link" href="#"><i class="bi bi-exclamation-circle"></i> Emergency Alerts</a>
-        <a class="side-link" href="#"><i class="bi bi-bar-chart"></i> Reports</a>
-        <a class="side-link" href="#"><i class="bi bi-gear"></i> Settings</a>
+        <a class="side-link" href="{% url 'admin_requests' %}"><i class="bi bi-clipboard2-pulse"></i> Medicine Requests</a>
+        <a class="side-link" href="{% url 'inventory_overview' %}"><i class="bi bi-box-seam"></i> Inventory Overview</a>
+        <a class="side-link" href="{% url 'admin_profile' %}"><i class="bi bi-gear"></i> profile</a>
         <a class="side-link text-danger" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
       </nav>
     </aside>
@@ -53,16 +51,15 @@
         </div>
 
         <div class="topbar-actions">
-          <button class="icon-button" type="button" aria-label="Notifications">
-            <i class="bi bi-bell"></i>
-          </button>
+          <a href="{% url 'admin_profile' %}">
           <div class="admin-profile">
             <span class="avatar">A</span>
             <span>
               <strong>Admin</strong>
-              <small>Super Admin</small>
+              <small>{{ request.user.username }}</small>
             </span>
           </div>
+          </a>
           <a class="logout-button" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
       </header>

@@ -1,0 +1,174 @@
+{% extends '03-admin/admin_base.html' %}
+{% load static %}
+
+{% block title %}Edit Admin Profile - MediShare{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-wrapper">
+        <!-- Back Button -->
+        <div style="margin-bottom: 2rem;">
+            <a href="{% url 'admin_profile' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i>
+                Back to Profile
+            </a>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }}">
+                    <i class="bi bi-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
+                    <div>{{ message }}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Edit Profile Section -->
+        <div class="profile-form-section">
+            <div class="form-section-header">
+                <i class="bi bi-pencil-square"></i>
+                <h2>Edit Admin Information</h2>
+            </div>
+
+            <form method="POST" action="{% url 'admin_edit_profile' %}" novalidate>
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                        <small class="form-help-text">
+                            <i class="bi bi-info-circle"></i>
+                            Your unique admin username
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.email.label_tag }}
+                        {{ form.email }}
+                        <small class="form-help-text">
+                            <i class="bi bi-info-circle"></i>
+                            Your email address for login and notifications
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        Reset
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Change Password Section -->
+        <div class="security-section">
+            <div class="security-header">
+                <i class="bi bi-shield-lock"></i>
+                <h3>Change Password</h3>
+            </div>
+
+            <form method="POST" action="{% url 'admin_change_password' %}" novalidate>
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="form-group" style="width: 100%;">
+                        {{ current_form.current_password.label_tag }}
+                        <div class="password-field-wrapper">
+                            {{ current_form.current_password }}
+                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="width: 100%;">
+                        {{ password_form.new_password1.label_tag }}
+                        <div class="password-field-wrapper">
+                            {{ password_form.new_password1 }}
+                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="width: 100%;">
+                        {{ password_form.new_password2.label_tag }}
+                        <div class="password-field-wrapper">
+                            {{ password_form.new_password2 }}
+                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="password-requirements">
+                    <div class="requirement">
+                        <i class="bi bi-circle"></i>
+                        <span>At least 8 characters</span>
+                    </div>
+                    <div class="requirement">
+                        <i class="bi bi-circle"></i>
+                        <span>Uppercase letter</span>
+                    </div>
+                    <div class="requirement">
+                        <i class="bi bi-circle"></i>
+                        <span>Lowercase letter</span>
+                    </div>
+                    <div class="requirement">
+                        <i class="bi bi-circle"></i>
+                        <span>Number</span>
+                    </div>
+                    <div class="requirement">
+                        <i class="bi bi-circle"></i>
+                        <span>Special character</span>
+                    </div>
+                </div>
+
+                <div class="form-actions" style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-lock-fill"></i>
+                        Update Password
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="profile-info-grid" style="margin-top: 2rem;">
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="bi bi-shield-exclamation"></i>
+                    Admin Account Security
+                </div>
+                <p class="info-card-label" style="margin: 0; line-height: 1.6;">
+                    As an administrator, keep your account secure at all times. Change your password regularly and never share your credentials. Your account has access to sensitive platform data.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile/profile.js' %}"></script>
+{% endblock %}
