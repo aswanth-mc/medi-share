@@ -64,7 +64,6 @@
             <div>
               <h3>{{ donation.medicine_name }}</h3>
               <p>{{ donation.quantity }} item(s) · Expires {{ donation.expiry_date }}</p>
-              <small>{{ donation.get_status_display }}</small>
             </div>
             {% if donation.status == 'accepted' %}
               <form method="POST" action="{% url 'collect_donation' donation.id %}">
