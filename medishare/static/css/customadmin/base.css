@@ -195,14 +195,202 @@ a {
   padding: 24px 28px;
 }
 
-.footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 28px 24px;
-  color: var(--muted);
-  font-size: 0.86rem;
+/* =========================
+   FOOTER
+========================= */
+
+.main-footer{
+
+    background: #0f172a;
+
+    color: #e2e8f0;
+
+    margin-top: 4rem;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
 }
+
+.footer-container{
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 4rem 2rem;
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 3rem;
+
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.footer-brand h2{
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    color: #38bdf8;
+
+    margin-bottom: 1rem;
+
+}
+
+.footer-brand p{
+
+    color: #cbd5e1;
+
+    line-height: 1.8;
+
+    font-size: 0.95rem;
+
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.footer-links h3,
+.footer-contact h3{
+
+    font-size: 1.1rem;
+
+    margin-bottom: 1.2rem;
+
+    color: #ffffff;
+
+}
+
+.footer-links ul{
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+}
+
+.footer-links ul li{
+
+    margin-bottom: 0.9rem;
+
+    color: #cbd5e1;
+
+    font-size: 0.95rem;
+
+}
+
+.footer-links ul li a{
+
+    text-decoration: none;
+
+    color: #cbd5e1;
+
+    transition: 0.3s ease;
+
+}
+
+.footer-links ul li a:hover{
+
+    color: #38bdf8;
+
+    padding-left: 5px;
+
+}
+
+/* =========================
+   CONTACT
+========================= */
+
+.footer-contact p{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.7rem;
+
+    margin-bottom: 1rem;
+
+    color: #cbd5e1;
+
+    font-size: 0.95rem;
+
+}
+
+.footer-contact i{
+
+    color: #38bdf8;
+
+    font-size: 1rem;
+
+}
+
+/* =========================
+   BOTTOM
+========================= */
+
+.footer-bottom{
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    padding: 1.2rem 2rem;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+    background: #020617;
+
+}
+
+.footer-bottom p{
+
+    margin: 0;
+
+    color: #94a3b8;
+
+    font-size: 0.9rem;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    .footer-container{
+
+        padding: 3rem 1.5rem;
+
+    }
+
+    .footer-bottom{
+
+        flex-direction: column;
+
+        text-align: center;
+
+    }
+
+}
+
+
 
 @media (max-width: 900px) {
   .layout {
