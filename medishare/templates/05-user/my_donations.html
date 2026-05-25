@@ -1,6 +1,16 @@
 {% extends '05-user/base.html' %}
 {% load static %}
 
+{% block extra_head %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/user/my_donations.css' %}"
+>
+
+{% endblock %}
+
+
 {% block title %}My Donations{% endblock %}
 
 {% block content %}

@@ -345,21 +345,21 @@ def donate_medicine(request):
         medicine_image = request.FILES.get('medicine_image')
 
         if not medicine_name:
-            return render(request, 'donate_medicine.html', {'error': 'Medicine name is required'})
+            return render(request, '05-user/donate_medicine.html', {'error': 'Medicine name is required'})
 
         if not expiry_date:
-            return render(request, 'donate_medicine.html', {'error': 'Expiry date is required'})
+            return render(request, '05-user/donate_medicine.html', {'error': 'Expiry date is required'})
 
         if not quantity:
-            return render(request, 'donate_medicine.html', {'error': 'Quantity is required'})
+            return render(request, '05-user/donate_medicine.html', {'error': 'Quantity is required'})
 
         if not medicine_image:
-            return render(request, 'donate_medicine.html', {'error': 'Medicine image is required'})
+            return render(request, '05-user/donate_medicine.html', {'error': 'Medicine image is required'})
 
         if not latitude or not longitude:
             return render(
                 request,
-                'donate_medicine.html',
+                '05-user/donate_medicine.html',
                 {'error': 'Please select a pickup location on the map.'},
             )
 
@@ -367,7 +367,7 @@ def donate_medicine(request):
         if not nearest_unit:
             return render(
                 request,
-                'donate_medicine.html',
+                '05-user/donate_medicine.html',
                 {
                     'error': (
                         'No verified unit is available near this location. '
@@ -390,7 +390,7 @@ def donate_medicine(request):
 
         return redirect('user_dashboard')
 
-    return render(request, 'donate_medicine.html')
+    return render(request, '05-user/donate_medicine.html')
 
 
 # ==========================================
