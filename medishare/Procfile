@@ -1,1 +1,1 @@
-web: gunicorn medishare.wsgi
+web: gunicorn medishare.wsgi:application
