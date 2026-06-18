@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'medishare.wsgi.application'
 # Database
 # --------------------------------------------------
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = os.environ.get("postgresql://postgres:VqvdLyUYmju8@HH@db.xsjmoqnpvvdndhcpsoau.supabase.co:5432/postgres")
 
 if DATABASE_URL:
     DATABASES = {
