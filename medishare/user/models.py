@@ -73,11 +73,7 @@ class MedicineDonation(models.Model):
 
     def __str__(self):
         return f'{self.medicine_name} donated by {self.donor.username}'
-
-    def __str__(self):
-        return f'{self.medicine_name} donated by {self.donor.username}'
     
-
 class MedicineRequest(models.Model):
 
     STATUS_CHOICES = (
