@@ -1,3 +1,49 @@
+
+/* ========================================
+   MEDISHARE - HEALTHCARE GREEN THEME
+======================================== */
+
+:root {
+  /* Primary Green Theme */
+  --primary: #168653;
+  --primary-dark: #10633d;
+  --primary-light: #e8f5ed;
+  --success: #27ae60;
+
+  /* Status Colors */
+  --danger: #dc4b4b;
+  --warning: #e6a23c;
+  --info: #2563eb;
+  --info-light: #eff6ff;
+
+  /* Background */
+  --bg: #f3f8f5;
+  --card: #ffffff;
+
+  /* Text */
+  --text: #1f2937;
+  --muted: #6b7280;
+
+  /* Borders and Hover */
+  --border: #dce9e0;
+  --hover: #e8f5ed;
+
+  /* Effects */
+  --shadow: 0 8px 25px rgba(16, 99, 61, 0.07);
+  --green-shadow: 0 4px 12px rgba(22, 134, 83, 0.15);
+
+  /* Accessibility */
+  --focus: #168653;
+  --focus-ring: 0 0 0 3px rgba(22, 134, 83, 0.2);
+  --disabled: #9ca3af;
+  --disabled-bg: #f3f4f6;
+}
+
+
+/* ========================================
+   SEARCH PANEL
+======================================== */
+
 .search-panel {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
@@ -5,9 +51,10 @@
   align-items: end;
   margin-bottom: 24px;
   padding: 22px;
-  background: #ffffff;
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
 .section-kicker {
@@ -26,6 +73,7 @@
   margin: 0;
   font-size: 1.2rem;
   font-weight: 800;
+  color: var(--text);
 }
 
 .search-panel p,
@@ -41,7 +89,7 @@
 
 .input-group {
   min-height: 48px;
-  background: #f8fafc;
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 12px;
 }
@@ -53,8 +101,19 @@
 }
 
 .form-control:focus {
+  background: transparent;
   box-shadow: none;
 }
+
+.input-group:focus-within {
+  border-color: var(--primary);
+  box-shadow: var(--focus-ring);
+}
+
+
+/* ========================================
+   BUTTONS
+======================================== */
 
 .btn-theme,
 .btn-outline-theme {
@@ -66,6 +125,7 @@
   padding: 8px 14px;
   font-weight: 800;
   border-radius: 999px;
+  transition: all 0.2s ease;
 }
 
 .btn-theme {
@@ -79,13 +139,26 @@
   color: #ffffff;
   background: var(--primary-dark);
   border-color: var(--primary-dark);
+  box-shadow: var(--green-shadow);
 }
 
 .btn-outline-theme {
   color: var(--primary-dark);
-  background: #ffffff;
-  border: 1px solid rgba(45, 156, 219, 0.35);
+  background: var(--card);
+  border: 1px solid var(--primary);
 }
+
+.btn-outline-theme:hover,
+.btn-outline-theme:focus {
+  color: var(--primary-dark);
+  background: var(--primary-light);
+  border-color: var(--primary-dark);
+}
+
+
+/* ========================================
+   DASHBOARD LAYOUT
+======================================== */
 
 .dashboard-grid {
   display: grid;
@@ -103,22 +176,33 @@
   gap: 16px;
 }
 
+
+/* ========================================
+   CARDS
+======================================== */
+
 .medicine-card,
 .side-card,
 .trust-banner,
 .empty-state {
-  background: #ffffff;
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
 }
 
 .medicine-card {
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.medicine-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
 }
 
 .medicine-image {
   height: 190px;
-  background: #f8fafc;
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
 
@@ -145,6 +229,7 @@
   margin: 0;
   font-size: 1rem;
   font-weight: 800;
+  color: var(--text);
 }
 
 .medicine-title-row p {
@@ -152,6 +237,11 @@
   color: var(--muted);
   font-size: 0.86rem;
 }
+
+
+/* ========================================
+   MEDICINE STATUS
+======================================== */
 
 .stock-badge {
   padding: 6px 9px;
@@ -162,6 +252,26 @@
   border-radius: 999px;
   white-space: nowrap;
 }
+
+.status-accepted {
+  color: var(--primary-dark);
+  background: var(--primary-light);
+}
+
+.status-collected {
+  color: var(--success);
+  background: rgba(39, 174, 96, 0.1);
+}
+
+.status-removed {
+  color: var(--danger);
+  background: rgba(220, 75, 75, 0.1);
+}
+
+
+/* ========================================
+   MEDICINE DETAILS
+======================================== */
 
 .medicine-meta {
   display: grid;
@@ -193,6 +303,19 @@
   gap: 10px;
 }
 
+.card-actions form {
+  margin: 0;
+}
+
+.card-actions .full-button {
+  width: 100%;
+}
+
+
+/* ========================================
+   HELP / SIDEBAR
+======================================== */
+
 .help-column {
   display: grid;
   gap: 16px;
@@ -203,6 +326,7 @@
 .trust-banner,
 .empty-state {
   padding: 18px;
+  box-shadow: var(--shadow);
 }
 
 .workflow-steps {
@@ -233,6 +357,7 @@
   margin: 0;
   font-size: 0.92rem;
   font-weight: 800;
+  color: var(--text);
 }
 
 .step p,
@@ -254,6 +379,11 @@
   font-size: 2rem;
 }
 
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
 .empty-state {
   grid-column: 1 / -1;
   padding: 48px 18px;
@@ -269,6 +399,7 @@
   margin: 12px 0 6px;
   font-size: 1.1rem;
   font-weight: 800;
+  color: var(--text);
 }
 
 .empty-state p {
@@ -276,11 +407,17 @@
   color: var(--muted);
 }
 
+
+/* ========================================
+   DONATION FORM
+======================================== */
+
 .donation-form-panel {
   padding: 22px;
-  background: #ffffff;
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
 .donation-form {
@@ -310,9 +447,23 @@
 .location-section input {
   min-height: 46px;
   padding: 10px 12px;
-  background: #f8fafc;
+  color: var(--text);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input:focus,
+.location-section input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--focus-ring);
+}
+
+.field input::placeholder,
+.location-section input::placeholder {
+  color: var(--muted);
 }
 
 .section-label {
@@ -326,19 +477,42 @@
   font-size: 0.86rem;
 }
 
-#map {
+
+/* ========================================
+   MAP
+======================================== */
+
+#map,
+#unitMap {
   width: 100%;
   height: 320px;
-  margin-bottom: 12px;
   border: 1px solid var(--border);
   border-radius: 14px;
 }
+
+#map {
+  margin-bottom: 12px;
+}
+
+
+/* ========================================
+   FORM ACTIONS
+======================================== */
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
 }
+
+.full-button {
+  width: 100%;
+}
+
+
+/* ========================================
+   FORM ERRORS & FLASH MESSAGES
+======================================== */
 
 .form-error {
   margin: 0 0 18px;
@@ -348,55 +522,6 @@
   border: 1px solid #ffccc7;
   border-radius: 10px;
   font-weight: 700;
-}
-
-.full-button {
-  width: 100%;
-}
-
-.status-accepted {
-  color: var(--primary-dark);
-  background: var(--hover);
-}
-
-.status-collected {
-  color: var(--success);
-  background: rgba(39, 174, 96, 0.1);
-}
-
-.status-removed {
-  color: var(--danger);
-  background: rgba(235, 87, 87, 0.1);
-}
-
-.modal-content {
-  border: 0;
-  border-radius: 18px;
-}
-
-.modal-header,
-.modal-footer {
-  border-color: var(--border);
-}
-
-.modal-title {
-  font-weight: 800;
-}
-
-.modal-subtitle,
-.form-help {
-  display: block;
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 0.86rem;
-}
-
-.catalog-section {
-  margin-bottom: 24px;
-}
-
-.donate-panel {
-  margin-bottom: 24px;
 }
 
 .flash-messages {
@@ -424,24 +549,109 @@
   border: 1px solid #ffccc7;
 }
 
-.card-actions form {
-  margin: 0;
+
+/* ========================================
+   MODAL
+======================================== */
+
+.modal-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
 }
 
-.card-actions .full-button {
+.modal-header,
+.modal-footer {
+  border-color: var(--border);
+}
+
+.modal-title {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.modal-subtitle,
+.form-help {
+  display: block;
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+
+/* ========================================
+   CATALOG & DONATION PANELS
+======================================== */
+
+.catalog-section,
+.donate-panel {
+  margin-bottom: 24px;
+}
+
+
+/* ========================================
+   REQUEST FORM
+======================================== */
+
+.request-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quantity-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quantity-box label {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.quantity-box input {
   width: 100%;
+  padding: 10px 14px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quantity-box input:focus {
+  border-color: var(--primary);
+  box-shadow: var(--focus-ring);
+}
+
+
+/* ========================================
+   INTERACTIONS
+======================================== */
+
+button:disabled,
+.btn-theme:disabled,
+.btn-outline-theme:disabled {
+  color: var(--disabled);
+  background: var(--disabled-bg);
+  border-color: var(--border);
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .find-unit-btn {
   cursor: pointer;
 }
 
-#unitMap {
-  width: 100%;
-  height: 320px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
 
 @media (max-width: 1280px) {
   .medicine-grid {
@@ -463,43 +673,18 @@
 
   .search-box,
   .card-actions {
-    grid-template-columns: 1fr;
     display: grid;
+    grid-template-columns: 1fr;
   }
 
   .field-grid,
   .form-actions {
-    grid-template-columns: 1fr;
     display: grid;
+    grid-template-columns: 1fr;
   }
-}
-.request-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
 
-.quantity-box {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.quantity-box label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #444;
-}
-
-.quantity-box input {
-    width: 100%;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 1px solid #dcdcdc;
-    outline: none;
-    font-size: 15px;
-}
-
-.quantity-box input:focus {
-    border-color: #2e8b57;
+  .search-panel,
+  .donation-form-panel {
+    padding: 16px;
+  }
 }
