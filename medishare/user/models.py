@@ -48,6 +48,7 @@ class MedicineDonation(models.Model):
         related_name='medicine_donations'
     )
     medicine_name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
     medicine_image = models.ImageField(upload_to='medicine_images/')
     expiry_date = models.DateField()
     quantity = models.PositiveIntegerField()
