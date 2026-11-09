@@ -47,7 +47,8 @@ def register_user(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         phone = request.POST.get('phone')
-
+        full_name = request.POST.get('full_name')
+        blood_group = request.POST.get('blood_group')
         location_name = request.POST.get('location_name')
         latitude = request.POST.get('latitude')
         longitude = request.POST.get('longitude')
@@ -70,6 +71,8 @@ def register_user(request):
             password=password,
             role='user',
             phone=phone,
+            full_name=full_name,
+            blood_group=blood_group,
             location_name=location_name,
             latitude=latitude,
             longitude=longitude

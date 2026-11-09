@@ -13,17 +13,21 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserAdmin(BaseUserAdmin):
     add_form = CustomUserCreationForm
 
-    list_display = ('username', 'email', 'role')
+    # Add them here to see them in the admin table view
+    list_display = ('username', 'email', 'full_name', 'blood_group', 'role')
+    list_filter = ('role', 'blood_group')
+    search_fields = ('username', 'email', 'full_name')
 
     fieldsets = (
-        (None, {'fields': ('username', 'email', 'password')}),
+        (None, {'fields': ('username', 'email', 'password', 'full_name', 'blood_group')}),
         ('Role Info', {'fields': ('role',)}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'role', 'password1', 'password2'),
+            'fields': ('username', 'email', 'role', 'full_name', 'blood_group', 'password1', 'password2'),
         }),
     )
 

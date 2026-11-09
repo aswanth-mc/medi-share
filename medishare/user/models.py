@@ -17,6 +17,8 @@ class User(AbstractUser):
     latitude = models.FloatField(blank=True,null=True)
     longitude = models.FloatField(blank=True,null=True)
     created_at = models.DateTimeField(default=timezone.now)
+    full_name= models.CharField(max_length=100,blank=True,null=True)
+    blood_group = models.CharField(max_length=3,blank=True,null=True)
 
 
     def __str__(self):
