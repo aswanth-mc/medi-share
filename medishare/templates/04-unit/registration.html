@@ -1,106 +1,309 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/unit/registration.css' %}">
-     <link 
-    rel="stylesheet" 
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-    crossorigin="" 
-/>
+
+    <title>Palliative Unit Registration | Medi-Share</title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet"
+          href="{% static 'css/unit/registration.css' %}">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          crossorigin="">
 </head>
+
 <body>
+
+    <!-- Header -->
     <header class="auth-header">
-    <div class="header-container">
-        <a href="{% url 'register_choice' %}" class="back-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            <span>Back</span>
-        </a>
-        <div class="logo-small">Medi-Share</div>
-    </div>
-</header>
-    
-    <div class="auth-wrapper">
-        <div class="registration-card">
-            <div class="card-header">
-                <h2>Palliative Unit Registration</h2>
-                <p>Join the Medi-Share network to support those in need.</p>
-            </div>
+        <div class="header-container">
 
-            {% if error %}
-                <p class="form-error" role="alert">{{ error }}</p>
-            {% endif %}
-    
-            <form method="POST" enctype="multipart/form-data" class="grid-form">
-                {% csrf_token %}
-    
-                <div class="form-group full-width">
-                    <label>Unit Name</label>
-                    <input name="name" type="text" placeholder="e.g. Kozhikode Central Palliative" required>
-                </div>
-    
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input name="email" type="email" placeholder="unit@example.com" required>
-                </div>
-    
-                <div class="form-group">
-                    <label>Password</label>
-                    <input name="password" type="password" placeholder="••••••••" required>
-                </div>
-    
-                <div class="form-group">
-                    <label>License Number</label>
-                    <input name="license_number" type="text" placeholder="GOV-XXXX-XXXX" required>
-                </div>
-    
-                <div class="form-group">
-                    <label>Verification Document (PDF)</label>
-                    <input type="file" name="license_file" class="file-input" required>
-                </div>
-    
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="text" name="phone" placeholder="+91 XXXXX XXXXX" required>
-                </div>
-    
-                <div class="location-section">
+            <a href="{% url 'register_choice' %}" class="back-link">
+                <svg width="20" height="20"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
 
-    <label>Select Location</label>
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
 
-    <div id="map"></div>
+                </svg>
 
-    <input type="text"
-           name="location_name"
-           id="location_name"
-           readonly>
+                <span>Back</span>
+            </a>
 
-    <input type="hidden"
-           name="latitude"
-           id="latitude">
+            <div class="logo-small">Medi-Share</div>
 
-    <input type="hidden"
-           name="longitude"
-           id="longitude">
-
-</div>
-
-    
-                <button type="submit" class="btn-submit">Register Unit</button>
-            </form>
-            
-            <div class="card-footer">
-                <p>Already registered? <a href="{% url 'login' %}">Login here</a></p>
-            </div>
         </div>
-    </div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="{% static 'js/map/locationPicker.js' %}"></script>
+    </header>
+
+
+    <!-- Registration Wrapper -->
+    <main class="auth-wrapper">
+
+        <div class="registration-card">
+
+            <!-- Card Header -->
+            <div class="card-header">
+
+                <div class="header-icon">
+                    <svg width="30" height="30"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"></path>
+                        <path d="M12 8v8"></path>
+                        <path d="M8 12h8"></path>
+
+                    </svg>
+                </div>
+
+                <h2>Palliative Unit Registration</h2>
+
+                <p>
+                    Join the Medi-Share network to support
+                    those in need.
+                </p>
+
+            </div>
+
+
+            <!-- Registration Form -->
+            <form method="POST"
+                  enctype="multipart/form-data"
+                  class="grid-form">
+
+                {% csrf_token %}
+
+                <!-- Error Message -->
+                {% if error %}
+                    <p class="form-error full-width" role="alert">
+                        {{ error }}
+                    </p>
+                {% endif %}
+
+
+                <!-- Unit Name -->
+                <div class="form-group full-width">
+
+                    <label for="name">Unit Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="e.g. Kozhikode Central Palliative"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Email -->
+                <div class="form-group">
+
+                    <label for="email">Email Address</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="unit@example.com"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- License Number -->
+                <div class="form-group">
+
+                    <label for="license_number">License Number</label>
+
+                    <input
+                        type="text"
+                        name="license_number"
+                        id="license_number"
+                        placeholder="GOV-XXXX-XXXX"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Verification Document -->
+                <div class="form-group">
+
+                    <label for="license_file">
+                        Verification Document (PDF)
+                    </label>
+
+                    <input
+                        type="file"
+                        name="license_file"
+                        id="license_file"
+                        class="file-input"
+                        accept=".pdf,application/pdf"
+                        required
+                    >
+
+                    <small class="field-help">
+                        Upload your unit's valid registration document.
+                    </small>
+
+                </div>
+
+
+                <!-- Phone Number -->
+                <div class="form-group full-width">
+
+                    <label for="phone">Phone Number</label>
+
+                    <input
+                        type="tel"
+                        name="phone"
+                        id="phone"
+                        placeholder="+91 XXXXX XXXXX"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Location Section -->
+                <div class="location-section full-width">
+
+                    <div class="location-heading">
+
+                        <label for="location_name">
+                            Select Unit Location
+                        </label>
+
+                        <span class="location-badge">
+                            Required
+                        </span>
+
+                    </div>
+
+                    <p class="location-help">
+                        Click on the map to select the exact location
+                        of your palliative unit.
+                    </p>
+
+                    <!-- Leaflet Map -->
+                    <div id="map"></div>
+
+
+                    <!-- Selected Location -->
+                    <div class="form-group">
+
+                        <label for="location_name">
+                            Selected Address
+                        </label>
+
+                        <input
+                            type="text"
+                            name="location_name"
+                            id="location_name"
+                            placeholder="Click on the map to select a location"
+                            readonly
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Latitude -->
+                    <input
+                        type="hidden"
+                        name="latitude"
+                        id="latitude"
+                    >
+
+                    <!-- Longitude -->
+                    <input
+                        type="hidden"
+                        name="longitude"
+                        id="longitude"
+                    >
+
+                </div>
+
+
+                <!-- Submit -->
+                <button type="submit" class="btn-submit">
+
+                    Register Unit
+
+                    <svg width="18" height="18"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+
+                    </svg>
+
+                </button>
+
+            </form>
+
+
+            <!-- Footer -->
+            <div class="card-footer">
+
+                <p>
+                    Already registered?
+                    <a href="{% url 'login' %}">Login here</a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            crossorigin=""></script>
+
+    <!-- Location Picker JS -->
+    <script src="{% static 'js/map/locationPicker.js' %}"></script>
+
 </body>
 </html>
