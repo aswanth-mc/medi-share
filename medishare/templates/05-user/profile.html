@@ -4,23 +4,50 @@
 {% block title %}My Profile - MediShare{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/profile/profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/user/profile.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="profile-container">
-    <div class="profile-wrapper">
-        <!-- Profile Hero Section -->
-        <div class="profile-hero">
-            <div class="profile-hero-content">
-                <div class="profile-avatar">
-                    <i class="bi bi-person-circle"></i>
+<div class="profile-page-wrapper">
+    <div class="profile-container">
+
+        <!-- Welcome Eyebrow -->
+        <div class="profile-header-meta">
+            <span class="welcome-text">Welcome back,</span>
+            <h2>{{ user.full_name|default:user.username }}</h2>
+        </div>
+
+        <!-- Profile Hero Card -->
+        <div class="profile-hero-card">
+            <div class="hero-left">
+                <div class="avatar-container">
+                    <!-- Renders initials or avatar image if uploaded -->
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}" class="avatar-image">
+                    {% else %}
+                        <div class="avatar-fallback">
+                            <span>{{ user.full_name|default:user.username|make_list|first|upper }}</span>
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="profile-hero-text">
-                    <h1>{{ user.first_name|default:user.username }}</h1>
-                    <p>Donor • Member since {{ joined_date|date:"M Y" }}</p>
-                    <div class="profile-badge">
-                        <i class="bi bi-check-circle"></i>
+
+                <div class="hero-details">
+                    <div class="hero-title-row">
+                        <h1>{{ user.full_name|default:user.username }}</h1>
+                        {% if user.blood_group %}
+                            <span class="blood-pill">{{ user.blood_group }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="hero-meta">
+                        {{ user.get_role_display|default:"Donor" }} • 
+                        <span class="meta-joined">
+                            <i class="bi bi-calendar3"></i> Member since {{ joined_date|default:user.date_joined|date:"M Y" }}
+                        </span>
+                    </p>
+
+                    <div class="status-badge">
+                        <i class="bi bi-check-circle-fill"></i>
                         <span>Active User</span>
                     </div>
                 </div>
@@ -28,105 +55,105 @@
         </div>
 
         <!-- Statistics Section -->
-        <div class="stats-grid">
-            <div class="stat-card accent-primary">
-                <div class="stat-icon">
-                    <i class="bi bi-gift"></i>
+        <div class="stats-row">
+            <div class="stat-card stat-blue">
+                <div class="stat-icon-wrap">
+                    <i class="bi bi-box-seam"></i>
                 </div>
-                <div class="stat-number">{{ total_donations }}</div>
-                <p class="stat-label">Total Donations</p>
+                <div class="stat-value">{{ total_donations|default:0 }}</div>
+                <span class="stat-title">Total Donations</span>
             </div>
-            <div class="stat-card accent-accent">
-                <div class="stat-icon">
-                    <i class="bi bi-inbox"></i>
+
+            <div class="stat-card stat-purple">
+                <div class="stat-icon-wrap">
+                    <i class="bi bi-heart-pulse"></i>
                 </div>
-                <div class="stat-number">{{ total_requests }}</div>
-                <p class="stat-label">Total Requests</p>
+                <div class="stat-value">{{ total_requests|default:0 }}</div>
+                <span class="stat-title">Total Requests</span>
             </div>
-            <div class="stat-card accent-success">
-                <div class="stat-icon">
+
+            <div class="stat-card stat-green">
+                <div class="stat-icon-wrap">
                     <i class="bi bi-hourglass-split"></i>
                 </div>
-                <div class="stat-number">{{ active_requests }}</div>
-                <p class="stat-label">Active Requests</p>
+                <div class="stat-value">{{ active_requests|default:0 }}</div>
+                <span class="stat-title">Active Requests</span>
             </div>
         </div>
 
-        <!-- Information Grid -->
-        <div class="profile-info-grid">
-            <div class="info-card">
-                <div class="info-card-header">
+        <!-- User Information Grid -->
+        <div class="info-details-grid">
+            <div class="detail-card">
+                <div class="detail-label">
                     <i class="bi bi-person"></i>
-                    Username
+                    <span>Username</span>
                 </div>
-                <div class="info-card-value">{{ user.username }}</div>
-                <p class="info-card-label">Your unique identifier</p>
+                <div class="detail-value">{{ user.username }}</div>
+                <p class="detail-sub">Your unique identifier</p>
             </div>
 
-            <div class="info-card">
-                <div class="info-card-header">
+            <div class="detail-card">
+                <div class="detail-label">
                     <i class="bi bi-envelope"></i>
-                    Email
+                    <span>Email</span>
                 </div>
-                <div class="info-card-value">{{ user.email }}</div>
-                <p class="info-card-label">Primary contact email</p>
+                <div class="detail-value">{{ user.email }}</div>
+                <p class="detail-sub">Primary contact email</p>
             </div>
 
-            <div class="info-card">
-                <div class="info-card-header">
+            <div class="detail-card">
+                <div class="detail-label">
                     <i class="bi bi-telephone"></i>
-                    Phone
+                    <span>Phone</span>
                 </div>
-                <div class="info-card-value">{{ user.phone|default:"Not provided" }}</div>
-                <p class="info-card-label">Contact phone number</p>
+                <div class="detail-value">{{ user.phone|default:"Not provided" }}</div>
+                <p class="detail-sub">Contact phone number</p>
             </div>
 
-            <div class="info-card">
-                <div class="info-card-header">
+            <div class="detail-card">
+                <div class="detail-label">
                     <i class="bi bi-geo-alt"></i>
-                    Location
+                    <span>Location</span>
                 </div>
-                <div class="info-card-value">{{ user.location_name|default:"Not provided" }}</div>
-                <p class="info-card-label">Your location</p>
+                <div class="detail-value location-text" title="{{ user.location_name }}">
+                    {{ user.location_name|default:"Not provided" }}
+                </div>
+                <p class="detail-sub">Your registered address</p>
             </div>
 
-            <div class="info-card">
-                <div class="info-card-header">
+            <div class="detail-card">
+                <div class="detail-label">
                     <i class="bi bi-calendar-check"></i>
-                    Joined
+                    <span>Joined</span>
                 </div>
-                <div class="info-card-value">{{ joined_date|date:"M d, Y" }}</div>
-                <p class="info-card-label">Member since</p>
+                <div class="detail-value">{{ user.date_joined|date:"M d, Y" }}</div>
+                <p class="detail-sub">Account creation date</p>
             </div>
 
-            <div class="info-card">
-                <div class="info-card-header">
+            <div class="detail-card">
+                <div class="detail-label">
                     <i class="bi bi-shield-check"></i>
-                    Account Status
+                    <span>Account Status</span>
                 </div>
-                <div class="info-card-value text-success">Active</div>
-                <p class="info-card-label">Your account is active</p>
+                <div class="detail-value status-active">Active</div>
+                <p class="detail-sub">Verified community member</p>
             </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="profile-info-grid" style="margin-top: 2rem;">
-            <div class="info-card text-center" style="cursor: pointer; transition: var(--transition);">
-                <a href="{% url 'user_edit_profile' %}" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    <i class="bi bi-pencil-square"></i>
-                    Edit Profile
-                </a>
-            </div>
-            <div class="info-card text-center" style="cursor: pointer; transition: var(--transition);">
-                <a href="" class="btn btn-secondary" style="width: 100%; justify-content: center;">
-                    <i class="bi bi-lock"></i>
-                    Change Password
-                </a>
-            </div>
+        <div class="profile-actions-bar">
+            <a href="{% url 'user_edit_profile' %}" class="btn-profile-primary">
+                <i class="bi bi-pencil-square"></i>
+                <span>Edit Profile</span>
+            </a>
+            <a href="" class="btn-profile-outline">
+                <i class="bi bi-lock"></i>
+                <span>Change Password</span>
+            </a>
         </div>
+
     </div>
 </div>
-
 {% endblock %}
 
 {% block extra_js %}
