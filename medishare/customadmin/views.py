@@ -209,7 +209,7 @@ def reject_unit(request, unit_id):
         messages.success(request, f'Unit {unit.name} has been rejected!')
         return redirect('admin_dashboard')
 
-    return render(request, '03-admin/reject_unit.html', {'unit': unit})
+   
 
 
 # ==========================================
