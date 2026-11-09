@@ -547,7 +547,7 @@ def edit_inventory_item(request, donation_id):
 
     return render(
         request,
-        '04-unit/edit_inventory_item.html',
+        '04-unit/edit_inventory.html',
         {
             'item': item
         }
