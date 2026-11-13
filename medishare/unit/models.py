@@ -17,6 +17,8 @@ class PalliativeUnit(models.Model):
     license_number = models.CharField(max_length=100)
     license_file = models.FileField(upload_to='licenses/')
     is_verified = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
+    rejection_reason = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

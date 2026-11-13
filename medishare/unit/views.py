@@ -1,4 +1,6 @@
-from django.contrib.auth import login, logout
+from datetime import date
+
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -7,6 +9,11 @@ import json
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import PalliativeUnit
 from user.models import MedicineDonation, MedicineRequest
+from .forms import (
+    UnitProfileEditForm,
+    CurrentPasswordForm,
+    PasswordChangeForm,
+)
 
 User = get_user_model()
 
@@ -241,9 +248,12 @@ def verification_pending(request):
     if request.user.role != 'unit':
         return redirect('login')
 
+    unit = PalliativeUnit.objects.filter(user=request.user).first()
+
     return render(
         request,
-        '04-unit/verification_pending.html'
+        '04-unit/verification_pending.html',
+        {'unit': unit},
     )
 
 
@@ -523,17 +533,39 @@ def edit_inventory_item(request, donation_id):
             'medicine_name'
         )
 
-        item.quantity = request.POST.get(
-            'quantity'
-        )
-
-        item.expiry_date = request.POST.get(
-            'expiry_date'
-        )
-
         item.description = request.POST.get(
             'description'
         )
+
+        quantity_raw = request.POST.get('quantity')
+        expiry_raw = request.POST.get('expiry_date')
+        errors = []
+
+        try:
+            quantity = int(quantity_raw)
+            if quantity < 1:
+                raise ValueError
+        except (TypeError, ValueError):
+            errors.append('Quantity must be a positive whole number.')
+            quantity = None
+
+        try:
+            expiry_date = date.fromisoformat(expiry_raw)
+        except (TypeError, ValueError):
+            errors.append('Expiry date must be a valid date.')
+            expiry_date = None
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return render(
+                request,
+                '04-unit/edit_inventory.html',
+                {'item': item},
+            )
+
+        item.quantity = quantity
+        item.expiry_date = expiry_date
 
         # OPTIONAL IMAGE UPDATE
         if request.FILES.get('medicine_image'):
@@ -624,8 +656,6 @@ def unit_edit_profile(request):
     except PalliativeUnit.DoesNotExist:
         return redirect('login')
     
-    from .forms import UnitProfileEditForm
-    
     if request.method == 'POST':
         form = UnitProfileEditForm(request.POST, user=request.user)
         if form.is_valid():
@@ -656,6 +686,8 @@ def unit_edit_profile(request):
     
     context = {
         'form': form,
+        'current_form': CurrentPasswordForm(request.user),
+        'password_form': PasswordChangeForm(request.user),
         'unit': unit,
         'user': request.user,
     }
@@ -663,15 +695,16 @@ def unit_edit_profile(request):
     return render(request, '04-unit/edit_profile.html', context)
 
 
-from django.contrib.auth import update_session_auth_hash
-
 @login_required
 def unit_change_password(request):
 
-    if request.user.role != 'admin':
+    if request.user.role != 'unit':
         return redirect('welcome')
 
-    from .forms import CurrentPasswordForm, PasswordChangeForm
+    try:
+        unit = PalliativeUnit.objects.get(user=request.user)
+    except PalliativeUnit.DoesNotExist:
+        return redirect('login')
 
     if request.method == 'POST':
 
@@ -700,7 +733,7 @@ def unit_change_password(request):
                 'Password changed successfully!'
             )
 
-            return redirect('admin_profile')
+            return redirect('unit_profile')
 
         else:
 
@@ -737,12 +770,22 @@ def unit_change_password(request):
             request.user
         )
 
-    context = {
+    profile_form = UnitProfileEditForm(
+        initial={
+            'name': unit.name,
+            'email': unit.email,
+            'phone': unit.phone,
+            'location_name': unit.location_name,
+        },
+        user=request.user,
+    )
 
+    context = {
+        'form': profile_form,
         'current_form': current_form,
         'password_form': password_form,
+        'unit': unit,
         'user': request.user,
-
     }
 
     return render(

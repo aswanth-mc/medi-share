@@ -10,6 +10,22 @@
         <i class="bi bi-hourglass-split"></i>
     </div>
 
+    {% if unit and unit.is_rejected %}
+    <h1>Registration Rejected</h1>
+
+    <p class="message">
+        Your palliative unit registration was not approved.
+        {% if unit.rejection_reason %}
+        <br>
+        Reason: {{ unit.rejection_reason }}
+        {% endif %}
+    </p>
+
+    <div class="status-box">
+        <span class="status-label">Current Status</span>
+        <span class="status pending">Rejected</span>
+    </div>
+    {% else %}
     <h1>Verification Pending</h1>
 
     <p class="message">
@@ -22,6 +38,7 @@
         <span class="status-label">Current Status</span>
         <span class="status pending">Pending Approval</span>
     </div>
+    {% endif %}
 
     <div class="info-section">
 
