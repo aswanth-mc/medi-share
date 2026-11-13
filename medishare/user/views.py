@@ -1,9 +1,5 @@
-
-from pyexpat.errors import messages
-from urllib import request
-
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -14,7 +10,7 @@ from django.contrib import messages
 from .utils.geo import find_nearest_unit
 
 from .models import MedicineDonation, MedicineRequest
-from .forms import UserProfileEditForm
+from .forms import UserProfileEditForm, CurrentPasswordForm, PasswordChangeForm
 
 User = get_user_model()
 
@@ -47,7 +43,8 @@ def register_user(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         phone = request.POST.get('phone')
-
+        full_name = request.POST.get('full_name')
+        blood_group = request.POST.get('blood_group')
         location_name = request.POST.get('location_name')
         latitude = request.POST.get('latitude')
         longitude = request.POST.get('longitude')
@@ -70,6 +67,8 @@ def register_user(request):
             password=password,
             role='user',
             phone=phone,
+            full_name=full_name,
+            blood_group=blood_group,
             location_name=location_name,
             latitude=latitude,
             longitude=longitude
@@ -484,8 +483,6 @@ def user_edit_profile(request):
     if request.user.role != 'user':
         return redirect('login')
     
-    from .forms import UserProfileEditForm
-    
     if request.method == 'POST':
         form = UserProfileEditForm(
             request.POST,
@@ -505,22 +502,19 @@ def user_edit_profile(request):
     
     context = {
         'form': form,
+        'current_form': CurrentPasswordForm(request.user),
+        'password_form': PasswordChangeForm(request.user),
         'user': request.user,
     }
     
     return render(request, '05-user/edit_profile.html', context)
 
 
-
-from django.contrib.auth import update_session_auth_hash
-
 @login_required
 def user_change_password(request):
 
-    if request.user.role != 'admin':
+    if request.user.role != 'user':
         return redirect('welcome')
-
-    from .forms import CurrentPasswordForm, PasswordChangeForm
 
     if request.method == 'POST':
 
@@ -549,7 +543,7 @@ def user_change_password(request):
                 'Password changed successfully!'
             )
 
-            return redirect('admin_profile')
+            return redirect('user_profile')
 
         else:
 
@@ -587,11 +581,10 @@ def user_change_password(request):
         )
 
     context = {
-
+        'form': UserProfileEditForm(instance=request.user, user=request.user),
         'current_form': current_form,
         'password_form': password_form,
         'user': request.user,
-
     }
 
     return render(

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import SetPasswordForm
 from django.core.exceptions import ValidationError
 
 User = get_user_model()
@@ -87,3 +88,43 @@ class AdminProfileEditForm(forms.ModelForm):
         if username and User.objects.filter(username=username).exclude(pk=self.user.pk).exists():
             raise ValidationError('This username is already taken.')
         return username
+
+
+class PasswordChangeForm(SetPasswordForm):
+    """Form for changing password with custom styling"""
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
+        self.fields['new_password1'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'New Password',
+            'id': 'new_password1'
+        })
+        self.fields['new_password2'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm Password',
+            'id': 'new_password2'
+        })
+
+
+class CurrentPasswordForm(forms.Form):
+    """Form for verifying current password"""
+
+    current_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Current Password',
+            'id': 'current_password'
+        }),
+        label='Current Password'
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_current_password(self):
+        current_password = self.cleaned_data.get('current_password')
+        if not self.user.check_password(current_password):
+            raise ValidationError('Current password is incorrect.')
+        return current_password

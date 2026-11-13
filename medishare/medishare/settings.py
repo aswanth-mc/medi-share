@@ -21,7 +21,7 @@ SECRET_KEY = os.environ.get(
     "django-insecure-change-this-for-local-dev"
 )
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
 ALLOWED_HOSTS = [
     ".onrender.com",
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'user.User'
+LOGIN_URL = 'login'
 
 # --------------------------------------------------
 # Middleware
@@ -100,7 +101,7 @@ WSGI_APPLICATION = 'medishare.wsgi.application'
 # Database
 # --------------------------------------------------
 
-DATABASE_URL = os.environ.get("postgresql://postgres:VqvdLyUYmju8@HH@db.xsjmoqnpvvdndhcpsoau.supabase.co:5432/postgres")
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
     DATABASES = {

@@ -10,6 +10,7 @@ User = get_user_model()
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 
 # ==========================================
@@ -35,7 +36,8 @@ def admin_dashboard(request):
     ).count()
 
     pending_count = PalliativeUnit.objects.filter(
-        is_verified=False
+        is_verified=False,
+        is_rejected=False,
     ).count()
 
     total_donations = MedicineDonation.objects.count()
@@ -53,7 +55,8 @@ def admin_dashboard(request):
     # =========================
 
     pending_units = PalliativeUnit.objects.filter(
-        is_verified=False
+        is_verified=False,
+        is_rejected=False,
     ).order_by('-created_at')
 
     # =========================
@@ -175,20 +178,25 @@ def admin_dashboard(request):
 # APPROVE UNIT
 # ==========================================
 @login_required
+@require_POST
 def approve_unit(request, unit_id):
 
     if request.user.role != 'admin':
         return redirect('welcome')
 
-    unit = get_object_or_404(PalliativeUnit, id=unit_id, is_verified=False)
+    unit = get_object_or_404(
+        PalliativeUnit,
+        id=unit_id,
+        is_verified=False,
+        is_rejected=False,
+    )
 
-    if request.method == 'POST':
-        unit.is_verified = True
-        unit.save()
-        messages.success(request, f'{unit.name} has been verified!')
-        return redirect('admin_dashboard')
-
-    return render(request, '03-admin/approve_unit.html', {'unit': unit})
+    unit.is_verified = True
+    unit.is_rejected = False
+    unit.rejection_reason = ''
+    unit.save()
+    messages.success(request, f'{unit.name} has been verified!')
+    return redirect('admin_dashboard')
 
 
 # ==========================================
@@ -196,20 +204,26 @@ def approve_unit(request, unit_id):
 # ==========================================
 
 @login_required
+@require_POST
 def reject_unit(request, unit_id):
 
     if request.user.role != 'admin':
         return redirect('welcome')
 
-    unit = get_object_or_404(PalliativeUnit, id=unit_id, is_verified=False)
+    unit = get_object_or_404(
+        PalliativeUnit,
+        id=unit_id,
+        is_verified=False,
+        is_rejected=False,
+    )
 
-    if request.method == 'POST':
-        reason = request.POST.get('reason', 'No reason provided')
-        unit.user.delete()
-        messages.success(request, f'Unit {unit.name} has been rejected!')
-        return redirect('admin_dashboard')
-
-    return render(request, '03-admin/reject_unit.html', {'unit': unit})
+    reason = request.POST.get('reason', 'No reason provided')
+    unit.is_rejected = True
+    unit.is_verified = False
+    unit.rejection_reason = reason
+    unit.save()
+    messages.success(request, f'Unit {unit.name} has been rejected!')
+    return redirect('admin_dashboard')
 
 
 # ==========================================
@@ -228,7 +242,10 @@ def admin_profile(request):
     total_donations = MedicineDonation.objects.exclude(status='removed').count()
     total_requests = MedicineRequest.objects.count()
     verified_units = PalliativeUnit.objects.filter(is_verified=True).count()
-    pending_units = PalliativeUnit.objects.filter(is_verified=False).count()
+    pending_units = PalliativeUnit.objects.filter(
+        is_verified=False,
+        is_rejected=False,
+    ).count()
     
     context = {
         'user': request.user,
@@ -367,27 +384,6 @@ def admin_change_password(request):
 
 
 # ==========================================
-# ADMIN DONATIONS
-# ==========================================
-
-@login_required
-def admin_donations(request):
-
-    if request.user.role != 'admin':
-        return redirect('welcome')
-
-    donations = MedicineDonation.objects.all()
-
-    return render(
-        request,
-        '03-admin/admin_donations.html',
-        {
-            'donations': donations,
-        }
-    )
-
-
-# ==========================================
 # REMOVE DONATION
 # ==========================================
 
@@ -421,7 +417,8 @@ def units_page(request):
     ).count()
 
     pending_units = units.filter(
-        is_verified=False
+        is_verified=False,
+        is_rejected=False,
     ).count()
 
     return render(

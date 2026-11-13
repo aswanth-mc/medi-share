@@ -193,173 +193,142 @@ a {
    FOOTER
 ========================= */
 
-.main-footer{
-
-    background: #0f172a;
-
-    color: #e2e8f0;
-
-    margin-top: 4rem;
-
-    border-top: 1px solid rgba(255,255,255,0.08);
-
+./* =====================================================
+   Compact MediShare Green Footer
+===================================================== */
+.site-footer {
+  background: #092c1b; /* Deep rich forest green background */
+  color: #d1e7dd;
+  border-top: 1px solid rgba(22, 134, 83, 0.25);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-top: auto;
 }
 
-.footer-container{
-
-    max-width: 1400px;
-
-    margin: auto;
-
-    padding: 4rem 2rem;
-
-    display: grid;
-
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-
-    gap: 3rem;
-
+.footer-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 42px 20px 28px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+  gap: 32px;
 }
 
-/* =========================
-   BRAND
-========================= */
-
-.footer-brand h2{
-
-    font-size: 2rem;
-
-    font-weight: 700;
-
-    color: #38bdf8;
-
-    margin-bottom: 1rem;
-
+/* Brand column */
+.footer-brand .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-.footer-brand p{
-
-    color: #cbd5e1;
-
-    line-height: 1.8;
-
-    font-size: 0.95rem;
-
+.footer-brand .brand-icon {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #168653, #10633d);
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* =========================
-   LINKS
-========================= */
-
-.footer-links h3,
-.footer-contact h3{
-
-    font-size: 1.1rem;
-
-    margin-bottom: 1.2rem;
-
-    color: #ffffff;
-
+.footer-brand .brand-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.3px;
 }
 
-.footer-links ul{
-
-    list-style: none;
-
-    padding: 0;
-
-    margin: 0;
-
+.brand-desc {
+  color: #9cb8a8;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  max-width: 290px;
+  margin: 0;
 }
 
-.footer-links ul li{
-
-    margin-bottom: 0.9rem;
-
-    color: #cbd5e1;
-
-    font-size: 0.95rem;
-
+/* Headings & Lists */
+.footer-col h4 {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  letter-spacing: 0.2px;
 }
 
-.footer-links ul li a{
-
-    text-decoration: none;
-
-    color: #cbd5e1;
-
-    transition: 0.3s ease;
-
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
 }
 
-.footer-links ul li a:hover{
-
-    color: #38bdf8;
-
-    padding-left: 5px;
-
+.footer-col ul a {
+  color: #b5d5c3;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
 }
 
-/* =========================
-   CONTACT
-========================= */
-
-.footer-contact p{
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 0.7rem;
-
-    margin-bottom: 1rem;
-
-    color: #cbd5e1;
-
-    font-size: 0.95rem;
-
+.footer-col ul a:hover {
+  color: #55d691;
+  transform: translateX(3px);
 }
 
-.footer-contact i{
-
-    color: #38bdf8;
-
-    font-size: 1rem;
-
+/* Contact item formatting */
+.footer-contact p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #b5d5c3;
+  margin: 0 0 10px;
+  font-size: 0.85rem;
 }
 
-/* =========================
-   BOTTOM
-========================= */
-
-.footer-bottom{
-
-    border-top: 1px solid rgba(255,255,255,0.08);
-
-    padding: 1.2rem 2rem;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 1rem;
-
-    background: #020617;
-
+.footer-contact svg {
+  flex-shrink: 0;
+  color: #27ae60;
 }
 
-.footer-bottom p{
+/* Bottom Bar */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #061f13;
+  padding: 14px 20px;
+  font-size: 0.8rem;
+  color: #82a390;
+}
 
-    margin: 0;
+.footer-bottom-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    color: #94a3b8;
+/* Responsiveness */
+@media (max-width: 860px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+}
 
-    font-size: 0.9rem;
+@media (max-width: 520px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    padding: 32px 16px 20px;
+    gap: 22px;
+  }
 
+  .footer-bottom-inner {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
 }
 
 @media (max-width: 992px) {

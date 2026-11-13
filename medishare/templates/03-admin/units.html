@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'css/customadmin/units.css' %}">
+<link rel="stylesheet" href="{% static 'css/customadmin/unit.css' %}">
 
 <div class="units-page">
 
@@ -136,6 +136,12 @@
                                     Verified
                                 </span>
 
+                            {% elif unit.is_rejected %}
+
+                                <span class="badge pending">
+                                    Rejected
+                                </span>
+
                             {% else %}
 
                                 <span class="badge pending">
@@ -160,25 +166,31 @@
 
                         <td>
 
-                            {% if not unit.is_verified %}
+                            {% if not unit.is_verified and not unit.is_rejected %}
 
                             <div class="action-buttons">
 
-                                <a
-                                    href="{% url 'approve_unit' unit.id %}"
-                                    class="approve-btn"
-                                >
-                                    Approve
-                                </a>
+                                <form method="POST" action="{% url 'approve_unit' unit.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="approve-btn">
+                                        Approve
+                                    </button>
+                                </form>
 
-                                <a
-                                    href="#"
-                                    class="reject-btn"
-                                >
-                                    Reject
-                                </a>
+                                <form method="POST" action="{% url 'reject_unit' unit.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="reject-btn">
+                                        Reject
+                                    </button>
+                                </form>
 
                             </div>
+
+                            {% elif unit.is_rejected %}
+
+                                <span class="verified-text">
+                                    Rejected
+                                </span>
 
                             {% else %}
 

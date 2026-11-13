@@ -17,6 +17,8 @@ class User(AbstractUser):
     latitude = models.FloatField(blank=True,null=True)
     longitude = models.FloatField(blank=True,null=True)
     created_at = models.DateTimeField(default=timezone.now)
+    full_name= models.CharField(max_length=100,blank=True,null=True)
+    blood_group = models.CharField(max_length=3,blank=True,null=True)
 
 
     def __str__(self):
@@ -46,6 +48,7 @@ class MedicineDonation(models.Model):
         related_name='medicine_donations'
     )
     medicine_name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
     medicine_image = models.ImageField(upload_to='medicine_images/')
     expiry_date = models.DateField()
     quantity = models.PositiveIntegerField()
